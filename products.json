@@ -15,13 +15,16 @@
         "Keyword",
         "Keyword"
       ],
-      "images": [],
+      "images": [
+        "images/products/look-01/1787614740700-aa4a2f70.png",
+        "images/products/look-01/1787614744458-ea9791ff.png"
+      ],
       "buyLabel": "구매하기",
       "buyLink": "",
       "sections": [
         {
           "type": "rich_text",
-          "body": ""
+          "body": "<p><br></p>"
         }
       ]
     },
