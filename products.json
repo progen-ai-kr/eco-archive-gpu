@@ -16,8 +16,7 @@
         "Keyword"
       ],
       "images": [
-        "images/products/look-01/1787614740700-aa4a2f70.png",
-        "images/products/look-01/1787614744458-ea9791ff.png"
+        "images/sample-product-bag.jpg"
       ],
       "buyLabel": "구매하기",
       "buyLink": "",
@@ -41,7 +40,9 @@
         "Keyword",
         "Keyword"
       ],
-      "images": [],
+      "images": [
+        "images/sample-product-bag.jpg"
+      ],
       "buyLabel": "구매하기",
       "buyLink": "",
       "sections": [
@@ -64,7 +65,9 @@
         "Keyword",
         "Keyword"
       ],
-      "images": [],
+      "images": [
+        "images/sample-product-bag.jpg"
+      ],
       "buyLabel": "구매하기",
       "buyLink": "",
       "sections": [
