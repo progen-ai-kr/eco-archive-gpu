@@ -163,12 +163,12 @@
 .product-rich-text td {
   min-width: 110px;
   padding: .65rem .75rem;
-  border: 1px solid var(--line, #deddd6);
+  border: 1px solid var(--line, rgba(18,18,18,0.2));
 }
 
 .portfolio-content th,
 .product-rich-text th {
-  background: var(--surface, #f5f4ef);
+  background: var(--surface, #efefec);
   font-weight: 800;
 }
 
@@ -186,7 +186,7 @@
 .product-rich-text code {
   padding: .12em .3em;
   border-radius: 4px;
-  background: var(--surface, #f5f4ef);
+  background: var(--surface, #efefec);
   font-family: "SFMono-Regular", Consolas, monospace;
   font-size: .9em;
 }
