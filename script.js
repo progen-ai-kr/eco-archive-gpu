@@ -2,11 +2,24 @@
 const toggle = document.querySelector(".nav-toggle");
 const menu = document.querySelector(".nav-menu");
 
+function setMenuOpen(open) {
+  menu.classList.toggle("open", open);
+  toggle.setAttribute("aria-expanded", String(open));
+  toggle.setAttribute("aria-label", open ? "메뉴 닫기" : "메뉴 열기");
+}
+
 if (toggle && menu) {
-  toggle.addEventListener("click", () => menu.classList.toggle("open"));
+  toggle.addEventListener("click", () => setMenuOpen(!menu.classList.contains("open")));
   // 메뉴 항목을 누르면 자동으로 닫히게
   menu.querySelectorAll("a").forEach((link) => {
-    link.addEventListener("click", () => menu.classList.remove("open"));
+    link.addEventListener("click", () => setMenuOpen(false));
+  });
+  // 메뉴 안팎 어디에서든 Esc로 닫고 토글 버튼으로 포커스를 되돌림
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && menu.classList.contains("open")) {
+      setMenuOpen(false);
+      toggle.focus();
+    }
   });
 }
 

@@ -3,111 +3,93 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <!-- [작성서 01] 브랜드명으로 바꾸세요 -->
-  <title>브랜드 이름</title>
-  <!-- [작성서 02] 한 줄 소개 → 검색·공유 미리보기에 나오는 설명 -->
-  <meta name="description" content="브랜드 한 줄 소개를 여기에 적으세요." />
-
-  <!-- 카톡/인스타 공유 미리보기 (OG 태그) — 브랜드명·소개·대표이미지로 바꾸세요 -->
-  <meta property="og:title" content="브랜드 이름" />
-  <meta property="og:description" content="브랜드 한 줄 소개" />
-  <meta property="og:image" content="images/og.jpg" />
+  <title>ECHO ARCHIVE — Every Identity Echoes</title>
+  <meta name="description" content="서브컬처의 영감을 패션으로 재해석하는 ECHO ARCHIVE의 2026 F/W 신호를 탐색하세요." />
+  <meta property="og:title" content="ECHO ARCHIVE" />
+  <meta property="og:description" content="Every Identity Echoes — 2026 F/W Yin & Yang" />
+  <meta property="og:image" content="images/brand/echo-archive-logo.png" />
   <meta property="og:type" content="website" />
-
-  <!-- 탭 아이콘 (images/favicon.png 넣으면 표시됨) -->
-  <link rel="icon" href="images/favicon.png" />
-  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="images/brand/echo-archive-logo.png" />
+  <link rel="stylesheet" href="style.css?v=20260902-studio-2f" />
 </head>
-<body>
+<body class="home-page">
+  <a class="skip-link" href="#mainContent">시즌 신호로 건너뛰기</a>
 
-  <!-- ===== 상단 메뉴 (5페이지 공통 — 수정하면 모든 페이지에 똑같이 반영하세요) ===== -->
-  <header class="nav">
-    <div class="nav-inner">
-      <a href="index.html" class="logo">BRAND</a>
-      <button class="nav-toggle" aria-label="메뉴 열기">☰</button>
-      <nav class="nav-menu">
-        <a href="index.html" class="active">홈</a>
-        <a href="about.html">브랜드 소개</a>
-        <a href="products.html">제품</a>
-        <a href="portfolio.html">포트폴리오</a>
-        <a href="contact.html">문의</a>
-      </nav>
+  <main id="mainContent" class="home-stage">
+    <h1 class="sr-only">ECHO ARCHIVE 2026 F/W 제품 아카이브</h1>
+    <div class="studio-lights" aria-hidden="true">
+      <span class="studio-light"></span>
     </div>
-  </header>
+    <div class="studio-desk" aria-hidden="true"></div>
+    <a class="logo home-logo" href="products.html" aria-label="ECHO ARCHIVE 전체 제품 보기">
+      <img src="images/brand/echo-archive-logo.png" alt="ECHO ARCHIVE" />
+    </a>
 
-  <!-- ===== 히어로 [작성서 04 홈: 메인 카피·서브 카피] ===== -->
-  <section class="hero">
-    <p class="eyebrow">BRAND KEYWORD · KEYWORD</p>
-    <h1>메인 카피 (20자 내)</h1>
-    <p>서브 카피 (40자 내) — 브랜드를 소개하는 짧은 문장을 적으세요.</p>
-    <a href="products.html" class="btn">컬렉션 보기</a>
-  </section>
+    <echo-tv-wall aria-label="2026 F/W 제품 신호">
+      <p class="tv-wall-position" aria-live="polite">1 / 4</p>
+      <div class="tv-wall-stage">
+        <div class="tv-wall">
+          <a class="tv polarity-yin" href="products.html" data-product-name="CAT_404" data-slot="0" data-polarity="YIN">
+            <span class="tv-body">
+              <span class="tv-screen-wrap">
+                <span class="tv-screen">
+                  <img src="images/capsule/cat-404.png" alt="CAT_404 시즌 룩" loading="eager" />
+                  <span class="tv-fallback" aria-hidden="true"></span>
+                  <span class="tv-screen-meta"><span class="tv-meta-bar"><span class="tv-meta">SIGNAL-001</span><span class="tv-polarity">YIN</span></span><span class="tv-name">CAT_404</span><span class="tv-sync-badge">ARCHIVE SYNCING</span></span>
+                </span>
+              </span>
+              <span class="tv-panel" aria-hidden="true"><span class="tv-power"></span><span class="tv-knob"></span><span class="tv-knob"></span><span class="tv-speaker"><span></span><span></span><span></span><span></span><span></span><span></span></span></span>
+            </span>
+          </a>
 
-  <!-- ===== 강점 3가지 [작성서 04 홈: 강점3가지] ===== -->
-  <section class="section">
-    <p class="eyebrow">WHY US</p>
-    <h2>우리 브랜드의 강점</h2>
-    <div class="features">
-      <div class="feature">
-        <p class="num">01</p>
-        <h3>강점 제목</h3>
-        <p>강점 설명을 적으세요.</p>
+          <a class="tv polarity-yang" href="products.html" data-product-name="DOG_404" data-slot="1" data-polarity="YANG">
+            <span class="tv-body">
+              <span class="tv-screen-wrap">
+                <span class="tv-screen">
+                  <img src="images/capsule/dog-404.png" alt="DOG_404 시즌 룩" loading="eager" />
+                  <span class="tv-fallback" aria-hidden="true"></span>
+                  <span class="tv-screen-meta"><span class="tv-meta-bar"><span class="tv-meta">SIGNAL-002</span><span class="tv-polarity">YANG</span></span><span class="tv-name">DOG_404</span><span class="tv-sync-badge">ARCHIVE SYNCING</span></span>
+                </span>
+              </span>
+              <span class="tv-panel" aria-hidden="true"><span class="tv-power"></span><span class="tv-knob"></span><span class="tv-knob"></span><span class="tv-speaker"><span></span><span></span><span></span><span></span><span></span><span></span></span></span>
+            </span>
+          </a>
+
+          <a class="tv polarity-yin" href="products.html" data-product-name="DEVIL_666" data-slot="2" data-polarity="YIN">
+            <span class="tv-body">
+              <span class="tv-screen-wrap">
+                <span class="tv-screen">
+                  <img src="images/capsule/devil-666.png" alt="DEVIL_666 시즌 룩" loading="lazy" />
+                  <span class="tv-fallback" aria-hidden="true"></span>
+                  <span class="tv-screen-meta"><span class="tv-meta-bar"><span class="tv-meta">SIGNAL-003</span><span class="tv-polarity">YIN</span></span><span class="tv-name">DEVIL_666</span><span class="tv-sync-badge">ARCHIVE SYNCING</span></span>
+                </span>
+              </span>
+              <span class="tv-panel" aria-hidden="true"><span class="tv-power"></span><span class="tv-knob"></span><span class="tv-knob"></span><span class="tv-speaker"><span></span><span></span><span></span><span></span><span></span><span></span></span></span>
+            </span>
+          </a>
+
+          <a class="tv polarity-yang" href="products.html" data-product-name="ANGEL_777" data-slot="3" data-polarity="YANG">
+            <span class="tv-body">
+              <span class="tv-screen-wrap">
+                <span class="tv-screen">
+                  <img src="images/capsule/angel-777.png" alt="ANGEL_777 시즌 룩" loading="lazy" />
+                  <span class="tv-fallback" aria-hidden="true"></span>
+                  <span class="tv-screen-meta"><span class="tv-meta-bar"><span class="tv-meta">SIGNAL-004</span><span class="tv-polarity">YANG</span></span><span class="tv-name">ANGEL_777</span><span class="tv-sync-badge">ARCHIVE SYNCING</span></span>
+                </span>
+              </span>
+              <span class="tv-panel" aria-hidden="true"><span class="tv-power"></span><span class="tv-knob"></span><span class="tv-knob"></span><span class="tv-speaker"><span></span><span></span><span></span><span></span><span></span><span></span></span></span>
+            </span>
+          </a>
+        </div>
       </div>
-      <div class="feature">
-        <p class="num">02</p>
-        <h3>강점 제목</h3>
-        <p>강점 설명을 적으세요.</p>
-      </div>
-      <div class="feature">
-        <p class="num">03</p>
-        <h3>강점 제목</h3>
-        <p>강점 설명을 적으세요.</p>
-      </div>
-    </div>
-  </section>
+    </echo-tv-wall>
+  </main>
 
-  <!-- ===== 대표 제품 미리보기 — products.json에서 자동으로 채워짐 ===== -->
-  <section class="section">
-    <p class="eyebrow">COLLECTION</p>
-    <h2>대표 룩</h2>
-    <div class="grid" id="home-looks"></div>
-  </section>
-
-  <!-- ===== 푸터 (5페이지 공통) [작성서 01: 푸터 표기 정보] ===== -->
-  <footer class="footer">
-    <p class="logo">BRAND</p>
-    <p class="biz">
-      상호: ○○○ · 대표자: ○○○<br />
-      사업자등록번호: 000-00-00000 · 주소: ○○○
-    </p>
-    <p>© 브랜드 이름. All rights reserved.</p>
-  </footer>
-
-  <script src="script.js"></script>
-  <script src="catalog.js?v=20260826-rich-editor-1"></script>
-  <script>
-    // 공개 제품 중 '홈 대표 제품'을 최대 4개 보여줍니다.
-    ProductCatalog.loadVisibleProducts()
-      .then((products) => {
-        const featured = products.filter((product) => product.featured);
-        const homeProducts = (featured.length ? featured : products).slice(0, 4);
-        document.getElementById("home-looks").innerHTML = homeProducts
-          .map((p) => {
-            const image = ProductCatalog.safeImageUrl(p.images && p.images[0]);
-            const img = image
-              ? '<img src="' + ProductCatalog.escapeHtml(image) + '" alt="' + ProductCatalog.escapeHtml(p.name) + '" onerror="this.remove()" />'
-              : "";
-            return (
-              '<a class="card" href="product.html?id=' + encodeURIComponent(p.id) + '">' +
-              '<div class="card-img">' + img + "</div>" +
-              '<p class="k">' + ProductCatalog.escapeHtml(p.label || p.category || "") + "</p>" +
-              "<h3>" + ProductCatalog.escapeHtml(p.name) + "</h3></a>"
-            );
-          })
-          .join("");
-      })
-      .catch(() => {});
-  </script>
+  <signal-transition></signal-transition>
+  <script src="catalog.js?v=20260902-design-1b"></script>
+  <script src="scripts/motion.js?v=20260902-design-1b"></script>
+  <script src="scripts/capsule-data.js?v=20260902-design-1b"></script>
+  <script src="scripts/components/signal-transition.js?v=20260902-portal-2e"></script>
+  <script src="scripts/components/echo-tv-wall.js?v=20260902-design-1b"></script>
 </body>
 </html>

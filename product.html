@@ -3,31 +3,32 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>제품 상세 — 브랜드 이름</title>
-  <meta name="description" content="제품 상세 정보" />
-  <link rel="icon" href="images/favicon.png" />
-  <link rel="stylesheet" href="style.css?v=20260826-buy-popup-2" />
+  <title>제품 상세 — ECHO ARCHIVE</title>
+  <meta name="description" content="ECHO ARCHIVE 제품 상세 정보" />
+  <link rel="icon" href="images/brand/echo-archive-logo.png" />
+  <link rel="stylesheet" href="style.css?v=20260902-design-1c" />
   <link rel="stylesheet" href="rich-content.css?v=20260826-rich-editor-1" />
 </head>
-<body>
+<body class="product-page">
+
+  <a class="skip-link" href="#mainContent">본문으로 건너뛰기</a>
 
   <header class="nav">
     <div class="nav-inner">
-      <a href="index.html" class="logo">BRAND</a>
-      <button class="nav-toggle" aria-label="메뉴 열기">☰</button>
-      <nav class="nav-menu">
-        <a href="index.html">홈</a>
-        <a href="about.html">브랜드 소개</a>
-        <a href="products.html" class="active">제품</a>
-        <a href="portfolio.html">포트폴리오</a>
-        <a href="contact.html">문의</a>
+      <a href="index.html" class="logo"><img src="images/brand/echo-archive-logo.png" alt="ECHO ARCHIVE 홈" /></a>
+      <button class="nav-toggle" aria-label="메뉴 열기" aria-expanded="false" aria-controls="primaryNav">☰</button>
+      <nav class="nav-menu" id="primaryNav" aria-label="주요 메뉴">
+        <a href="about.html">About</a>
+        <a href="products.html" class="active" aria-current="page">Archive</a>
+        <a href="portfolio.html">Portfolio</a>
+        <a href="contact.html">Contact</a>
       </nav>
     </div>
   </header>
 
   <!-- 브랜드 담당자가 만든 제품 정보와 상세 내용이 자동으로 채워집니다. -->
-  <main id="product-detail" aria-live="polite">
-    <section class="section"><p>제품 정보를 불러오는 중…</p></section>
+  <main id="mainContent">
+    <section class="section"><p role="status" aria-live="polite">제품 정보를 불러오는 중…</p></section>
   </main>
 
   <dialog id="purchaseDialog" class="purchase-dialog" aria-labelledby="purchaseDialogTitle">
@@ -54,15 +55,16 @@
   </section>
 
   <footer class="footer">
-    <p class="logo">BRAND</p>
-    <p class="biz">
-      상호: ○○○ · 대표자: ○○○<br />
-      사업자등록번호: 000-00-00000 · 주소: ○○○
+    <a href="index.html" class="logo"><img src="images/brand/echo-archive-logo.png" alt="ECHO ARCHIVE 홈" /></a>
+    <p class="biz">ECHO ARCHIVE / 방려명</p>
+    <p>
+      <a href="https://instagram.com/echo_archive" target="_blank" rel="noopener noreferrer">@echo_archive</a>
+      · <a href="mailto:echo_archive@gmail.com">echo_archive@gmail.com</a>
     </p>
-    <p>© 브랜드 이름. All rights reserved.</p>
+    <p>© ECHO ARCHIVE. All rights reserved.</p>
   </footer>
 
-  <script src="script.js"></script>
+  <script src="script.js?v=20260902-design-1b"></script>
   <script src="catalog.js?v=20260826-rich-editor-1"></script>
   <script>
     const productId = new URLSearchParams(location.search).get("id");
@@ -176,6 +178,12 @@
       });
     }
 
+    function formatDisplayPrice(value) {
+      const text = String(value || "").trim();
+      if (!/^\d+$/.test(text)) return text;
+      return Number(text).toLocaleString("ko-KR") + "원";
+    }
+
     function renderSection(section, product, index) {
       if (!section || !section.type) return "";
       const esc = ProductCatalog.escapeHtml;
@@ -231,16 +239,18 @@
 
         const tags = (Array.isArray(product.keywords) ? product.keywords : [])
           .map((keyword) => "<span>" + esc(keyword) + "</span>").join("");
-        const price = product.price ? '<p class="product-price">' + esc(product.price) + "</p>" : "";
+        const displayPrice = formatDisplayPrice(product.price);
+        const price = displayPrice ? '<p class="product-price">' + esc(displayPrice) + "</p>" : "";
         const buyLink = ProductCatalog.safeExternalUrl(product.buyLink);
         const buyNotice = String(product.buyNotice || "").trim();
+        const publicBuyNotice = buyNotice === "계좌 0000-000-0000 김*수" ? "" : buyNotice;
         const buyButton = buyLink
           ? '<a class="btn product-buy" href="' + esc(buyLink) + '" target="_blank" rel="noopener noreferrer">' +
             esc(product.buyLabel || "구매하기") + " <span aria-hidden=\"true\">↗</span></a>"
-          : buyNotice
+          : publicBuyNotice
             ? '<button class="btn product-buy" type="button" data-purchase-dialog aria-haspopup="dialog">' +
               esc(product.buyLabel || "구매하기") + "</button>"
-            : "";
+            : '<p class="product-sale-status" role="status">판매 준비 중 · 문의 채널을 이용해 주세요.</p>';
 
         let sections = Array.isArray(product.sections)
           ? product.sections.map((section, index) => renderSection(section, product, index)).join("")
@@ -253,7 +263,7 @@
           sections = '<section class="product-block product-rich-text">' + paragraphs + "</section>";
         }
 
-        document.getElementById("product-detail").innerHTML =
+        document.getElementById("mainContent").innerHTML =
           '<section class="section product-hero">' +
             '<div class="product-hero-gallery">' + gallery + "</div>" +
             '<div class="product-info">' +
@@ -271,8 +281,8 @@
         setupPurchaseDialog(product);
       })
       .catch(() => {
-        document.getElementById("product-detail").innerHTML =
-          '<section class="section"><h1>제품을 찾을 수 없습니다.</h1><p><a href="products.html">제품 목록으로 돌아가기</a></p></section>';
+        document.getElementById("mainContent").innerHTML =
+          '<section class="section"><h1>제품을 찾을 수 없습니다.</h1><p>요청한 기록이 없거나 현재 공개되지 않았습니다.</p></section>';
       });
   </script>
 </body>

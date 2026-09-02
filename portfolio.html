@@ -3,52 +3,71 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>포트폴리오 — 브랜드 이름</title>
-  <meta name="description" content="브랜드의 작업 사례를 소개합니다." />
-  <link rel="icon" href="images/favicon.png" />
-  <link rel="stylesheet" href="style.css" />
+  <title>포트폴리오 — ECHO ARCHIVE</title>
+  <meta name="description" content="ECHO ARCHIVE의 작업 사례를 소개합니다." />
+  <link rel="icon" href="images/brand/echo-archive-logo.png" />
+  <link rel="stylesheet" href="style.css?v=20260902-design-1c" />
   <link rel="stylesheet" href="rich-content.css?v=20260826-rich-editor-1" />
 </head>
-<body>
+<body class="portfolio-page">
+
+  <a class="skip-link" href="#mainContent">본문으로 건너뛰기</a>
 
   <header class="nav">
     <div class="nav-inner">
-      <a href="index.html" class="logo">BRAND</a>
-      <button class="nav-toggle" aria-label="메뉴 열기">☰</button>
-      <nav class="nav-menu">
-        <a href="index.html">홈</a>
-        <a href="about.html">브랜드 소개</a>
-        <a href="products.html">제품</a>
-        <a href="portfolio.html" class="active">포트폴리오</a>
-        <a href="contact.html">문의</a>
+      <a href="index.html" class="logo"><img src="images/brand/echo-archive-logo.png" alt="ECHO ARCHIVE 홈" /></a>
+      <button class="nav-toggle" aria-label="메뉴 열기" aria-expanded="false" aria-controls="primaryNav">☰</button>
+      <nav class="nav-menu" id="primaryNav" aria-label="주요 메뉴">
+        <a href="about.html">About</a>
+        <a href="products.html">Archive</a>
+        <a href="portfolio.html" class="active" aria-current="page">Portfolio</a>
+        <a href="contact.html">Contact</a>
       </nav>
     </div>
   </header>
 
-  <section class="page-head">
-    <h1>포트폴리오</h1>
-    <p>브랜드의 작업·프로젝트 사례를 소개합니다.</p>
-  </section>
+  <main id="mainContent">
 
-  <section class="section">
-    <!-- 브랜드 담당자가 관리자에서 작성한 한 개의 포트폴리오 문서가 여기에 표시됩니다.
-         학생은 이 컨테이너와 portfolio.js를 유지하고 CSS로 UI만 디자인하세요. -->
-    <article id="portfolioContent" class="portfolio-content" aria-live="polite">
-      <p class="portfolio-status">포트폴리오를 불러오는 중입니다.</p>
-    </article>
-  </section>
+    <section class="page-head">
+      <h1>PORTFOLIO</h1>
+      <p>옷과 이미지, 이야기가 하나의 신호로 연결된 프로젝트 기록입니다.</p>
+    </section>
+
+    <section class="section">
+      <!-- 브랜드 담당자가 관리자에서 작성한 한 개의 포트폴리오 문서가 여기에 표시됩니다.
+           학생은 이 컨테이너와 portfolio.js를 유지하고 CSS로 UI만 디자인하세요. -->
+      <article id="portfolioContent" class="portfolio-content" aria-live="polite">
+        <p class="portfolio-status">포트폴리오를 불러오는 중입니다.</p>
+      </article>
+    </section>
+
+  </main>
 
   <footer class="footer">
-    <p class="logo">BRAND</p>
-    <p class="biz">
-      상호: ○○○ · 대표자: ○○○<br />
-      사업자등록번호: 000-00-00000 · 주소: ○○○
+    <a href="index.html" class="logo"><img src="images/brand/echo-archive-logo.png" alt="ECHO ARCHIVE 홈" /></a>
+    <p class="biz">ECHO ARCHIVE / 방려명</p>
+    <p>
+      <a href="https://instagram.com/echo_archive" target="_blank" rel="noopener noreferrer">@echo_archive</a>
+      · <a href="mailto:echo_archive@gmail.com">echo_archive@gmail.com</a>
     </p>
-    <p>© 브랜드 이름. All rights reserved.</p>
+    <p>© ECHO ARCHIVE. All rights reserved.</p>
   </footer>
 
   <script src="catalog.js?v=20260826-rich-editor-1"></script>
   <script src="portfolio.js"></script>
-  <script src="script.js"></script>
+  <script>
+    const portfolioRoot = document.getElementById("portfolioContent");
+    const improvePortfolioAlt = () => {
+      portfolioRoot.querySelectorAll("img").forEach((image, index) => {
+        const alt = String(image.alt || "").trim();
+        if (!alt || /\.(?:jpe?g|png|webp|gif)$/i.test(alt)) {
+          image.alt = "ECHO ARCHIVE 포트폴리오 이미지 " + (index + 1);
+        }
+      });
+    };
+    new MutationObserver(improvePortfolioAlt).observe(portfolioRoot, { childList: true, subtree: true });
+    improvePortfolioAlt();
+  </script>
+  <script src="script.js?v=20260902-design-1b"></script>
 </body>
 </html>
