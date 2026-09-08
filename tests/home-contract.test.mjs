@@ -60,9 +60,13 @@ test("각 TV 화면 안에는 아이콘(svg) 하나만 존재한다", () => {
 });
 
 test("화면 안에 금지된 가시 텍스트 문구가 없다", () => {
+  // <head>의 메타 설명 등은 화면에 그려지지 않으므로 본문(tv-wall-stage)만 검사한다.
+  const stageMatch = indexHtml.match(/<div class="tv-wall-stage">[\s\S]*?<\/div>\s*<\/div>/);
+  assert.ok(stageMatch, "tv-wall-stage 블록을 찾을 수 없다");
+  const stageHtml = stageMatch[0];
   const forbidden = ["2026 F/W", "BGM OFF", "YANG LOOK", "ABOUT ECHO", "YIN LOOK", "SIGNAL-00"];
   for (const phrase of forbidden) {
-    assert.ok(!indexHtml.includes(phrase), `"${phrase}" 문구가 마크업에 남아있으면 안 된다`);
+    assert.ok(!stageHtml.includes(phrase), `"${phrase}" 문구가 화면 마크업에 남아있으면 안 된다`);
   }
 });
 
@@ -72,7 +76,9 @@ test("화면 내부 메타 텍스트 클래스가 없다", () => {
 });
 
 test("장식 요소는 접근성 트리와 포인터 입력에서 제외된다", () => {
-  const decorTags = indexHtml.match(/<[^>]*class="[^"]*tv-decor[^"]*"[^>]*>/g) || [];
+  // 최상위 tv-decor 래퍼만 검사한다 — 그 안의 자식(tv-decor-img 등)은 부모가 이미 숨겼으므로
+  // 각각 aria-hidden을 반복할 필요가 없다.
+  const decorTags = indexHtml.match(/<[^>]*class="(?:[^"]*\s)?tv-decor(?:\s[^"]*)?"[^>]*>/g) || [];
   assert.ok(decorTags.length > 0, "tv-decor 장식 요소가 있어야 한다");
   for (const tag of decorTags) {
     assert.match(tag, /aria-hidden="true"/, "장식 요소는 aria-hidden=true여야 한다: " + tag);
