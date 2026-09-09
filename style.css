@@ -201,18 +201,24 @@ main { min-height: calc(100vh - 166px); }
   z-index: 1;
   height: 16%;
   background:
+    /* 아래쪽 3대, 위쪽 2대의 x축 위치(16.7%/50%/83.3%, 33.3%/66.7%)에 맞춘 옅은 반사 얼룩 */
+    radial-gradient(ellipse 13% 55% at 16.7% 0%, rgba(120,134,156,.16), transparent 78%),
+    radial-gradient(ellipse 13% 55% at 50% 0%, rgba(120,134,156,.18), transparent 78%),
+    radial-gradient(ellipse 13% 55% at 83.3% 0%, rgba(120,134,156,.16), transparent 78%),
+    radial-gradient(ellipse 10% 40% at 33.3% 0%, rgba(120,134,156,.1), transparent 78%),
+    radial-gradient(ellipse 10% 40% at 66.7% 0%, rgba(120,134,156,.1), transparent 78%),
     linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,.55) 100%),
     radial-gradient(ellipse 60% 100% at 50% 0%, rgba(150,166,190,.28), transparent 70%);
-  filter: blur(1px);
+  filter: blur(2px);
 }
 
 /* ── TV 조형물 배치 ── */
 .tv-wall-stage {
   position: absolute;
   top: 2%;
-  right: 7%;
+  right: 14%;
   bottom: 16%;
-  left: 7%;
+  left: 15.5%;
   z-index: 5;
 }
 .tv-wall {
@@ -223,6 +229,7 @@ main { min-height: calc(100vh - 166px); }
   grid-template-rows: 1fr 1fr;
   column-gap: 0;
   row-gap: 0;
+  filter: drop-shadow(0 clamp(10px, 1.8cqw, 28px) clamp(20px, 3.2cqw, 44px) rgba(70, 82, 100, .3));
 }
 .tv[data-tv-index="1"] { grid-column: 2 / 4; grid-row: 1 / 2; z-index: 4; margin-bottom: clamp(-8px, -1cqw, -3px); }
 .tv[data-tv-index="2"] { grid-column: 4 / 6; grid-row: 1 / 2; z-index: 4; margin-bottom: clamp(-8px, -1cqw, -3px); }
@@ -247,12 +254,14 @@ main { min-height: calc(100vh - 166px); }
   text-decoration: none;
   cursor: pointer;
   box-shadow:
-    0 clamp(6px, 1.4cqw, 20px) clamp(14px, 2.6cqw, 36px) rgba(70, 82, 100, .22),
-    0 2px 0 rgba(255, 255, 255, .8),
     inset 0 2px 3px rgba(255, 255, 255, .9),
     inset 0 -6px 10px rgba(90, 96, 105, .3);
   transition: transform .26s ease, filter .26s ease;
 }
+/* 개별 TV의 바깥 그림자·림 대신 .tv-wall 전체에 하나의 실루엣 그림자를 씌워
+   맞닿은 캐비닛들이 이중 테두리 없이 하나의 조형물처럼 보이게 한다. */
+.tv[data-tv-index="1"], .tv[data-tv-index="2"] { filter: brightness(1.025); }
+.tv[data-tv-index="3"], .tv[data-tv-index="4"], .tv[data-tv-index="5"] { filter: brightness(.97); }
 .tv::after {
   position: absolute;
   inset: 0;
@@ -260,7 +269,7 @@ main { min-height: calc(100vh - 166px); }
   border-radius: inherit;
   background: repeating-radial-gradient(circle at 22% 22%, rgba(255,255,255,.5) 0 1px, transparent 1px 5px);
   content: "";
-  opacity: .35;
+  opacity: .18;
   pointer-events: none;
   mix-blend-mode: soft-light;
 }
@@ -318,7 +327,7 @@ main { min-height: calc(100vh - 166px); }
   z-index: 4;
   border-radius: inherit;
   background:
-    linear-gradient(120deg, rgba(255,255,255,.22) 0, rgba(255,255,255,.04) 20%, transparent 40%),
+    linear-gradient(124deg, rgba(255,255,255,.42) 0, rgba(255,255,255,.16) 9%, transparent 24%),
     radial-gradient(ellipse at center, transparent 48%, rgba(0,0,0,.6) 100%);
   content: "";
   pointer-events: none;
@@ -330,7 +339,7 @@ main { min-height: calc(100vh - 166px); }
   background: repeating-linear-gradient(112deg, rgba(255,255,255,.03) 0 6px, transparent 6px 16px);
   content: "";
   animation: staticshift 9s linear infinite;
-  opacity: .05;
+  opacity: .035;
   pointer-events: none;
   transition: opacity .3s ease, filter .3s ease;
 }
