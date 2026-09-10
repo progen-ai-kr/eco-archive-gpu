@@ -46,6 +46,13 @@
     }
   }
 
+  function shouldRestartBgm(currentTime, loopEndSeconds) {
+    return Number.isFinite(currentTime)
+      && Number.isFinite(loopEndSeconds)
+      && loopEndSeconds > 0
+      && currentTime >= loopEndSeconds;
+  }
+
   // ── YIN/YANG 쿼리 매핑 ──────────────────────────────────────────
   // 대소문자를 가리지 않고 YIN/YANG만 인정한다. 그 외 값은 null(전체 목록 폴백).
   function resolvePolarityQuery(rawValue) {
@@ -81,6 +88,7 @@
     BGM_ACTIONS: BGM_ACTIONS,
     initialBgmState: initialBgmState,
     bgmReducer: bgmReducer,
+    shouldRestartBgm: shouldRestartBgm,
     resolvePolarityQuery: resolvePolarityQuery,
     resolveProductPolarity: resolveProductPolarity,
     filterProductsByPolarity: filterProductsByPolarity,
