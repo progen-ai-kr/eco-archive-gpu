@@ -713,8 +713,11 @@ body.transition-active .tv:not(.is-focused) { opacity: 0; filter: brightness(.2)
   }
   /* 데스크톱의 절대배치(%)를 풀고 흐름 배치로 되돌리되, .tv는 position:relative를
      유지해서 안의 장식(귀·안테나·날개·꼬리)이 계속 자기 TV 기준으로 붙어 있게 한다.
-     비율은 각 TV 자산의 실제 캔버스 비율(px)을 그대로 써서 장식 정렬도 유지한다. */
-  .tv {
+     비율은 각 TV 자산의 실제 캔버스 비율(px)을 그대로 써서 장식 정렬도 유지한다.
+     선택자를 [data-tv-index]로 잡는 이유: 데스크톱 좌표 규칙(.tv[data-tv-index="N"])이
+     속성 선택자를 포함해 명시도가 더 높다 — 그냥 .tv로 리셋하면 소스 순서와 무관하게
+     그 좌표에 밀려서 무시된다. */
+  .tv[data-tv-index] {
     position: relative;
     left: auto;
     top: auto;
