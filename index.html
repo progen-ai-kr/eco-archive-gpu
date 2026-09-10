@@ -15,6 +15,69 @@
 <body class="home-page">
   <a class="skip-link" href="#mainContent">시즌 신호로 건너뛰기</a>
 
+  <!-- ===== 공용 머티리얼 =====
+       TV 캐비닛·장식이 공유하는 그라데이션/필터를 한 번만 정의한다.
+       (validate_site.py가 중복 id를 거부하므로 부품마다 defs를 두지 않는다.)
+       크롬이 금속으로 읽히는 핵심은 중간의 급격한 '어두움→흰색' 전환이다 —
+       실제 크롬에 비치는 수평선 반사를 흉내낸 것. -->
+  <svg class="tv-materials" aria-hidden="true" focusable="false">
+    <defs>
+      <linearGradient id="matChrome" x1="0" y1="0" x2="0.35" y2="1">
+        <stop offset="0%" stop-color="#ffffff" />
+        <stop offset="18%" stop-color="#f2f5f8" />
+        <stop offset="34%" stop-color="#b9c1c9" />
+        <stop offset="46%" stop-color="#7e868f" />
+        <stop offset="52%" stop-color="#ffffff" />
+        <stop offset="68%" stop-color="#cdd4db" />
+        <stop offset="86%" stop-color="#9aa2ab" />
+        <stop offset="100%" stop-color="#eef2f6" />
+      </linearGradient>
+      <linearGradient id="matChromeSoft" x1="0.1" y1="0" x2="0.6" y2="1">
+        <stop offset="0%" stop-color="#ffffff" />
+        <stop offset="30%" stop-color="#e6eaee" />
+        <stop offset="55%" stop-color="#aab2bb" />
+        <stop offset="63%" stop-color="#f7f9fb" />
+        <stop offset="100%" stop-color="#c3cad2" />
+      </linearGradient>
+      <radialGradient id="matChromeDisc" cx="0.34" cy="0.28" r="0.85">
+        <stop offset="0%" stop-color="#ffffff" />
+        <stop offset="42%" stop-color="#d4dae0" />
+        <stop offset="74%" stop-color="#89919a" />
+        <stop offset="100%" stop-color="#eaeef2" />
+      </radialGradient>
+      <linearGradient id="matJet" x1="0.1" y1="0" x2="0.5" y2="1">
+        <stop offset="0%" stop-color="#3d4248" />
+        <stop offset="30%" stop-color="#16191c" />
+        <stop offset="62%" stop-color="#0a0c0e" />
+        <stop offset="100%" stop-color="#282d33" />
+      </linearGradient>
+      <radialGradient id="matInnerEar" cx="0.42" cy="0.32" r="0.82">
+        <stop offset="0%" stop-color="#4a5057" />
+        <stop offset="45%" stop-color="#1d2126" />
+        <stop offset="100%" stop-color="#080a0c" />
+      </radialGradient>
+      <linearGradient id="matFeather" x1="0.2" y1="0" x2="0.8" y2="1">
+        <stop offset="0%" stop-color="#ffffff" />
+        <stop offset="52%" stop-color="#f1f4f7" />
+        <stop offset="100%" stop-color="#d5dade" />
+      </linearGradient>
+      <linearGradient id="matFeatherDeep" x1="0.2" y1="0" x2="0.8" y2="1">
+        <stop offset="0%" stop-color="#f4f7fa" />
+        <stop offset="55%" stop-color="#dfe4e9" />
+        <stop offset="100%" stop-color="#bcc3ca" />
+      </linearGradient>
+      <!-- 깃털 한 장. 뿌리가 (0,0)이고 끝이 왼쪽(-x)을 향한다.
+           날개는 이 한 장을 translate/rotate/scale로 여러 번 배치해 층층이 쌓는다. -->
+      <path id="matFeatherShape" d="M0 -6 C -30 -9, -58 -6, -78 2 C -58 10, -30 13, 0 6 C 5 4, 5 -4, 0 -6 Z" />
+      <filter id="fxDrop" x="-30%" y="-30%" width="160%" height="160%">
+        <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#4a545f" flood-opacity="0.34" />
+      </filter>
+      <filter id="fxDropSoft" x="-30%" y="-30%" width="160%" height="160%">
+        <feDropShadow dx="0" dy="5" stdDeviation="7" flood-color="#4a545f" flood-opacity="0.26" />
+      </filter>
+    </defs>
+  </svg>
+
   <main id="mainContent" class="home-stage">
     <h1 class="sr-only">ECHO ARCHIVE 2026 F/W 제품 아카이브</h1>
 
@@ -38,26 +101,37 @@
 
           <a class="tv" data-tv-role="portfolio" data-tv-index="1" href="portfolio.html" aria-label="음양 시즌 포트폴리오 보기">
             <span class="tv-decor tv-decor-antenna" aria-hidden="true">
+              <!-- 크롬 소켓 위로 왼쪽=천사 날개(흰색), 오른쪽=악마 날개(광택 검정)가 뻗는다.
+                   각 날개는 [본체 그라데이션 → 스페큘러 하이라이트 → 리브] 순으로 겹쳐 입체감을 만든다. -->
               <svg class="tv-decor-img" viewBox="0 0 176 100" preserveAspectRatio="xMidYMax meet">
-                <rect x="82" y="66" width="12" height="30" rx="6" fill="var(--chrome-500)" />
-                <circle cx="88" cy="92" r="10" fill="var(--chrome-300)" />
-                <path fill="#fff" stroke="var(--chrome-300)" stroke-width="1.5" stroke-linejoin="round" d="M88 76
-                  C 78 58, 54 38, 18 26
-                  C 10 23, 3 24, 0 29
-                  C 11 29, 21 34, 28 43
-                  C 17 41, 8 44, 3 50
-                  C 15 49, 24 53, 30 61
-                  C 20 60, 11 64, 7 70
-                  C 20 69, 32 72, 42 79
-                  C 57 88, 74 86, 88 76 Z" />
-                <path fill="#161616" d="M88 76
-                  C 99 60, 118 42, 152 30
-                  L 146 42
-                  L 167 36
-                  L 156 48
-                  L 174 45
-                  L 160 58
-                  C 147 66, 118 74, 88 76 Z" />
+                <g filter="url(#fxDrop)">
+                  <path fill="url(#matFeather)" d="M86 84
+                    C 82 58, 74 32, 56 13
+                    C 50 7, 42 7, 38 12
+                    C 42 24, 44 34, 42 45
+                    C 32 38, 20 39, 12 46
+                    C 22 52, 31 58, 36 67
+                    C 26 67, 17 71, 12 79
+                    C 35 76, 62 78, 86 84 Z" />
+                  <path fill="#ffffff" opacity=".9" d="M52 14 C 46 9, 41 10, 39 14 C 44 24, 46 33, 45 42 C 49 32, 52 22, 52 14 Z" />
+                  <path fill="#c5ccd4" opacity=".45" d="M86 84 C 68 78, 44 74, 18 76 C 44 72, 68 74, 85 80 Z" />
+                  <path fill="url(#matJet)" d="M90 84
+                    C 94 58, 102 32, 120 13
+                    C 126 7, 134 7, 138 12
+                    L 133 45
+                    C 143 38, 155 39, 164 45
+                    L 138 67
+                    C 149 67, 158 71, 164 79
+                    C 141 76, 114 78, 90 84 Z" />
+                  <g fill="none" stroke="#98a2ac" stroke-width="1.1" opacity=".6" stroke-linecap="round">
+                    <path d="M93 80 C 103 56, 112 32, 128 14" />
+                    <path d="M95 81 C 108 66, 122 54, 136 46" />
+                    <path d="M97 82 C 112 76, 130 72, 145 69" />
+                  </g>
+                  <path fill="#ffffff" opacity=".22" d="M124 14 C 130 8, 136 8, 138 13 C 133 26, 130 36, 130 46 C 127 34, 125 23, 124 14 Z" />
+                </g>
+                <ellipse cx="88" cy="91" rx="17" ry="6.5" fill="url(#matChromeDisc)" />
+                <ellipse cx="84" cy="89" rx="8" ry="2.4" fill="#ffffff" opacity=".8" />
               </svg>
             </span>
             <span class="tv-controls" aria-hidden="true">
@@ -66,11 +140,16 @@
             </span>
             <span class="tv-screen-wrap">
               <span class="tv-screen">
+                <!-- 음양: 하나의 까다로운 path 대신 [어두운 원 → 오른쪽 반원 흰색 → 위/아래 보조 원]
+                     순서로 쌓아 올린다. 어느 영역이 채워지는지 모호하지 않아 눈 2개가 항상 보인다. -->
                 <svg class="tv-icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
-                  <circle cx="32" cy="32" r="26" fill="none" stroke="currentColor" stroke-width="2" />
-                  <path fill="currentColor" d="M32 6 A26 26 0 0 1 32 58 A13 13 0 0 1 32 32 A13 13 0 0 0 32 6 Z" />
-                  <circle cx="32" cy="19" r="3.6" fill="#0c0d10" />
-                  <circle cx="32" cy="45" r="3.6" fill="currentColor" />
+                  <circle cx="32" cy="32" r="25" fill="#12171d" />
+                  <path fill="currentColor" d="M32 7 A25 25 0 0 1 32 57 Z" />
+                  <circle cx="32" cy="19.5" r="12.5" fill="currentColor" />
+                  <circle cx="32" cy="44.5" r="12.5" fill="#12171d" />
+                  <circle cx="32" cy="19.5" r="4.6" fill="#12171d" />
+                  <circle cx="32" cy="44.5" r="4.6" fill="currentColor" />
+                  <circle cx="32" cy="32" r="25" fill="none" stroke="currentColor" stroke-width="1.5" opacity=".9" />
                 </svg>
               </span>
             </span>
@@ -100,29 +179,56 @@
 
           <a class="tv" data-tv-role="yang" data-tv-index="3" href="products.html?polarity=YANG" aria-label="YANG 룩 보기">
             <span class="tv-decor tv-decor-wing-back" aria-hidden="true">
+              <!-- 천사 날개: 깃털 18장을 3열(칼깃→둘째깃→덮깃)로 겹쳐 배치한다.
+                   뒤쪽 열을 먼저 그려야 앞쪽 열이 위로 겹쳐 실제 날개의 층이 생긴다. -->
               <svg class="tv-decor-img" viewBox="0 0 252 248" preserveAspectRatio="xMaxYMid meet">
-                <path fill="#fff" stroke="var(--chrome-300)" stroke-width="1.5" stroke-linejoin="round" d="
-                  M252 128
-                  C 200 108, 138 88, 88 50
-                  C 58 27, 28 11, 0 8
-                  C 25 21, 44 40, 54 61
-                  C 31 53, 12 55, 0 67
-                  C 25 67, 47 76, 59 94
-                  C 36 90, 16 96, 5 110
-                  C 30 106, 53 114, 66 130
-                  C 45 130, 26 138, 17 152
-                  C 42 146, 65 152, 78 166
-                  C 59 168, 44 176, 36 188
-                  C 61 180, 86 184, 101 196
-                  C 86 200, 75 208, 69 218
-                  C 98 208, 138 204, 176 198
-                  C 208 192, 235 170, 252 148 Z" />
+                <g filter="url(#fxDropSoft)">
+                  <!-- 칼깃(가장 길고 뒤쪽) -->
+                  <g fill="url(#matFeatherDeep)" stroke="#c3cad2" stroke-width=".5">
+                    <use href="#matFeatherShape" transform="translate(243 112) rotate(20) scale(2.40)" />
+                    <use href="#matFeatherShape" transform="translate(241 131) rotate(23) scale(2.52)" />
+                    <use href="#matFeatherShape" transform="translate(239 150) rotate(26) scale(2.64)" />
+                    <use href="#matFeatherShape" transform="translate(237 169) rotate(29) scale(2.74)" />
+                    <use href="#matFeatherShape" transform="translate(234 188) rotate(32) scale(2.82)" />
+                    <use href="#matFeatherShape" transform="translate(231 207) rotate(35) scale(2.88)" />
+                  </g>
+                  <!-- 둘째깃 -->
+                  <g fill="url(#matFeather)" stroke="#cfd6dd" stroke-width=".5">
+                    <use href="#matFeatherShape" transform="translate(245 80) rotate(14) scale(1.68)" />
+                    <use href="#matFeatherShape" transform="translate(244 97) rotate(17) scale(1.80)" />
+                    <use href="#matFeatherShape" transform="translate(242 114) rotate(20) scale(1.90)" />
+                    <use href="#matFeatherShape" transform="translate(240 131) rotate(23) scale(1.98)" />
+                    <use href="#matFeatherShape" transform="translate(238 148) rotate(26) scale(2.04)" />
+                    <use href="#matFeatherShape" transform="translate(236 165) rotate(29) scale(2.10)" />
+                  </g>
+                  <!-- 덮깃(가장 짧고 앞쪽) -->
+                  <g fill="url(#matFeather)" stroke="#dbe1e7" stroke-width=".45">
+                    <use href="#matFeatherShape" transform="translate(247 52) rotate(8) scale(1.00)" />
+                    <use href="#matFeatherShape" transform="translate(246 65) rotate(10) scale(1.08)" />
+                    <use href="#matFeatherShape" transform="translate(245 78) rotate(12) scale(1.14)" />
+                    <use href="#matFeatherShape" transform="translate(244 91) rotate(14) scale(1.20)" />
+                    <use href="#matFeatherShape" transform="translate(243 104) rotate(17) scale(1.26)" />
+                    <use href="#matFeatherShape" transform="translate(241 117) rotate(20) scale(1.31)" />
+                    <use href="#matFeatherShape" transform="translate(240 130) rotate(23) scale(1.36)" />
+                  </g>
+                </g>
               </svg>
             </span>
             <span class="tv-decor tv-decor-ears-dog" aria-hidden="true">
+              <!-- 강아지 귀: 검정 삼각형이 아니라 캐비닛과 같은 크롬 재질의 늘어진 귀다.
+                   [크롬 본체 → 안쪽 접힌 어두운 면 → 바깥 가장자리 스페큘러] 3겹.
+                   오른쪽 귀는 같은 path를 좌우 반전해 대칭을 보장한다. -->
               <svg class="tv-decor-img" viewBox="0 0 370 86" preserveAspectRatio="xMidYMax meet">
-                <path fill="#161616" d="M18 86 C9 55 20 18 49 3 C60 22 57 55 44 86 Z" />
-                <path fill="#161616" d="M352 86 C361 55 350 18 321 3 C310 22 313 55 326 86 Z" />
+                <g filter="url(#fxDrop)">
+                  <path fill="url(#matChromeSoft)" d="M120 24 C 112 6, 80 2, 52 16 C 22 31, 2 60, 10 78 C 20 92, 48 88, 70 72 C 94 56, 126 42, 120 24 Z" />
+                  <path fill="url(#matInnerEar)" opacity=".82" d="M114 30 C 112 50, 96 70, 68 82 C 48 90, 26 90, 14 82 C 34 86, 58 80, 78 66 C 98 52, 112 40, 114 30 Z" />
+                  <path fill="#ffffff" opacity=".95" d="M112 26 C 102 11, 74 8, 50 19 C 74 13, 99 17, 109 29 Z" />
+                </g>
+                <g filter="url(#fxDrop)" transform="translate(370 0) scale(-1 1)">
+                  <path fill="url(#matChromeSoft)" d="M120 24 C 112 6, 80 2, 52 16 C 22 31, 2 60, 10 78 C 20 92, 48 88, 70 72 C 94 56, 126 42, 120 24 Z" />
+                  <path fill="url(#matInnerEar)" opacity=".82" d="M114 30 C 112 50, 96 70, 68 82 C 48 90, 26 90, 14 82 C 34 86, 58 80, 78 66 C 98 52, 112 40, 114 30 Z" />
+                  <path fill="#ffffff" opacity=".95" d="M112 26 C 102 11, 74 8, 50 19 C 74 13, 99 17, 109 29 Z" />
+                </g>
               </svg>
             </span>
             <span class="tv-controls" aria-hidden="true">
@@ -131,17 +237,22 @@
             </span>
             <span class="tv-screen-wrap">
               <span class="tv-screen">
+                <!-- 천사 날개: 아래 가장자리가 전부 '둥근' 스캘럽이다(깃털).
+                     TV5의 악마 날개는 같은 자리에 '뾰족한' 스캘럽 + 리브를 써서 확실히 구분된다. -->
                 <svg class="tv-icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
-                  <path fill="currentColor" d="M8 44
-                    C 12 32, 20 19, 37 10
-                    C 43 7, 51 8, 55 12
-                    C 47 14, 41 18, 37 24
-                    C 45 22, 51 24, 54 28
-                    C 46 29, 40 33, 36 38
-                    C 43 37, 49 39, 52 43
-                    C 44 43, 37 46, 32 51
-                    C 37 49, 42 50, 45 53
-                    C 35 56, 21 55, 8 44 Z" />
+                  <path fill="currentColor" d="M6 46
+                    C 10 33, 19 20, 34 11
+                    C 42 6, 52 6, 57 11
+                    C 48 14, 41 19, 36 26
+                    C 43 23, 51 24, 55 29
+                    C 46 31, 38 35, 33 41
+                    C 40 39, 47 41, 51 46
+                    C 41 46, 32 49, 26 55
+                    C 19 51, 11 48, 6 46 Z" />
+                  <g fill="none" stroke="#0c0d10" stroke-width="1.1" opacity=".3" stroke-linecap="round">
+                    <path d="M12 45 C 21 34, 31 23, 45 15" />
+                    <path d="M16 48 C 25 41, 34 34, 46 30" />
+                  </g>
                 </svg>
               </span>
             </span>
@@ -154,10 +265,11 @@
             </span>
             <span class="tv-screen-wrap">
               <span class="tv-screen">
+                <!-- 원본은 획이 가늘고 괄호가 세로로 길다 -->
                 <svg class="tv-icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
-                  <path fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" d="M22 14c-7 8-7 28 0 36" />
-                  <path fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" d="M42 14c7 8 7 28 0 36" />
-                  <line x1="24" y1="32" x2="40" y2="32" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" />
+                  <path fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" d="M23 11c-8 9-8 33 0 42" />
+                  <path fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" d="M41 11c8 9 8 33 0 42" />
+                  <line x1="26" y1="32" x2="38" y2="32" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" />
                 </svg>
               </span>
             </span>
@@ -165,16 +277,37 @@
 
           <a class="tv" data-tv-role="yin" data-tv-index="5" href="products.html?polarity=YIN" aria-label="YIN 룩 보기">
             <span class="tv-decor tv-decor-tail" aria-hidden="true">
+              <!-- 악마 꼬리: TV 뒤에서 나와 S자로 휘어 올라가고 끝에 스페이드가 달린다.
+                   케이블 위쪽에 가는 하이라이트를 한 줄 얹어 원통(광택 튜브)처럼 보이게 한다. -->
               <svg class="tv-decor-img" viewBox="0 0 206 263" preserveAspectRatio="xMinYMin meet">
-                <path fill="none" stroke="#161616" stroke-width="9" stroke-linecap="round"
-                  d="M18 8 C 92 26, 132 66, 110 118 C 90 168, 28 176, 50 218" />
-                <path fill="#161616" d="M30 206 L70 212 L46 250 L52 214 Z" />
+                <g filter="url(#fxDrop)">
+                  <path fill="none" stroke="url(#matJet)" stroke-width="13" stroke-linecap="round"
+                    d="M8 240 C 62 250, 124 226, 150 180 C 170 144, 152 92, 126 58" />
+                  <path fill="none" stroke="#aab3bc" stroke-width="2.6" stroke-linecap="round" opacity=".5"
+                    d="M10 236 C 62 246, 120 222, 145 178 C 164 143, 148 94, 123 62" />
+                  <path fill="url(#matJet)" d="M104 14
+                    C 118 22, 134 26, 148 22
+                    C 138 36, 132 52, 132 66
+                    C 126 50, 116 32, 104 14 Z" />
+                  <path fill="#8f98a2" opacity=".45" d="M108 20 C 118 26, 128 29, 138 28 C 130 36, 126 44, 124 52 C 120 40, 114 29, 108 20 Z" />
+                </g>
               </svg>
             </span>
             <span class="tv-decor tv-decor-ears-cat" aria-hidden="true">
+              <!-- 고양이 귀: 크롬 외피가 검정 내이(內耳)를 감싼다. 강아지 귀와 달리 곧게 서고 뾰족하다. -->
               <svg class="tv-decor-img" viewBox="0 0 320 71" preserveAspectRatio="xMidYMax meet">
-                <path fill="#161616" d="M20 71 L47 5 L65 71 Z" />
-                <path fill="#161616" d="M300 71 L273 5 L255 71 Z" />
+                <g filter="url(#fxDrop)">
+                  <ellipse cx="45" cy="68" rx="36" ry="4.5" fill="url(#matChromeDisc)" />
+                  <path fill="url(#matChrome)" d="M9 69 C 6 40, 23 12, 56 0 C 72 17, 80 45, 78 69 Z" />
+                  <path fill="url(#matInnerEar)" d="M23 67 C 21 42, 34 20, 56 11 C 67 27, 72 48, 70 67 Z" />
+                  <path fill="#ffffff" opacity=".85" d="M55 3 C 34 15, 20 38, 16 62 C 17 39, 32 17, 54 7 Z" />
+                </g>
+                <g filter="url(#fxDrop)" transform="translate(320 0) scale(-1 1)">
+                  <ellipse cx="45" cy="68" rx="36" ry="4.5" fill="url(#matChromeDisc)" />
+                  <path fill="url(#matChrome)" d="M9 69 C 6 40, 23 12, 56 0 C 72 17, 80 45, 78 69 Z" />
+                  <path fill="url(#matInnerEar)" d="M23 67 C 21 42, 34 20, 56 11 C 67 27, 72 48, 70 67 Z" />
+                  <path fill="#ffffff" opacity=".85" d="M55 3 C 34 15, 20 38, 16 62 C 17 39, 32 17, 54 7 Z" />
+                </g>
               </svg>
             </span>
             <span class="tv-controls" aria-hidden="true">
@@ -183,18 +316,29 @@
             </span>
             <span class="tv-screen-wrap">
               <span class="tv-screen">
+                <!-- 악마 날개: 아래 가장자리가 '뾰족한' 스캘럽 3개 + 손가락뼈(리브) 라인.
+                     같은 자리의 천사 날개(TV3)는 둥근 스캘럽이라 실루엣만으로 구분된다. -->
+                <!-- 천사 날개와 좌우 대칭이 되도록 통째로 뒤집는다 —
+                     실루엣 방향 + 뾰족한 가장자리 + 리브, 세 가지로 확실히 구분된다. -->
                 <svg class="tv-icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
-                  <path fill="currentColor" d="M8 44
-                    C 12 32, 20 19, 37 10
-                    C 43 7, 51 8, 55 12
-                    L 44 20
-                    L 53 24
-                    L 40 33
-                    L 50 38
-                    L 34 44
-                    L 42 48
-                    L 24 52
-                    L 8 44 Z" />
+                  <g transform="translate(64 0) scale(-1 1)">
+                    <path fill="currentColor" d="M6 46
+                      C 10 33, 19 20, 34 11
+                      C 42 6, 52 6, 57 11
+                      L 43 20
+                      L 55 26
+                      L 39 34
+                      L 51 40
+                      L 32 46
+                      L 42 52
+                      L 22 57
+                      C 16 52, 10 48, 6 46 Z" />
+                    <g fill="none" stroke="#0c0d10" stroke-width="1.4" opacity=".45" stroke-linecap="round">
+                      <path d="M10 45 L 44 18" />
+                      <path d="M12 48 L 40 32" />
+                      <path d="M15 51 L 33 45" />
+                    </g>
+                  </g>
                 </svg>
               </span>
             </span>
