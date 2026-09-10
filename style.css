@@ -268,12 +268,31 @@ main { min-height: calc(100vh - 166px); }
 .card-placeholder h3 { color: var(--stage-ink-faint); }
 @keyframes placeholdersweep { to { transform: translateX(60px); } }
 
+/* YIN/YANG 극성 배너 — 홈 TV에서 ?polarity=로 들어왔을 때만 JS가 채우고 보여준다.
+   매칭된 제품이 없어 전체 목록으로 폴백했을 때도 이 배너로 그 사실을 알려
+   "필터가 고장났다"는 오해를 막는다. */
+.polarity-banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: min(100%, var(--maxw));
+  margin: 0 auto;
+  padding: 12px var(--page-x);
+  color: var(--stage-ink-soft);
+  font: 600 12px var(--font-mono);
+  letter-spacing: .04em;
+}
+.polarity-banner[hidden] { display: none; }
+.polarity-banner-dot { width: 7px; height: 7px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #eaf4ff, #8fc4ff 45%, var(--focus-ring) 100%); box-shadow: 0 0 6px 1px var(--glow-cool); flex-shrink: 0; }
+.polarity-banner p { flex: 1; }
+.polarity-banner-clear { color: var(--stage-ink-faint); text-decoration: underline; text-underline-offset: 3px; white-space: nowrap; }
+
 /* 제품 카테고리 필터 — 카테고리가 2개 이상일 때만 표시(JS가 hidden 토글) */
 .filter-rail { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; }
 .filter-rail[hidden] { display: none; }
 .filter-rail-label { color: var(--stage-ink-faint); font: 600 10px var(--font-mono); letter-spacing: .16em; }
 .filter-chips { display: flex; flex-wrap: wrap; gap: 8px; }
-.filter-chip { padding: 8px 16px; border: 1px solid var(--stage-ink-line); border-radius: 999px; background: rgba(255,255,255,.55); color: var(--stage-ink-soft); cursor: pointer; font: 600 11px var(--font-mono); letter-spacing: .06em; text-transform: uppercase; transition: background .18s ease, color .18s ease; }
+.filter-chip { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 8px 16px; border: 1px solid var(--stage-ink-line); border-radius: 999px; background: rgba(255,255,255,.55); color: var(--stage-ink-soft); cursor: pointer; font: 600 11px var(--font-mono); letter-spacing: .06em; text-transform: uppercase; transition: background .18s ease, color .18s ease; }
 .filter-chip:hover { color: var(--stage-ink); }
 .filter-chip[aria-pressed="true"] { background: var(--stage-ink); color: var(--ice-0); border-color: var(--stage-ink); }
 .products-toolbar-section { padding-top: 0; padding-bottom: 0; }
@@ -647,6 +666,16 @@ main { min-height: calc(100vh - 166px); }
 
 @keyframes staticshift { to { transform: translate(-12px,8px); } }
 
+/* BGM 음원 미확보 상태 — 아이콘을 옅게 죽여 "꺼짐"이 아니라 "아직 준비 중"임을 암시하고,
+   클릭 시 짧게 흔들려 반응은 하되 상태는 안 바뀐다는 걸 알린다(QA: 무반응이 고장처럼 보임). */
+.tv.is-bgm-unavailable .tv-icon { opacity: .38; }
+.tv.is-bgm-shake { animation: bgmshake .32s ease; }
+@keyframes bgmshake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-3px); }
+  75% { transform: translateX(3px); }
+}
+
 .home-footer {
   position: absolute;
   right: 3.6%;
@@ -817,7 +846,7 @@ body.transition-active .tv:not(.is-focused) { opacity: 0; filter: brightness(.2)
 .product-keywords { margin-top: 14px; color: var(--stage-ink-faint); font: 11px var(--font-mono); letter-spacing: .08em; text-transform: uppercase; }
 .product-price { margin-top: 18px; font: 600 18px var(--font-main); color: var(--stage-ink); }
 .product-buy { width: 100%; margin-top: 26px; justify-content: space-between; padding: 16px 22px; }
-.product-sale-status { margin-top: 26px; padding: 15px 18px; border: 1px solid var(--stage-ink-line); border-radius: 8px; color: var(--stage-ink-soft); font: 10px var(--font-mono); letter-spacing: .08em; text-align: center; text-transform: uppercase; }
+.product-sale-status { margin-top: 26px; padding: 15px 18px; border: 1px solid var(--stage-ink-line); border-radius: 8px; color: var(--stage-ink-soft); font: 13px var(--font-mono); letter-spacing: .04em; text-align: center; text-transform: uppercase; }
 .product-hero-carousel { position: relative; }
 .product-carousel-button { position: absolute; top: 50%; z-index: 4; display: grid; width: 42px; height: 42px; border: 1px solid var(--stage-ink-line); border-radius: 50%; background: rgba(255,255,255,.85); color: var(--stage-ink); cursor: pointer; place-items: center; transform: translateY(-50%); }
 .product-carousel-button.previous { left: 12px; }
@@ -992,18 +1021,23 @@ body.transition-active .tv:not(.is-focused) { opacity: 0; filter: brightness(.2)
   .home-stage { display: block; min-height: auto; padding: 0; }
   .home-frame { width: 100%; max-width: 100%; aspect-ratio: auto; }
   .tv-wall, .tv-wall-stage { min-width: 0; }
-  .home-header,
   .tv-floor,
   .tv-wall-stage,
   .home-footer { position: static; inset: auto; }
 
-  .home-header { flex-direction: column; align-items: flex-start; gap: 10px; padding: 18px 20px 0; }
+  /* .home-header는 static으로 풀지 않고 relative + 높은 z-index를 유지한다 —
+     TV1의 안테나 장식이 자기 TV 밖으로(-55.91% top) 크게 튀어나오는데, static이면
+     z-index가 무효화돼 장식이 로고·메뉴 위를 덮어버린다(실제로 재현된 버그). */
+  .home-header { position: relative; top: auto; right: auto; left: auto; z-index: 40; flex-direction: column; align-items: flex-start; gap: 10px; padding: 18px 20px 0; background: var(--ice-0); }
   .home-brand-sub { position: static; margin-top: 6px; white-space: normal; }
   .home-nav { flex-wrap: wrap; }
 
   .tv-floor { display: none; }
 
-  .tv-wall-stage { padding: 20px 16px 8px; }
+  /* 안테나가 TV1 높이의 55.91%만큼 위로 튀어나오므로(뷰포트 폭에 비례해 커진다),
+     헤더 위로 넘치지 않도록 뷰포트 폭에 비례한 여유 공간을 미리 확보한다.
+     (padding-top이 부족하면 헤더 위로 침범 — 위 position:relative는 최후 방어선일 뿐이다.) */
+  .tv-wall-stage { padding: clamp(92px, 25vw, 128px) 16px 8px; }
   .tv-wall {
     display: grid;
     grid-template-columns: repeat(2, minmax(0,1fr));

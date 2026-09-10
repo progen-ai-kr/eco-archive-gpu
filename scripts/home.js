@@ -104,11 +104,17 @@
     if (BGM_SRC) {
       audio = new Audio(BGM_SRC);
       audio.loop = true;
+    } else {
+      // 승인된 음원이 아직 없다 — 눌렀다가 조용히 OFF로 튕기면 "고장"처럼 보인다(QA 지적).
+      // 처음부터 "준비 중" 상태로 정직하게 표시하고, 클릭해도 상태 기계는 건드리지 않는다.
+      button.classList.add("is-bgm-unavailable");
+      button.setAttribute("aria-label", "배경음악 준비 중");
+      if (button.title !== undefined) button.title = "배경음악 준비 중";
     }
 
     function render() {
       button.setAttribute("aria-pressed", state.pressed ? "true" : "false");
-      button.setAttribute("aria-label", state.pressed ? "배경음악 끄기" : "배경음악 켜기");
+      if (audio) button.setAttribute("aria-label", state.pressed ? "배경음악 끄기" : "배경음악 켜기");
       if (liveStatus) liveStatus.textContent = state.pressed ? "배경음악 켜짐" : "배경음악 꺼짐";
     }
 
@@ -118,17 +124,20 @@
     }
 
     button.addEventListener("click", function () {
+      if (!audio) {
+        // 상태 전이를 만들지 않는다 — aria-pressed가 true→false로 튀면 "눌렀는데 꺼졌다"로
+        // 읽힌다. 대신 짧은 흔들림으로 "지금은 반응하지 않는다"는 걸 시각적으로만 알린다.
+        button.classList.remove("is-bgm-shake");
+        void button.offsetWidth; // 같은 클래스를 다시 붙여도 애니메이션이 재생되도록 리플로우 강제
+        button.classList.add("is-bgm-shake");
+        return;
+      }
       var wasPending = state.pending;
       var wasPressed = state.pressed;
       dispatch(logic.BGM_ACTIONS.TOGGLE_REQUEST);
       if (wasPending) return; // 재생 대기 중 빠른 연속 클릭은 무시
 
       if (!wasPressed) {
-        // OFF → ON 요청: 음원이 없으면 접근 가능한 OFF 상태를 유지하고 조용히 끝낸다(404 금지)
-        if (!audio) {
-          dispatch(logic.BGM_ACTIONS.PLAY_FAILURE);
-          return;
-        }
         var playResult = audio.play();
         if (playResult && typeof playResult.then === "function") {
           playResult

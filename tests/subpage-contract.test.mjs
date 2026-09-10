@@ -92,3 +92,29 @@ test("index.html이 아닌 서브페이지는 style.css의 채널 헤드/음양 
     assert.match(css, new RegExp(escaped + "\\s*\\{|" + escaped + "[,:]"), "style.css에 " + selector + " 규칙이 있어야 한다");
   }
 });
+
+test("products.html은 홈 TV의 YIN/YANG 극성 쿼리를 실제로 읽어 반영한다 (QA: 링크만 있고 무시되던 버그)", () => {
+  const html = readPage("products.html");
+  assert.match(html, /scripts\/home-logic\.js/, "home-logic.js(순수 극성 매핑 로직)를 로드해야 한다");
+  assert.match(html, /scripts\/capsule-data\.js/, "capsule-data.js(시즌 프레젠테이션 데이터)를 로드해야 한다");
+  assert.match(html, /resolvePolarityQuery/, "location.search의 polarity를 실제로 해석해야 한다");
+  assert.match(html, /resolveProductPolarity/, "제품별 극성을 실제로 판정해야 한다");
+  assert.match(html, /id="polarityBanner"/, "극성 필터 결과(또는 폴백)를 알리는 배너가 있어야 한다");
+});
+
+test("index.html의 TV 5개는 title(네이티브 툴팁)로 아이콘만으로 알기 어려운 목적을 보완한다", () => {
+  const html = readPage("index.html");
+  const roles = ["portfolio", "bgm", "yang", "about", "yin"];
+  for (const role of roles) {
+    const pattern = new RegExp('data-tv-role="' + role + '"[^>]*title="[^"]+"|title="[^"]+"[^>]*data-tv-role="' + role + '"');
+    assert.match(html, pattern, role + " TV에 title 속성이 있어야 한다");
+  }
+});
+
+test("BGM 음원이 없을 때는 클릭해도 상태 기계를 건드리지 않고 '준비 중'을 알린다 (QA: 무반응이 고장처럼 보임)", () => {
+  const homeJs = fs.readFileSync(path.join(repoRoot, "scripts", "home.js"), "utf8");
+  assert.match(homeJs, /is-bgm-unavailable/, "음원 없음 상태를 나타내는 클래스가 있어야 한다");
+  assert.match(homeJs, /배경음악 준비 중/, "정직한 준비 중 안내 문구가 있어야 한다");
+  const styleCss = fs.readFileSync(path.join(repoRoot, "style.css"), "utf8");
+  assert.match(styleCss, /\.is-bgm-unavailable/, "style.css에 준비 중 상태 스타일이 있어야 한다");
+});
