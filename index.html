@@ -364,13 +364,15 @@
       </footer>
     </div>
 
+    <!-- 화면에는 TV만 보이게 두고, 실제 음원은 숨겨진 오디오 요소로 연결한다. -->
+    <audio id="bgmAudio" src="audio/velvet-shoreline.mp3" preload="auto" hidden></audio>
     <span id="bgmLiveStatus" class="sr-only" role="status" aria-live="polite"></span>
   </main>
 
   <signal-transition></signal-transition>
   <script src="scripts/motion.js?v=20260908-y2k-1"></script>
-  <script src="scripts/home-logic.js?v=20260908-y2k-1"></script>
+  <script src="scripts/home-logic.js?v=20260910-bgm-1"></script>
   <script src="scripts/components/signal-transition.js?v=20260908-y2k-1"></script>
-  <script src="scripts/home.js?v=20260908-y2k-1"></script>
+  <script src="scripts/home.js?v=20260910-bgm-2"></script>
 </body>
 </html>

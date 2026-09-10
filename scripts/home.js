@@ -6,7 +6,9 @@
   var SESSION_KEY = "echoTvWallTuned";
   var BASE_DELAY_MS = 900;
   var STAGGER_MS = 180;
-  var BGM_SRC = null; // PRD §BGM: 승인된 로컬 음원이 저장소에 없으면 null로 유지 — OFF 폴백만 완성한다.
+  var BGM_SRC = "audio/velvet-shoreline.mp3";
+  // 원본은 30초지만 마지막 약 5초가 무음이라, 소리가 끝나는 지점에서 처음으로 돌아간다.
+  var BGM_LOOP_END_SECONDS = 25;
 
   function alreadyTuned() {
     try {
@@ -99,11 +101,17 @@
     var logic = window.EchoHomeLogic;
     var liveStatus = document.getElementById("bgmLiveStatus");
     var state = logic.initialBgmState();
-    var audio = null;
+    var audio = document.getElementById("bgmAudio");
+    var loopGuardId = null;
 
-    if (BGM_SRC) {
-      audio = new Audio(BGM_SRC);
+    if (audio || BGM_SRC) {
+      audio = audio || new Audio(BGM_SRC);
+      audio.preload = "auto";
       audio.loop = true;
+
+      // 기본 loop 속성만 쓰면 30초 전체를 반복하므로 마지막 무음까지 재생한다.
+      // 25초를 감지해 먼저 되감으면 사용자가 끌 때까지 소리가 이어진다.
+      audio.addEventListener("timeupdate", rewindBeforeSilence);
     } else {
       // 승인된 음원이 아직 없다 — 눌렀다가 조용히 OFF로 튕기면 "고장"처럼 보인다(QA 지적).
       // 처음부터 "준비 중" 상태로 정직하게 표시하고, 클릭해도 상태 기계는 건드리지 않는다.
@@ -112,9 +120,33 @@
       if (button.title !== undefined) button.title = "배경음악 준비 중";
     }
 
+    function rewindBeforeSilence() {
+      if (audio) {
+        if (!audio.paused && logic.shouldRestartBgm(audio.currentTime, BGM_LOOP_END_SECONDS)) {
+          audio.currentTime = 0;
+        }
+      }
+    }
+
+    function startLoopGuard() {
+      if (loopGuardId !== null) return;
+      // 일부 백그라운드 탭은 timeupdate를 드물게 보내므로 짧은 주기 감시를 함께 둔다.
+      loopGuardId = window.setInterval(rewindBeforeSilence, 100);
+    }
+
+    function stopLoopGuard() {
+      if (loopGuardId === null) return;
+      window.clearInterval(loopGuardId);
+      loopGuardId = null;
+    }
+
     function render() {
       button.setAttribute("aria-pressed", state.pressed ? "true" : "false");
-      if (audio) button.setAttribute("aria-label", state.pressed ? "배경음악 끄기" : "배경음악 켜기");
+      if (audio) {
+        var actionLabel = state.pressed ? "배경음악 끄기" : "배경음악 켜기";
+        button.setAttribute("aria-label", actionLabel);
+        button.title = "SOUND — " + actionLabel;
+      }
       if (liveStatus) liveStatus.textContent = state.pressed ? "배경음악 켜짐" : "배경음악 꺼짐";
     }
 
@@ -141,18 +173,27 @@
         var playResult = audio.play();
         if (playResult && typeof playResult.then === "function") {
           playResult
-            .then(function () { dispatch(logic.BGM_ACTIONS.PLAY_SUCCESS); })
-            .catch(function () { dispatch(logic.BGM_ACTIONS.PLAY_FAILURE); });
+            .then(function () {
+              dispatch(logic.BGM_ACTIONS.PLAY_SUCCESS);
+              startLoopGuard();
+            })
+            .catch(function () {
+              stopLoopGuard();
+              dispatch(logic.BGM_ACTIONS.PLAY_FAILURE);
+            });
         } else {
           dispatch(logic.BGM_ACTIONS.PLAY_SUCCESS);
+          startLoopGuard();
         }
       } else if (audio) {
+        stopLoopGuard();
         audio.pause();
         audio.currentTime = 0;
       }
     });
 
     function stop() {
+      stopLoopGuard();
       if (audio) {
         audio.pause();
         audio.currentTime = 0;

@@ -130,6 +130,17 @@ test("BGM: ON 상태에서 토글하면 즉시 OFF로 전이한다", () => {
   assert.deepEqual(next, { pressed: false, pending: false });
 });
 
+test("BGM: 25초에 도달하면 무음 구간 전에 반복한다", () => {
+  assert.equal(homeLogic.shouldRestartBgm(24.99, 25), false);
+  assert.equal(homeLogic.shouldRestartBgm(25, 25), true);
+  assert.equal(homeLogic.shouldRestartBgm(25.2, 25), true);
+});
+
+test("BGM: 홈에 승인된 로컬 음원이 연결되어 있다", () => {
+  assert.match(indexHtml, /<audio\b[^>]*id="bgmAudio"[^>]*src="audio\/velvet-shoreline\.mp3"/s);
+  assert.equal(fs.existsSync(path.join(repoRoot, "audio", "velvet-shoreline.mp3")), true);
+});
+
 // ── 순수 로직: YIN/YANG 쿼리 매핑 ─────────────────────────────────
 test("극성 쿼리: 대소문자와 무관하게 YIN/YANG을 인식한다", () => {
   assert.equal(homeLogic.resolvePolarityQuery("yang"), "YANG");
