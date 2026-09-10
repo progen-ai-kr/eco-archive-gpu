@@ -80,13 +80,13 @@
             const displayPrice = formatPrice(p.price);
             const price = displayPrice ? '<p class="price">' + ProductCatalog.escapeHtml(displayPrice) + "</p>" : "";
             return (
-              '<a class="card glass-panel glass-corners" href="product.html?id=' + encodeURIComponent(p.id) + '">' +
-              '<div class="card-img">' + img + "</div>" +
+              '<a class="card glass-panel glass-corners" href="product.html?id=' + encodeURIComponent(p.id) + '" aria-label="' + ProductCatalog.escapeHtml(p.name) + ' 자세히 보기">' +
+              '<div class="card-img tv-frame">' + img + "</div>" +
               '<div class="card-body">' +
               '<p class="k">' + ProductCatalog.escapeHtml(p.label || p.category || "") + "</p>" +
               "<h3>" + ProductCatalog.escapeHtml(p.name) + "</h3>" +
               "<p>" + ProductCatalog.escapeHtml(p.summary || "") + "</p>" + price +
-              '<span class="view-look">자세히 보기 <span aria-hidden="true">→</span></span>' +
+              '<span class="view-look" aria-hidden="true">→</span>' +
               "</div>" +
               "</a>"
             );
