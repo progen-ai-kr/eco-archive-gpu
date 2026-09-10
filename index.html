@@ -22,53 +22,21 @@
        실제 크롬에 비치는 수평선 반사를 흉내낸 것. -->
   <svg class="tv-materials" aria-hidden="true" focusable="false">
     <defs>
-      <linearGradient id="matChrome" x1="0" y1="0" x2="0.35" y2="1">
-        <stop offset="0%" stop-color="#ffffff" />
-        <stop offset="18%" stop-color="#f2f5f8" />
-        <stop offset="34%" stop-color="#b9c1c9" />
-        <stop offset="46%" stop-color="#7e868f" />
-        <stop offset="52%" stop-color="#ffffff" />
-        <stop offset="68%" stop-color="#cdd4db" />
-        <stop offset="86%" stop-color="#9aa2ab" />
-        <stop offset="100%" stop-color="#eef2f6" />
-      </linearGradient>
-      <linearGradient id="matChromeSoft" x1="0.1" y1="0" x2="0.6" y2="1">
-        <stop offset="0%" stop-color="#ffffff" />
-        <stop offset="30%" stop-color="#e6eaee" />
-        <stop offset="55%" stop-color="#aab2bb" />
-        <stop offset="63%" stop-color="#f7f9fb" />
-        <stop offset="100%" stop-color="#c3cad2" />
-      </linearGradient>
+      <!-- 웹툰 화풍은 셀 셰이딩(딱 떨어지는 평면 톤)이라 그라데이션을 거의 쓰지 않는다.
+           남긴 건 소켓 하나뿐 — 실제 금속 원반이라 여기만 광택이 필요하다. -->
       <radialGradient id="matChromeDisc" cx="0.34" cy="0.28" r="0.85">
         <stop offset="0%" stop-color="#ffffff" />
         <stop offset="42%" stop-color="#d4dae0" />
         <stop offset="74%" stop-color="#89919a" />
         <stop offset="100%" stop-color="#eaeef2" />
       </radialGradient>
-      <linearGradient id="matJet" x1="0.1" y1="0" x2="0.5" y2="1">
-        <stop offset="0%" stop-color="#3d4248" />
-        <stop offset="30%" stop-color="#16191c" />
-        <stop offset="62%" stop-color="#0a0c0e" />
-        <stop offset="100%" stop-color="#282d33" />
-      </linearGradient>
-      <radialGradient id="matInnerEar" cx="0.42" cy="0.32" r="0.82">
-        <stop offset="0%" stop-color="#4a5057" />
-        <stop offset="45%" stop-color="#1d2126" />
-        <stop offset="100%" stop-color="#080a0c" />
-      </radialGradient>
-      <linearGradient id="matFeather" x1="0.2" y1="0" x2="0.8" y2="1">
-        <stop offset="0%" stop-color="#ffffff" />
-        <stop offset="52%" stop-color="#f1f4f7" />
-        <stop offset="100%" stop-color="#d5dade" />
-      </linearGradient>
-      <linearGradient id="matFeatherDeep" x1="0.2" y1="0" x2="0.8" y2="1">
-        <stop offset="0%" stop-color="#f4f7fa" />
-        <stop offset="55%" stop-color="#dfe4e9" />
-        <stop offset="100%" stop-color="#bcc3ca" />
-      </linearGradient>
-      <!-- 깃털 한 장. 뿌리가 (0,0)이고 끝이 왼쪽(-x)을 향한다.
-           날개는 이 한 장을 translate/rotate/scale로 여러 번 배치해 층층이 쌓는다. -->
-      <path id="matFeatherShape" d="M0 -6 C -30 -9, -58 -6, -78 2 C -58 10, -30 13, 0 6 C 5 4, 5 -4, 0 -6 Z" />
+      <!-- 깃털 한 장. 뿌리가 (0,0)이고 끝이 왼쪽(-x)을 향하며, 끝은 볼록한 U자다
+           (악마 날개의 오목한 막과 대비되는 지점).
+           날개는 이 한 장을 translate/rotate/scale로 배치해 층층이 쌓는다.
+           non-scaling-stroke가 없으면 scale에 따라 선 두께가 같이 커져서
+           깃털마다 선 굵기가 달라진다 — 웹툰 선화에서는 치명적이라 고정한다. -->
+      <path id="matFeatherShape" vector-effect="non-scaling-stroke"
+        d="M0 -6 C -30 -9, -58 -7, -74 -1 C -80 2, -80 4, -74 6 C -58 11, -30 12, 0 6 C 5 4, 5 -4, 0 -6 Z" />
       <filter id="fxDrop" x="-30%" y="-30%" width="160%" height="160%">
         <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#4a545f" flood-opacity="0.34" />
       </filter>
@@ -104,31 +72,31 @@
               <!-- 크롬 소켓 위로 왼쪽=천사 날개(흰색), 오른쪽=악마 날개(광택 검정)가 뻗는다.
                    각 날개는 [본체 그라데이션 → 스페큘러 하이라이트 → 리브] 순으로 겹쳐 입체감을 만든다. -->
               <svg class="tv-decor-img" viewBox="0 0 176 100" preserveAspectRatio="xMidYMax meet">
-                <g filter="url(#fxDrop)">
-                  <path fill="url(#matFeather)" d="M86 84
-                    C 82 58, 74 32, 56 13
-                    C 50 7, 42 7, 38 12
-                    C 42 24, 44 34, 42 45
-                    C 32 38, 20 39, 12 46
-                    C 22 52, 31 58, 36 67
-                    C 26 67, 17 71, 12 79
-                    C 35 76, 62 78, 86 84 Z" />
-                  <path fill="#ffffff" opacity=".9" d="M52 14 C 46 9, 41 10, 39 14 C 44 24, 46 33, 45 42 C 49 32, 52 22, 52 14 Z" />
-                  <path fill="#c5ccd4" opacity=".45" d="M86 84 C 68 78, 44 74, 18 76 C 44 72, 68 74, 85 80 Z" />
-                  <path fill="url(#matJet)" d="M90 84
-                    C 94 58, 102 32, 120 13
-                    C 126 7, 134 7, 138 12
-                    L 133 45
-                    C 143 38, 155 39, 164 45
-                    L 138 67
-                    C 149 67, 158 71, 164 79
-                    C 141 76, 114 78, 90 84 Z" />
-                  <g fill="none" stroke="#98a2ac" stroke-width="1.1" opacity=".6" stroke-linecap="round">
-                    <path d="M93 80 C 103 56, 112 32, 128 14" />
-                    <path d="M95 81 C 108 66, 122 54, 136 46" />
-                    <path d="M97 82 C 112 76, 130 72, 145 69" />
+                <g filter="url(#fxDrop)" stroke-linejoin="round" stroke-linecap="round">
+                  <!-- 천사 날개: 깃털 5장을 소켓에서 위·왼쪽으로 부채꼴로 펼친다.
+                       깃털마다 선화가 둘러져 개별 깃이 또렷하게 읽힌다. -->
+                  <g fill="#ffffff" stroke="#16191d" stroke-width="1.6">
+                    <use href="#matFeatherShape" transform="translate(86 88) rotate(86) scale(.80)" />
+                    <use href="#matFeatherShape" transform="translate(86 88) rotate(73) scale(.90)" />
+                    <use href="#matFeatherShape" transform="translate(86 88) rotate(60) scale(.96)" />
+                    <use href="#matFeatherShape" transform="translate(86 88) rotate(47) scale(.94)" />
+                    <use href="#matFeatherShape" transform="translate(86 88) rotate(34) scale(.86)" />
                   </g>
-                  <path fill="#ffffff" opacity=".22" d="M124 14 C 130 8, 136 8, 138 13 C 133 26, 130 36, 130 46 C 127 34, 125 23, 124 14 Z" />
+                  <!-- 악마 날개: 손가락뼈 3개(F1~F3) 사이의 막을 오목하게 파낸다.
+                       Q 커브의 제어점을 날개 안쪽으로 당겨 오목함을 만드는 게 핵심 —
+                       천사 쪽 깃털의 볼록한 U자와 정반대다. -->
+                  <path fill="#22262c" stroke="#16191d" stroke-width="1.8" d="M88 86
+                    C 94 58, 108 28, 132 10
+                    Q 136 30, 160 34
+                    Q 148 50, 166 64
+                    Q 130 78, 88 86 Z" />
+                  <path fill="#0b0d10" opacity=".85" d="M88 86 Q 128 76, 164 63 Q 130 74, 92 84 Z" />
+                  <g fill="none" stroke="#6d7883" stroke-width="1.3">
+                    <path d="M93 81 C 101 58, 113 32, 130 14" />
+                    <path d="M94 82 C 109 66, 133 45, 157 36" />
+                    <path d="M96 83 C 113 76, 141 68, 163 64" />
+                  </g>
+                  <path fill="none" stroke="#aab4be" stroke-width="1.5" opacity=".75" d="M92 82 C 98 58, 110 30, 130 12" />
                 </g>
                 <ellipse cx="88" cy="91" rx="17" ry="6.5" fill="url(#matChromeDisc)" />
                 <ellipse cx="84" cy="89" rx="8" ry="2.4" fill="#ffffff" opacity=".8" />
@@ -182,34 +150,22 @@
               <!-- 천사 날개: 깃털 18장을 3열(칼깃→둘째깃→덮깃)로 겹쳐 배치한다.
                    뒤쪽 열을 먼저 그려야 앞쪽 열이 위로 겹쳐 실제 날개의 층이 생긴다. -->
               <svg class="tv-decor-img" viewBox="0 0 252 248" preserveAspectRatio="xMaxYMid meet">
-                <g filter="url(#fxDropSoft)">
-                  <!-- 칼깃(가장 길고 뒤쪽) -->
-                  <g fill="url(#matFeatherDeep)" stroke="#c3cad2" stroke-width=".5">
-                    <use href="#matFeatherShape" transform="translate(243 112) rotate(20) scale(2.40)" />
-                    <use href="#matFeatherShape" transform="translate(241 131) rotate(23) scale(2.52)" />
-                    <use href="#matFeatherShape" transform="translate(239 150) rotate(26) scale(2.64)" />
-                    <use href="#matFeatherShape" transform="translate(237 169) rotate(29) scale(2.74)" />
-                    <use href="#matFeatherShape" transform="translate(234 188) rotate(32) scale(2.82)" />
-                    <use href="#matFeatherShape" transform="translate(231 207) rotate(35) scale(2.88)" />
+                <g filter="url(#fxDropSoft)" stroke-linejoin="round">
+                  <!-- 칼깃 5장(길고 뒤쪽). 웹툰 화풍이라 깃털 수를 줄이고 크게 키워
+                       선화로 한 장 한 장이 또렷하게 보이게 한다. 톤은 그림자 쪽. -->
+                  <g fill="#d5dce3" stroke="#16191d" stroke-width="2">
+                    <use href="#matFeatherShape" transform="translate(240 118) rotate(18) scale(2.55)" />
+                    <use href="#matFeatherShape" transform="translate(237 141) rotate(23) scale(2.68)" />
+                    <use href="#matFeatherShape" transform="translate(234 164) rotate(28) scale(2.78)" />
+                    <use href="#matFeatherShape" transform="translate(230 187) rotate(33) scale(2.86)" />
+                    <use href="#matFeatherShape" transform="translate(226 209) rotate(38) scale(2.90)" />
                   </g>
-                  <!-- 둘째깃 -->
-                  <g fill="url(#matFeather)" stroke="#cfd6dd" stroke-width=".5">
-                    <use href="#matFeatherShape" transform="translate(245 80) rotate(14) scale(1.68)" />
-                    <use href="#matFeatherShape" transform="translate(244 97) rotate(17) scale(1.80)" />
-                    <use href="#matFeatherShape" transform="translate(242 114) rotate(20) scale(1.90)" />
-                    <use href="#matFeatherShape" transform="translate(240 131) rotate(23) scale(1.98)" />
-                    <use href="#matFeatherShape" transform="translate(238 148) rotate(26) scale(2.04)" />
-                    <use href="#matFeatherShape" transform="translate(236 165) rotate(29) scale(2.10)" />
-                  </g>
-                  <!-- 덮깃(가장 짧고 앞쪽) -->
-                  <g fill="url(#matFeather)" stroke="#dbe1e7" stroke-width=".45">
-                    <use href="#matFeatherShape" transform="translate(247 52) rotate(8) scale(1.00)" />
-                    <use href="#matFeatherShape" transform="translate(246 65) rotate(10) scale(1.08)" />
-                    <use href="#matFeatherShape" transform="translate(245 78) rotate(12) scale(1.14)" />
-                    <use href="#matFeatherShape" transform="translate(244 91) rotate(14) scale(1.20)" />
-                    <use href="#matFeatherShape" transform="translate(243 104) rotate(17) scale(1.26)" />
-                    <use href="#matFeatherShape" transform="translate(241 117) rotate(20) scale(1.31)" />
-                    <use href="#matFeatherShape" transform="translate(240 130) rotate(23) scale(1.36)" />
+                  <!-- 덮깃 4장(짧고 앞쪽). 흰색 베이스라 칼깃과 톤이 나뉜다. -->
+                  <g fill="#ffffff" stroke="#16191d" stroke-width="2">
+                    <use href="#matFeatherShape" transform="translate(246 66) rotate(10) scale(1.42)" />
+                    <use href="#matFeatherShape" transform="translate(244 90) rotate(14) scale(1.60)" />
+                    <use href="#matFeatherShape" transform="translate(241 114) rotate(18) scale(1.74)" />
+                    <use href="#matFeatherShape" transform="translate(238 138) rotate(22) scale(1.84)" />
                   </g>
                 </g>
               </svg>
@@ -220,14 +176,32 @@
                    오른쪽 귀는 같은 path를 좌우 반전해 대칭을 보장한다. -->
               <svg class="tv-decor-img" viewBox="0 0 370 86" preserveAspectRatio="xMidYMax meet">
                 <g filter="url(#fxDrop)">
-                  <path fill="url(#matChromeSoft)" d="M120 24 C 112 6, 80 2, 52 16 C 22 31, 2 60, 10 78 C 20 92, 48 88, 70 72 C 94 56, 126 42, 120 24 Z" />
-                  <path fill="url(#matInnerEar)" opacity=".82" d="M114 30 C 112 50, 96 70, 68 82 C 48 90, 26 90, 14 82 C 34 86, 58 80, 78 66 C 98 52, 112 40, 114 30 Z" />
-                  <path fill="#ffffff" opacity=".95" d="M112 26 C 102 11, 74 8, 50 19 C 74 13, 99 17, 109 29 Z" />
+                  <path fill="#eef2f5" stroke="#16191d" stroke-width="2.4" d="M124 20
+                    C 116 4, 86 2, 60 14
+                    C 28 29, 4 58, 10 78
+                    C 17 93, 44 92, 66 78
+                    C 92 62, 130 40, 124 20 Z" />
+                  <path fill="#9aa4af" d="M118 26
+                    C 118 48, 100 70, 70 82
+                    C 48 91, 22 90, 11 80
+                    C 26 88, 52 84, 74 68
+                    C 100 50, 116 38, 118 26 Z" />
+                  <path fill="#ffffff" d="M115 22 C 106 9, 78 8, 54 19 C 78 12, 104 15, 112 26 Z" />
+                  <path fill="none" stroke="#16191d" stroke-width="1.4" opacity=".55" d="M112 30 C 106 50, 88 68, 62 78" />
                 </g>
                 <g filter="url(#fxDrop)" transform="translate(370 0) scale(-1 1)">
-                  <path fill="url(#matChromeSoft)" d="M120 24 C 112 6, 80 2, 52 16 C 22 31, 2 60, 10 78 C 20 92, 48 88, 70 72 C 94 56, 126 42, 120 24 Z" />
-                  <path fill="url(#matInnerEar)" opacity=".82" d="M114 30 C 112 50, 96 70, 68 82 C 48 90, 26 90, 14 82 C 34 86, 58 80, 78 66 C 98 52, 112 40, 114 30 Z" />
-                  <path fill="#ffffff" opacity=".95" d="M112 26 C 102 11, 74 8, 50 19 C 74 13, 99 17, 109 29 Z" />
+                  <path fill="#eef2f5" stroke="#16191d" stroke-width="2.4" d="M124 20
+                    C 116 4, 86 2, 60 14
+                    C 28 29, 4 58, 10 78
+                    C 17 93, 44 92, 66 78
+                    C 92 62, 130 40, 124 20 Z" />
+                  <path fill="#9aa4af" d="M118 26
+                    C 118 48, 100 70, 70 82
+                    C 48 91, 22 90, 11 80
+                    C 26 88, 52 84, 74 68
+                    C 100 50, 116 38, 118 26 Z" />
+                  <path fill="#ffffff" d="M115 22 C 106 9, 78 8, 54 19 C 78 12, 104 15, 112 26 Z" />
+                  <path fill="none" stroke="#16191d" stroke-width="1.4" opacity=".55" d="M112 30 C 106 50, 88 68, 62 78" />
                 </g>
               </svg>
             </span>
@@ -280,16 +254,27 @@
               <!-- 악마 꼬리: TV 뒤에서 나와 S자로 휘어 올라가고 끝에 스페이드가 달린다.
                    케이블 위쪽에 가는 하이라이트를 한 줄 얹어 원통(광택 튜브)처럼 보이게 한다. -->
               <svg class="tv-decor-img" viewBox="0 0 206 263" preserveAspectRatio="xMinYMin meet">
-                <g filter="url(#fxDrop)">
-                  <path fill="none" stroke="url(#matJet)" stroke-width="13" stroke-linecap="round"
-                    d="M8 240 C 62 250, 124 226, 150 180 C 170 144, 152 92, 126 58" />
-                  <path fill="none" stroke="#aab3bc" stroke-width="2.6" stroke-linecap="round" opacity=".5"
-                    d="M10 236 C 62 246, 120 222, 145 178 C 164 143, 148 94, 123 62" />
-                  <path fill="url(#matJet)" d="M104 14
-                    C 118 22, 134 26, 148 22
-                    C 138 36, 132 52, 132 66
-                    C 126 50, 116 32, 104 14 Z" />
-                  <path fill="#8f98a2" opacity=".45" d="M108 20 C 118 26, 128 29, 138 28 C 130 36, 126 44, 124 52 C 120 40, 114 29, 108 20 Z" />
+                <g filter="url(#fxDrop)" stroke-linejoin="round" stroke-linecap="round">
+                  <!-- 꼬리는 날개가 아니라 '한 줄기 채찍'이다 — 뿌리는 굵고 끝으로 갈수록
+                       가늘어져야 한다. 균일 두께 stroke로는 그 테이퍼가 안 나와서
+                       위/아래 가장자리를 각각 그린 채움 도형으로 만든다. -->
+                  <path fill="#22262c" stroke="#16191d" stroke-width="2" d="M4 232
+                    C 60 244, 122 220, 148 176
+                    C 168 142, 152 96, 128 62
+                    L 120 68
+                    C 142 100, 154 140, 137 170
+                    C 114 210, 58 230, 6 220 Z" />
+                  <path fill="#0b0d10" opacity=".8" d="M6 226
+                    C 58 236, 112 216, 136 178
+                    C 120 212, 62 232, 5 228 Z" />
+                  <path fill="none" stroke="#7e8894" stroke-width="2.4" opacity=".75"
+                    d="M14 228 C 62 236, 116 214, 139 174 C 156 143, 143 104, 124 74" />
+                  <!-- 스페이드 끝 -->
+                  <path fill="#22262c" stroke="#16191d" stroke-width="2" d="M100 8
+                    C 116 20, 134 26, 152 22
+                    C 140 38, 132 56, 132 74
+                    C 124 52, 114 28, 100 8 Z" />
+                  <path fill="#7e8894" opacity=".5" d="M108 20 C 119 28, 131 32, 142 30 C 133 40, 128 50, 126 60 C 122 45, 116 31, 108 20 Z" />
                 </g>
               </svg>
             </span>
@@ -297,16 +282,16 @@
               <!-- 고양이 귀: 크롬 외피가 검정 내이(內耳)를 감싼다. 강아지 귀와 달리 곧게 서고 뾰족하다. -->
               <svg class="tv-decor-img" viewBox="0 0 320 71" preserveAspectRatio="xMidYMax meet">
                 <g filter="url(#fxDrop)">
-                  <ellipse cx="45" cy="68" rx="36" ry="4.5" fill="url(#matChromeDisc)" />
-                  <path fill="url(#matChrome)" d="M9 69 C 6 40, 23 12, 56 0 C 72 17, 80 45, 78 69 Z" />
-                  <path fill="url(#matInnerEar)" d="M23 67 C 21 42, 34 20, 56 11 C 67 27, 72 48, 70 67 Z" />
-                  <path fill="#ffffff" opacity=".85" d="M55 3 C 34 15, 20 38, 16 62 C 17 39, 32 17, 54 7 Z" />
+                  <path fill="#eef2f5" stroke="#16191d" stroke-width="2.4" stroke-linejoin="round" d="M9 69 C 6 40, 23 12, 56 0 C 72 17, 80 45, 78 69 Z" />
+                  <path fill="#0b0d10" d="M24 67 C 22 43, 35 21, 56 12 C 66 28, 71 48, 69 67 Z" />
+                  <path fill="#3a4148" d="M56 12 C 66 28, 71 48, 69 67 C 62 48, 58 30, 56 12 Z" />
+                  <path fill="#ffffff" d="M55 4 C 35 16, 21 38, 17 62 C 18 39, 33 18, 53 8 Z" />
                 </g>
                 <g filter="url(#fxDrop)" transform="translate(320 0) scale(-1 1)">
-                  <ellipse cx="45" cy="68" rx="36" ry="4.5" fill="url(#matChromeDisc)" />
-                  <path fill="url(#matChrome)" d="M9 69 C 6 40, 23 12, 56 0 C 72 17, 80 45, 78 69 Z" />
-                  <path fill="url(#matInnerEar)" d="M23 67 C 21 42, 34 20, 56 11 C 67 27, 72 48, 70 67 Z" />
-                  <path fill="#ffffff" opacity=".85" d="M55 3 C 34 15, 20 38, 16 62 C 17 39, 32 17, 54 7 Z" />
+                  <path fill="#eef2f5" stroke="#16191d" stroke-width="2.4" stroke-linejoin="round" d="M9 69 C 6 40, 23 12, 56 0 C 72 17, 80 45, 78 69 Z" />
+                  <path fill="#0b0d10" d="M24 67 C 22 43, 35 21, 56 12 C 66 28, 71 48, 69 67 Z" />
+                  <path fill="#3a4148" d="M56 12 C 66 28, 71 48, 69 67 C 62 48, 58 30, 56 12 Z" />
+                  <path fill="#ffffff" d="M55 4 C 35 16, 21 38, 17 62 C 18 39, 33 18, 53 8 Z" />
                 </g>
               </svg>
             </span>
@@ -322,21 +307,20 @@
                      실루엣 방향 + 뾰족한 가장자리 + 리브, 세 가지로 확실히 구분된다. -->
                 <svg class="tv-icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
                   <g transform="translate(64 0) scale(-1 1)">
+                    <!-- 손가락 끝 3개(57,11 / 55,29 / 46,48)는 뾰족하게 두고,
+                         그 사이 막을 Q 제어점을 날개 안쪽으로 당겨 오목하게 파냈다.
+                         천사 날개의 볼록한 U자와 정확히 반대 방향이라 실루엣만으로 구분된다. -->
                     <path fill="currentColor" d="M6 46
                       C 10 33, 19 20, 34 11
                       C 42 6, 52 6, 57 11
-                      L 43 20
-                      L 55 26
-                      L 39 34
-                      L 51 40
-                      L 32 46
-                      L 42 52
-                      L 22 57
-                      C 16 52, 10 48, 6 46 Z" />
-                    <g fill="none" stroke="#0c0d10" stroke-width="1.4" opacity=".45" stroke-linecap="round">
-                      <path d="M10 45 L 44 18" />
-                      <path d="M12 48 L 40 32" />
-                      <path d="M15 51 L 33 45" />
+                      Q 42 20, 55 29
+                      Q 36 35, 46 48
+                      Q 30 48, 24 58
+                      C 16 54, 10 49, 6 46 Z" />
+                    <g fill="none" stroke="#0c0d10" stroke-width="1.5" opacity=".45" stroke-linecap="round">
+                      <path d="M10 45 L 46 15" />
+                      <path d="M11 47 L 50 28" />
+                      <path d="M13 50 L 42 46" />
                     </g>
                   </g>
                 </svg>
