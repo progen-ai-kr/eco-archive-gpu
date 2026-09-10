@@ -23,5 +23,24 @@ if (toggle && menu) {
   });
 }
 
+// 음양 룰(.yy-rule) — 화면에 들어오면 경계 노드가 좌→우로 미끄러진다.
+// prefers-reduced-motion에서는 style.css의 전역 규칙이 transition을 0에 가깝게 줄여
+// 사실상 즉시 나타나므로 여기서 별도 분기하지 않아도 된다.
+const yyRules = document.querySelectorAll(".yy-rule");
+if (yyRules.length && "IntersectionObserver" in window) {
+  const yyObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          yyObserver.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.4 }
+  );
+  yyRules.forEach((rule) => yyObserver.observe(rule));
+}
+
 // 여기에 다른 동작을 추가할 수 있습니다.
 // 예: Codex에게 "스크롤하면 메뉴 배경을 진하게 해줘" 처럼 말하면 코드가 채워집니다.

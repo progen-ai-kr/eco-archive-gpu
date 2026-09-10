@@ -17,19 +17,30 @@
       <a href="index.html" class="logo"><img src="images/brand/echo-archive-logo.png" alt="ECHO ARCHIVE 홈" /></a>
       <button class="nav-toggle" aria-label="메뉴 열기" aria-expanded="false" aria-controls="primaryNav">☰</button>
       <nav class="nav-menu" id="primaryNav" aria-label="주요 메뉴">
-        <a href="about.html">About</a>
-        <a href="products.html" class="active" aria-current="page">All Looks</a>
-        <a href="portfolio.html">Portfolio</a>
-        <a href="contact.html">Contact</a>
+        <a href="about.html" data-ch="01">About</a>
+        <a href="products.html" data-ch="02" class="active" aria-current="page">All Looks</a>
+        <a href="portfolio.html" data-ch="04">Portfolio</a>
+        <a href="contact.html" data-ch="05">Contact</a>
       </nav>
     </div>
   </header>
 
   <main id="mainContent">
 
-    <section class="page-head">
+    <section class="page-head channel-head">
+      <div class="channel-head-top">
+        <p class="channel-code">CH.02 <strong>SIG_LOOKS</strong></p>
+        <p class="channel-stamp">2026 F/W — YIN &amp; YANG</p>
+      </div>
       <h1>ALL LOOKS</h1>
       <p>수집된 신호를 열고 각 CAPSULE의 세계를 탐색해 보세요.</p>
+    </section>
+
+    <section class="section products-toolbar-section" aria-label="카테고리 필터">
+      <div class="filter-rail" id="productFilterRail" hidden>
+        <p class="filter-rail-label">FILTER</p>
+        <div class="filter-chips" id="productFilterChips" role="group" aria-label="카테고리로 필터"></div>
+      </div>
     </section>
 
     <!-- ===== 제품 목록 =====
@@ -39,6 +50,18 @@
       <div class="grid" id="product-list" aria-live="polite">
         <!-- products.json 내용이 자동으로 채워집니다 -->
       </div>
+    </section>
+
+    <div class="yy-rule" aria-hidden="true"><span class="yy-rule-node"></span></div>
+
+    <section class="section archive-note">
+      <p class="eyebrow">RECORD CONTINUES</p>
+      <h2>기록은 계속<br />수집됩니다.</h2>
+      <p class="lead">새 CAPSULE이 공개되면 이 신호에 자동으로 더해집니다.</p>
+      <p class="archive-note-links">
+        <a href="portfolio.html" class="btn ghost">SIG_RECORD 보기</a>
+        <a href="contact.html" class="btn ghost">문의하기</a>
+      </p>
     </section>
 
   </main>
@@ -57,21 +80,37 @@
   <script src="catalog.js?v=20260826-rich-editor-1"></script>
   <script>
     // 공개된 products.json 제품을 카드로 그립니다. 학생은 CSS로 자유롭게 디자인할 수 있습니다.
+    const productListBox = document.getElementById("product-list");
+    const filterRail = document.getElementById("productFilterRail");
+    const filterChipsBox = document.getElementById("productFilterChips");
+
+    function formatPrice(value) {
+      const text = String(value || "").trim();
+      if (!text) return "";
+      if (!/^\d+$/.test(text)) return text;
+      return Number(text).toLocaleString("ko-KR") + "원";
+    }
+
+    // 빈 상태(제품이 아직 없을 때)도 텍스트 한 줄 대신 스캔라인이 흐르는 카드형
+    // 플레이스홀더로 보여준다 — 상업 사이트는 로딩·빈 상태에서 완성도가 갈린다.
+    function renderEmptyState() {
+      filterRail.hidden = true;
+      const placeholder = '<div class="card card-placeholder" aria-hidden="true"><div class="card-img"></div><div class="card-body"><p class="k">SIGNAL</p><h3>SYNCING</h3></div></div>';
+      productListBox.innerHTML = placeholder.repeat(3);
+      const status = document.createElement("p");
+      status.className = "portfolio-status";
+      status.textContent = "CAPSULE ARCHIVE SYNCING — 공개된 제품이 아직 없습니다.";
+      productListBox.after(status);
+    }
+
     ProductCatalog.loadVisibleProducts()
       .then((products) => {
-        const box = document.getElementById("product-list");
         if (!products.length) {
-          box.innerHTML = '<p class="portfolio-status">CAPSULE ARCHIVE SYNCING — 공개된 제품이 아직 없습니다.</p>';
+          renderEmptyState();
           return;
         }
-        function formatPrice(value) {
-          const text = String(value || "").trim();
-          if (!text) return "";
-          if (!/^\d+$/.test(text)) return text;
-          return Number(text).toLocaleString("ko-KR") + "원";
-        }
 
-        box.innerHTML = products
+        productListBox.innerHTML = products
           .map((p) => {
             const image = ProductCatalog.safeImageUrl(p.images && p.images[0]);
             const img = image
@@ -79,9 +118,11 @@
               : "";
             const displayPrice = formatPrice(p.price);
             const price = displayPrice ? '<p class="price">' + ProductCatalog.escapeHtml(displayPrice) + "</p>" : "";
+            const category = String(p.category || "").trim();
             return (
-              '<a class="card glass-panel glass-corners" href="product.html?id=' + encodeURIComponent(p.id) + '" aria-label="' + ProductCatalog.escapeHtml(p.name) + ' 자세히 보기">' +
-              '<div class="card-img tv-frame">' + img + "</div>" +
+              '<a class="card glass-panel glass-corners" data-category="' + ProductCatalog.escapeHtml(category.toLowerCase()) +
+              '" href="product.html?id=' + encodeURIComponent(p.id) + '" aria-label="' + ProductCatalog.escapeHtml(p.name) + ' 자세히 보기">' +
+              '<div class="card-img tv-frame"><span class="card-ep" aria-hidden="true"></span>' + img + "</div>" +
               '<div class="card-body">' +
               '<p class="k">' + ProductCatalog.escapeHtml(p.label || p.category || "") + "</p>" +
               "<h3>" + ProductCatalog.escapeHtml(p.name) + "</h3>" +
@@ -92,9 +133,38 @@
             );
           })
           .join("");
+
+        // 카테고리가 둘 이상일 때만 필터를 보여준다 — 하나뿐이면 필터가 의미 없다.
+        const categories = Array.from(new Set(
+          products.map((p) => String(p.category || "").trim()).filter(Boolean)
+        ));
+        if (categories.length > 1) {
+          const cards = Array.from(productListBox.querySelectorAll(".card"));
+          function applyFilter(value) {
+            cards.forEach((card) => {
+              const match = value === "all" || card.dataset.category === value.toLowerCase();
+              card.hidden = !match;
+            });
+            filterChipsBox.querySelectorAll(".filter-chip").forEach((chip) => {
+              chip.setAttribute("aria-pressed", String(chip.dataset.value === value));
+            });
+          }
+          const chipsHtml = ['<button type="button" class="filter-chip" data-value="all" aria-pressed="true">전체</button>']
+            .concat(categories.map((cat) =>
+              '<button type="button" class="filter-chip" data-value="' + ProductCatalog.escapeHtml(cat) + '" aria-pressed="false">' +
+              ProductCatalog.escapeHtml(cat) + "</button>"
+            ));
+          filterChipsBox.innerHTML = chipsHtml.join("");
+          filterChipsBox.addEventListener("click", (event) => {
+            const chip = event.target.closest(".filter-chip");
+            if (chip) applyFilter(chip.dataset.value);
+          });
+          filterRail.hidden = false;
+        }
       })
       .catch(() => {
-        document.getElementById("product-list").innerHTML =
+        filterRail.hidden = true;
+        productListBox.innerHTML =
           '<p class="portfolio-status">SIGNAL LOST — 제품 기록을 불러오지 못했습니다. 로컬 정적 서버에서 다시 확인해 주세요.</p>';
       });
   </script>

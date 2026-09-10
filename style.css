@@ -127,7 +127,8 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--focus-ring); ou
   filter: drop-shadow(0 4px 10px rgba(140, 106, 40, .28));
 }
 
-/* 공통 헤더 */
+/* 공통 헤더 — 채널 목록처럼 각 링크 앞에 CH.0X 신호 코드가 붙는다(data-ch 속성).
+   현재 페이지에는 홈 TV의 전원등과 같은 부품을 재사용해 점등시킨다(::after). */
 .nav { position: relative; z-index: 40; background: transparent; border-bottom: 1px solid var(--stage-ink-line); }
 .nav-inner { width: min(100%, var(--maxw)); min-height: 84px; margin: 0 auto; padding: 20px var(--page-x); display: flex; align-items: center; justify-content: space-between; gap: 28px; }
 .logo { display: inline-flex; align-items: center; gap: 8px; text-decoration: none; }
@@ -136,17 +137,60 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--focus-ring); ou
 .nav-toggle { width: 44px; height: 44px; border: 1px solid var(--stage-ink-line); border-radius: 8px; background: rgba(255,255,255,.6); color: var(--stage-ink); cursor: pointer; }
 .nav-menu { position: absolute; top: 74px; left: var(--page-x); right: var(--page-x); display: none; flex-direction: column; overflow: hidden; border: 1px solid var(--stage-ink-line); border-radius: 10px; background: rgba(250,251,252,.98); box-shadow: 0 18px 48px rgba(70,82,100,.18); backdrop-filter: blur(8px); }
 .nav-menu.open { display: flex; }
-.nav-menu a { padding: 14px 18px; border-bottom: 1px solid var(--stage-ink-line); color: var(--stage-ink-soft); font-family: var(--font-mono); font-size: 12px; letter-spacing: .1em; text-decoration: none; text-transform: uppercase; }
+.nav-menu a { position: relative; display: flex; align-items: center; gap: 8px; padding: 14px 18px; border-bottom: 1px solid var(--stage-ink-line); color: var(--stage-ink-soft); font-family: var(--font-mono); font-size: 12px; letter-spacing: .1em; text-decoration: none; text-transform: uppercase; }
 .nav-menu a:last-child { border-bottom: 0; }
 .nav-menu a:hover, .nav-menu a.active { color: var(--stage-ink); }
-.nav-menu a.active::before { display: inline-block; width: 5px; height: 5px; margin-right: 8px; border-radius: 50%; background: var(--focus-ring); box-shadow: 0 0 6px 1px var(--glow-cool); content: ""; vertical-align: middle; }
+.nav-menu a::before { color: var(--stage-ink-faint); content: "CH." attr(data-ch); font-size: 9px; letter-spacing: .05em; opacity: .7; }
+.nav-menu a.active::before { color: var(--stage-ink-soft); opacity: 1; }
+.nav-menu a::after { display: inline-block; width: 5px; height: 5px; border-radius: 50%; background: var(--stage-ink-line); content: ""; flex-shrink: 0; }
+.nav-menu a.active::after { background: radial-gradient(circle at 35% 30%, #eaf4ff, #8fc4ff 45%, var(--focus-ring) 100%); box-shadow: 0 0 6px 1px var(--glow-cool); }
 
 /* 공통 페이지 */
 main { min-height: calc(100vh - 166px); }
+
+/* ── 채널 헤드(SIGNAL SHEET 공통 부품 ①) ──
+   서브페이지 5개가 전부 같은 해부구조로 열린다: 좌상단 신호 코드 → 대형 타이틀 → 시즌 스탬프.
+   어느 채널로 이동해도 "같은 방송국의 다른 채널"로 읽히게 하는 장치. */
 .page-head { width: min(100%, var(--maxw)); margin: 0 auto; padding: clamp(40px,7vw,94px) var(--page-x) clamp(28px,4vw,58px); }
-.page-head::before { display: block; margin-bottom: 10px; color: var(--stage-ink-faint); content: "TRANSMISSION / 2026 F/W"; font-family: var(--font-mono); font-size: 10px; letter-spacing: .16em; }
+.channel-head-top { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 20px; margin-bottom: 14px; }
+.channel-code { color: var(--stage-ink-faint); font-family: var(--font-mono); font-size: 10px; letter-spacing: .16em; text-transform: uppercase; }
+.channel-code strong { color: var(--stage-ink-soft); font-weight: 600; }
+.channel-stamp { color: var(--stage-ink-faint); font-family: var(--font-mono); font-size: 10px; letter-spacing: .14em; text-transform: uppercase; }
 .page-head h1 { font: 800 clamp(40px,8vw,88px)/.94 var(--font-display); color: var(--stage-ink); font-style: italic; letter-spacing: -.03em; text-transform: uppercase; }
 .page-head p { max-width: 620px; margin-top: 18px; color: var(--stage-ink-soft); font-size: 14px; }
+
+/* ── 음양 룰(SIGNAL SHEET 공통 부품 ②) ──
+   브랜드 심볼(대시 —)을 흑/백 반반 + 경계 노드로 변주한 섹션 구분선.
+   스크롤에 들어오면 노드가 좌→우로 미끄러진다(script.js가 .is-visible 토글). */
+.yy-rule {
+  position: relative;
+  container-type: inline-size;
+  width: min(100%, var(--maxw));
+  height: 1px;
+  margin: 0 auto;
+  padding: 0 var(--page-x);
+  overflow: hidden;
+}
+.yy-rule::before {
+  position: absolute;
+  top: 0; right: var(--page-x); left: var(--page-x);
+  height: 1px;
+  background: linear-gradient(90deg, var(--stage-ink) 0%, var(--stage-ink) 50%, var(--chrome-300) 50%, var(--chrome-300) 100%);
+  content: "";
+}
+.yy-rule-node {
+  position: absolute;
+  top: 0; left: var(--page-x);
+  width: 9px; height: 9px;
+  margin-top: -4px;
+  border: 1px solid var(--stage-ink);
+  border-radius: 50%;
+  background: var(--ice-0);
+  transform: translateX(0);
+  transition: transform 1.1s cubic-bezier(.16,.8,.2,1);
+}
+.yy-rule.is-visible .yy-rule-node { transform: translateX(calc(100cqw - var(--page-x) * 2 - 9px)); }
+
 .section { width: min(100%, var(--maxw)); margin: 0 auto; padding: clamp(38px,5vw,72px) var(--page-x); }
 .section .eyebrow, .k { color: var(--stage-ink-faint); font-family: var(--font-mono); font-size: 10px; letter-spacing: .15em; text-transform: uppercase; }
 .section h2 { margin: 8px 0 24px; font: 800 clamp(28px,4vw,48px)/1.08 var(--font-display); color: var(--stage-ink); font-style: italic; letter-spacing: -.02em; }
@@ -160,12 +204,48 @@ main { min-height: calc(100vh - 166px); }
 .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
 .tags span { padding: 7px 10px; border: 1px solid var(--stage-ink-line); border-radius: 999px; color: var(--stage-ink-soft); font-family: var(--font-mono); font-size: 10px; }
 
-/* 제품 카드 (ALL LOOKS) */
-.grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
-.card { position: relative; z-index: 1; display: grid; grid-template-columns: 1fr; min-width: 0; overflow: hidden; color: var(--stage-ink); text-decoration: none; transition: transform .22s ease, box-shadow .22s ease; }
+/* ── 아카이브 카드(SIGNAL SHEET 공통 부품 ③) ──
+   목록의 최소 단위. products.json 항목 수와 무관하게 CSS 카운터로 EP.01, EP.02…를
+   자동 부여한다 — 제품이 늘거나 줄어도 번호를 손으로 맞출 필요가 없다. */
+.grid { display: grid; grid-template-columns: 1fr; gap: 20px; counter-reset: archive-ep; }
+.card { position: relative; z-index: 1; display: grid; grid-template-columns: 1fr; min-width: 0; overflow: hidden; color: var(--stage-ink); text-decoration: none; counter-increment: archive-ep; transition: transform .22s ease, box-shadow .22s ease; }
+/* [hidden]과 .card가 둘 다 display를 지정하면 명시도가 같아 소스 순서(나중에 로드되는
+   이 스타일시트)가 이겨서 카드가 숨겨지지 않는다 — 필터 클릭이 "먹통"으로 보이는 원인이라
+   .card[hidden]을 더 높은 명시도로 명시해 둔다. */
+.card[hidden] { display: none; }
 .card-img { position: relative; z-index: 1; overflow: hidden; min-height: 220px; background: linear-gradient(155deg, var(--ice-1), var(--ice-2)); }
-.card-img::after { position: absolute; inset: 0; background: radial-gradient(ellipse 70% 50% at 30% 0%, rgba(255,255,255,.7), transparent 70%); content: ""; pointer-events: none; }
-.card-img img { position: relative; z-index: 1; width: 100%; height: 100%; min-height: 212px; object-fit: contain; transition: transform .3s ease; }
+.card-img::after { position: absolute; inset: 0; z-index: 1; background: radial-gradient(ellipse 70% 50% at 30% 0%, rgba(255,255,255,.7), transparent 70%); content: ""; pointer-events: none; }
+.card-img img { position: relative; z-index: 0; width: 100%; height: 100%; min-height: 212px; object-fit: contain; transition: transform .3s ease; }
+.card-ep {
+  position: absolute;
+  top: 12px; left: 12px;
+  z-index: 2;
+  padding: 4px 9px;
+  border: 1px solid var(--stage-ink-line);
+  border-radius: 999px;
+  background: rgba(250,251,252,.82);
+  color: var(--stage-ink-soft);
+  font: 600 10px var(--font-mono);
+  letter-spacing: .1em;
+  backdrop-filter: blur(3px);
+}
+.card-ep::before { content: "EP." counter(archive-ep, decimal-leading-zero); }
+/* 호버 시 이미지 위로 한 번 지나가는 스캔라인 — 홈 TV 화면의 노이즈 문법을 카드에도 이어붙인다 */
+.card-img::before {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: linear-gradient(100deg, transparent 42%, rgba(255,255,255,.55) 50%, transparent 58%);
+  content: "";
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-120%);
+}
+.card:hover .card-img::before, .card:focus-visible .card-img::before {
+  opacity: 1;
+  transform: translateX(120%);
+  transition: transform .62s ease, opacity .62s ease;
+}
 .card-body { position: relative; z-index: 1; padding: clamp(18px,2.4vw,28px); }
 .card .k { margin-top: 0; }
 .card h3 { margin-top: 6px; font: 700 20px/1.25 var(--font-display); }
@@ -175,6 +255,45 @@ main { min-height: calc(100vh - 166px); }
 .card:hover .view-look, .card:focus-visible .view-look { opacity: 1; transform: translateX(0); }
 .card:hover { box-shadow: 0 22px 44px -22px var(--glass-shadow); transform: translateY(-3px); }
 .card:hover .card-img img { transform: scale(1.03); }
+
+/* 빈 상태 플레이스홀더 카드 — 실제 카드와 같은 뼈대에 스캔라인만 흐르게 한다 */
+.card-placeholder { pointer-events: none; }
+.card-placeholder .card-img { position: relative; overflow: hidden; }
+.card-placeholder .card-img::before {
+  position: absolute; inset: 0; z-index: 1;
+  background: repeating-linear-gradient(100deg, transparent 0 22px, rgba(255,255,255,.5) 22px 26px);
+  content: "";
+  animation: placeholdersweep 2.4s linear infinite;
+}
+.card-placeholder h3 { color: var(--stage-ink-faint); }
+@keyframes placeholdersweep { to { transform: translateX(60px); } }
+
+/* 제품 카테고리 필터 — 카테고리가 2개 이상일 때만 표시(JS가 hidden 토글) */
+.filter-rail { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; }
+.filter-rail[hidden] { display: none; }
+.filter-rail-label { color: var(--stage-ink-faint); font: 600 10px var(--font-mono); letter-spacing: .16em; }
+.filter-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.filter-chip { padding: 8px 16px; border: 1px solid var(--stage-ink-line); border-radius: 999px; background: rgba(255,255,255,.55); color: var(--stage-ink-soft); cursor: pointer; font: 600 11px var(--font-mono); letter-spacing: .06em; text-transform: uppercase; transition: background .18s ease, color .18s ease; }
+.filter-chip:hover { color: var(--stage-ink); }
+.filter-chip[aria-pressed="true"] { background: var(--stage-ink); color: var(--ice-0); border-color: var(--stage-ink); }
+.products-toolbar-section { padding-top: 0; padding-bottom: 0; }
+
+.archive-note { text-align: center; }
+.archive-note h2 { margin-left: auto; margin-right: auto; }
+.archive-note-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 22px; }
+
+@media (min-width: 1180px) {
+  .grid { grid-template-columns: repeat(4, minmax(0,1fr)); }
+  /* 첫 카드를 2×2로 키우는 비대칭 배치는 제품이 5개 이상일 때만 적용한다 —
+     그보다 적으면 4열 그리드에 빈 칸이 생겨 오히려 허전해 보인다. */
+  #product-list.grid:has(> .card:nth-child(5)) > .card:first-child {
+    grid-column: span 2;
+    grid-row: span 2;
+  }
+  #product-list.grid:has(> .card:nth-child(5)) > .card:first-child .card-img { min-height: 100%; }
+  #product-list.grid > .card:last-child:nth-child(odd) { grid-column: auto; }
+  #product-list.grid > .card:last-child:nth-child(odd) .card-img { max-width: none; aspect-ratio: auto; margin: 0; }
+}
 
 /* 홈 — 크롬 Y2K 스튜디오 */
 .home-page { overflow: hidden; background: var(--ice-0); }
@@ -641,6 +760,31 @@ body.transition-active .tv:not(.is-focused) { opacity: 0; filter: brightness(.2)
 .value-card:nth-child(2)::after { border-radius: 55% 45% 60% 40% / 45% 55% 45% 55%; }
 .value-card:nth-child(3)::after { border-radius: 50% 50% 40% 60% / 60% 40% 60% 40%; }
 
+.about-channel-head { padding-bottom: 0; }
+.chapter-index { display: inline-block; margin-right: 8px; color: var(--stage-ink-soft); font-weight: 700; }
+
+/* 반전 챕터 — 페이지에서 유일하게 색이 뒤집히는 구간(2026 F/W 음양 선언) */
+.season-reversal {
+  width: 100%;
+  padding: clamp(64px,12vw,140px) var(--page-x);
+  background: var(--stage-ink);
+  color: var(--ice-0);
+  text-align: center;
+}
+.season-reversal .eyebrow { color: rgba(255,255,255,.5); }
+.season-reversal h2 { max-width: 900px; margin: 10px auto 20px; color: var(--ice-0); font: 800 clamp(30px,5.5vw,60px)/1.1 var(--font-display); font-style: italic; letter-spacing: -.02em; }
+.season-reversal .lead { max-width: 620px; margin: 0 auto; color: rgba(255,255,255,.68); }
+.season-reversal-symbol { margin-bottom: 18px; color: var(--ice-0); font-size: clamp(48px,7vw,84px); line-height: 1; animation: seasonspin 16s linear infinite; }
+.season-reversal-tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 26px; }
+.season-reversal-tags span { padding: 7px 14px; border: 1px solid rgba(255,255,255,.28); border-radius: 999px; color: rgba(255,255,255,.75); font: 10px var(--font-mono); letter-spacing: .1em; text-transform: uppercase; }
+@keyframes seasonspin { to { transform: rotate(360deg); } }
+
+/* 장인 제작 공정 스텝 */
+.craft-steps { display: grid; gap: 12px; margin-top: 22px; }
+.craft-steps li { display: flex; align-items: baseline; gap: 12px; padding-bottom: 12px; border-bottom: 1px solid var(--stage-ink-line); color: var(--stage-ink-soft); font-size: 13px; }
+.craft-steps li:last-child { border-bottom: 0; }
+.craft-steps li span { color: var(--stage-ink-faint); font: 700 11px var(--font-mono); }
+
 .brand-story-grid { display: grid; gap: 20px; }
 .brand-symbol-placeholder, .craft-copy { position: relative; z-index: 1; min-height: 220px; }
 .brand-symbol-placeholder { display: grid; place-items: center; padding: 32px; }
@@ -651,11 +795,9 @@ body.transition-active .tv:not(.is-focused) { opacity: 0; filter: brightness(.2)
 .craft-copy h2 { color: var(--stage-ink); }
 .about-cta { margin-top: 28px; }
 
-/* 페이지별 전송 라벨 */
-.products-page .page-head::before { content: "CAPSULE INDEX / LIVE DATA"; }
-.portfolio-page .page-head::before { content: "DOCUMENTED SIGNALS / SELECTED"; }
+/* 페이지별 채널 헤드 조정 */
 .contact-page .page-head { text-align: center; }
-.contact-page .page-head::before { content: "CONTACT / OPEN CHANNEL"; }
+.contact-page .channel-head-top { justify-content: center; }
 .contact-page .page-head p { margin-right: auto; margin-left: auto; }
 /* 헤드라인은 기존 .page-head h1의 60% 크기로 축소 (다른 페이지는 그대로 둠) */
 .contact-page .page-head h1 { font-size: clamp(24px, 4.8vw, 53px); }
@@ -668,6 +810,7 @@ body.transition-active .tv:not(.is-focused) { opacity: 0; filter: brightness(.2)
 .product-hero-image { min-width: 100%; aspect-ratio: 4/3; background: transparent; }
 .product-hero-image img { width: 100%; height: 100%; object-fit: contain; }
 .product-image-placeholder { background: repeating-linear-gradient(115deg, var(--ice-1) 0 12px, var(--ice-2) 12px 22px); }
+.product-info .channel-code { margin-bottom: 10px; }
 .product-info .k { color: var(--stage-ink-faint); }
 .product-info h1 { margin-top: 8px; font: 800 clamp(34px,5vw,68px)/.98 var(--font-display); font-style: italic; letter-spacing: -.03em; text-transform: uppercase; }
 .product-summary { max-width: 560px; margin-top: 20px; color: var(--stage-ink-soft); white-space: pre-line; }
@@ -710,6 +853,35 @@ body.transition-active .tv:not(.is-focused) { opacity: 0; filter: brightness(.2)
 .purchase-dialog-actions { margin-top: 20px; text-align: right; }
 .purchase-dialog-actions .btn { background: var(--stage-ink); color: var(--ice-0); }
 
+/* 다음 에피소드 — 상세 페이지 이탈 방지의 표준 장치. 이전/다음 제품으로 바로 이동 */
+.related-episodes { padding-top: 12px; }
+.related-grid { display: grid; gap: 16px; margin-top: 18px; }
+.related-card { display: grid; grid-template-columns: 96px 1fr; gap: 16px; align-items: center; padding: 14px; color: var(--stage-ink); text-decoration: none; transition: transform .2s ease; }
+.related-card:hover, .related-card:focus-visible { transform: translateY(-2px); }
+.related-card-img { overflow: hidden; aspect-ratio: 1; border-radius: 8px; background: linear-gradient(155deg, var(--ice-1), var(--ice-2)); }
+.related-card-img img { width: 100%; height: 100%; object-fit: cover; }
+.related-card-body .k { margin-top: 0; }
+.related-card-body h3 { margin-top: 4px; font: 700 16px var(--font-display); }
+
+/* 시즌 인덱스 바 — 포트폴리오 문서가 하나뿐이어도 "아카이브 색인"처럼 보이게 하는 sticky 앵커.
+   항목이 늘어나면 이 자리에 시즌별 앵커를 추가로 붙일 수 있다. */
+.season-index-bar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: min(100%, var(--maxw));
+  margin: 0 auto;
+  padding: 12px var(--page-x);
+  background: rgba(250,251,252,.86);
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid var(--stage-ink-line);
+}
+.season-index-dot { width: 7px; height: 7px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #eaf4ff, #8fc4ff 45%, var(--focus-ring) 100%); box-shadow: 0 0 6px 1px var(--glow-cool); flex-shrink: 0; }
+.season-index-bar p { color: var(--stage-ink-soft); font: 600 10px var(--font-mono); letter-spacing: .14em; text-transform: uppercase; }
+
 /* 포트폴리오 — 하나의 큰 유리 프레임 안에 리치 텍스트를 그대로 담는다 */
 .portfolio-content { position: relative; z-index: 1; max-width: 1200px; margin: 0 auto; padding: clamp(28px,4vw,56px); overflow-wrap: anywhere; }
 .portfolio-page .section { padding-top: 20px; }
@@ -725,6 +897,29 @@ body.transition-active .tv:not(.is-focused) { opacity: 0; filter: brightness(.2)
 .portfolio-content iframe { aspect-ratio: 16/9; }
 .portfolio-content.is-empty { display: grid; min-height: 320px; place-items: center; text-align: center; }
 .portfolio-status { color: var(--stage-ink-faint); font: 11px var(--font-mono); letter-spacing: .1em; text-transform: uppercase; }
+
+/* 대형 mailto 히어로 — 폼 없는 문의 페이지의 콘셉트: 메일 주소 자체가 히어로 타이포다 */
+.contact-mail-hero { padding-top: 8px; padding-bottom: 8px; text-align: center; }
+.contact-mail-link {
+  display: inline-block;
+  overflow-wrap: anywhere;
+  color: var(--stage-ink);
+  font: 800 clamp(28px,6vw,72px)/1.1 var(--font-display);
+  letter-spacing: -.02em;
+  text-decoration: none;
+  word-break: break-word;
+}
+.contact-mail-link::after { display: block; width: 0; height: 2px; margin-top: 6px; background: var(--stage-ink); content: ""; transition: width .32s ease; }
+.contact-mail-link:hover::after, .contact-mail-link:focus-visible::after { width: 100%; }
+
+/* 채널 3분할 — 문의 유형별 접수 채널과 예상 회신 시간 */
+.contact-channels-section { padding-top: 8px; }
+.contact-channels { display: grid; gap: 14px; margin-top: 18px; }
+.contact-channel { padding: clamp(22px,3vw,28px); }
+.contact-channel h3 { margin-top: 6px; font: 700 20px var(--font-display); }
+.contact-channel p:not(.k):not(.contact-channel-eta) { margin-top: 10px; color: var(--stage-ink-soft); font-size: 13px; }
+.contact-channel-eta { margin-top: 14px; color: var(--stage-ink-faint); font: 10px var(--font-mono); letter-spacing: .08em; text-transform: uppercase; }
+.contact-return { padding-top: 0; text-align: center; }
 
 /* 문의 — 유리 채널 바 */
 .contact-list { display: grid; gap: 16px; width: min(100%,900px); margin: 0 auto; }
@@ -771,11 +966,14 @@ body.transition-active .tv:not(.is-focused) { opacity: 0; filter: brightness(.2)
   .product-image-text.reverse .product-block-image { order: 2; }
   .product-gallery.columns-2 { grid-template-columns: repeat(2,1fr); }
   .product-gallery.columns-3 { grid-template-columns: repeat(3,1fr); }
+  .contact-channels { grid-template-columns: repeat(3,1fr); }
 }
 
 @media (min-width: 980px) {
   .card { grid-template-columns: minmax(0,1fr) minmax(0,1fr); align-items: stretch; }
   .card-img { min-height: 0; }
+  .product-info { position: sticky; top: 24px; align-self: start; }
+  .related-grid { grid-template-columns: repeat(2,1fr); }
 }
 @media (min-width: 720px) {
   /* 제품 수가 홀수라 마지막 한 장이 남으면 절반만 채워 어색해 보이지 않게 전체 폭으로 늘린다 */
