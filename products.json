@@ -2,6 +2,31 @@
   "_설명": "브랜드 담당자가 사이트 관리자에서 제품과 상세페이지를 관리합니다. 학생은 이 파일을 직접 수정하지 않습니다.",
   "products": [
     {
+      "id": "6d6e45d1-e850-4f1e-95a7-49be596021db",
+      "published": true,
+      "featured": false,
+      "label": "NEW",
+      "name": "치킨",
+      "summary": "맛잇",
+      "category": "",
+      "price": "20000",
+      "keywords": [
+        "냠냠"
+      ],
+      "images": [
+        "images/products/6d6e45d1-e850-4f1e-95a7-49be596021db/1789047389304-cfbf6e86.png"
+      ],
+      "buyLabel": "구매하기",
+      "buyLink": "",
+      "buyNotice": "",
+      "sections": [
+        {
+          "type": "rich_text",
+          "body": "<p><br></p>"
+        }
+      ]
+    },
+    {
       "id": "look-01",
       "published": true,
       "featured": true,
