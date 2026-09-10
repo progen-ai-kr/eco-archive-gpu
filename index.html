@@ -37,17 +37,50 @@
         <div class="tv-wall">
 
           <a class="tv" data-tv-role="portfolio" data-tv-index="1" href="portfolio.html" aria-label="음양 시즌 포트폴리오 보기">
-            <img class="tv-shell" src="images/tv/tv-1.webp" alt="" aria-hidden="true" width="372" height="313" />
             <span class="tv-decor tv-decor-antenna" aria-hidden="true">
-              <img class="tv-decor-img" src="images/decor/antenna.webp" alt="" />
+              <svg class="tv-decor-img" viewBox="0 0 176 100" preserveAspectRatio="xMidYMax meet">
+                <rect x="82" y="66" width="12" height="30" rx="6" fill="var(--chrome-500)" />
+                <circle cx="88" cy="92" r="10" fill="var(--chrome-300)" />
+                <path fill="#fff" stroke="var(--chrome-300)" stroke-width="1.5" stroke-linejoin="round" d="M88 76
+                  C 78 58, 54 38, 18 26
+                  C 10 23, 3 24, 0 29
+                  C 11 29, 21 34, 28 43
+                  C 17 41, 8 44, 3 50
+                  C 15 49, 24 53, 30 61
+                  C 20 60, 11 64, 7 70
+                  C 20 69, 32 72, 42 79
+                  C 57 88, 74 86, 88 76 Z" />
+                <path fill="#161616" d="M88 76
+                  C 99 60, 118 42, 152 30
+                  L 146 42
+                  L 167 36
+                  L 156 48
+                  L 174 45
+                  L 160 58
+                  C 147 66, 118 74, 88 76 Z" />
+              </svg>
+            </span>
+            <span class="tv-controls" aria-hidden="true">
+              <span class="tv-led"></span>
+              <span class="tv-knobs"><span class="tv-knob"></span><span class="tv-knob"></span></span>
             </span>
             <span class="tv-screen-wrap">
-              <span class="tv-screen"></span>
+              <span class="tv-screen">
+                <svg class="tv-icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+                  <circle cx="32" cy="32" r="26" fill="none" stroke="currentColor" stroke-width="2" />
+                  <path fill="currentColor" d="M32 6 A26 26 0 0 1 32 58 A13 13 0 0 1 32 32 A13 13 0 0 0 32 6 Z" />
+                  <circle cx="32" cy="19" r="3.6" fill="#0c0d10" />
+                  <circle cx="32" cy="45" r="3.6" fill="currentColor" />
+                </svg>
+              </span>
             </span>
           </a>
 
           <button class="tv" type="button" data-tv-role="bgm" data-tv-index="2" aria-pressed="false" aria-label="배경음악 켜기">
-            <img class="tv-shell" src="images/tv/tv-2.webp" alt="" aria-hidden="true" width="357" height="309" />
+            <span class="tv-controls" aria-hidden="true">
+              <span class="tv-led"></span>
+              <span class="tv-knobs"><span class="tv-knob"></span><span class="tv-knob"></span></span>
+            </span>
             <span class="tv-screen-wrap">
               <span class="tv-screen">
                 <svg class="tv-icon tv-icon-bgm-on" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
@@ -67,34 +100,103 @@
 
           <a class="tv" data-tv-role="yang" data-tv-index="3" href="products.html?polarity=YANG" aria-label="YANG 룩 보기">
             <span class="tv-decor tv-decor-wing-back" aria-hidden="true">
-              <img class="tv-decor-img" src="images/decor/wing-left.webp" alt="" />
+              <svg class="tv-decor-img" viewBox="0 0 252 248" preserveAspectRatio="xMaxYMid meet">
+                <path fill="#fff" stroke="var(--chrome-300)" stroke-width="1.5" stroke-linejoin="round" d="
+                  M252 128
+                  C 200 108, 138 88, 88 50
+                  C 58 27, 28 11, 0 8
+                  C 25 21, 44 40, 54 61
+                  C 31 53, 12 55, 0 67
+                  C 25 67, 47 76, 59 94
+                  C 36 90, 16 96, 5 110
+                  C 30 106, 53 114, 66 130
+                  C 45 130, 26 138, 17 152
+                  C 42 146, 65 152, 78 166
+                  C 59 168, 44 176, 36 188
+                  C 61 180, 86 184, 101 196
+                  C 86 200, 75 208, 69 218
+                  C 98 208, 138 204, 176 198
+                  C 208 192, 235 170, 252 148 Z" />
+              </svg>
             </span>
-            <img class="tv-shell" src="images/tv/tv-3.webp" alt="" aria-hidden="true" width="382" height="333" />
             <span class="tv-decor tv-decor-ears-dog" aria-hidden="true">
-              <img class="tv-decor-img" src="images/decor/ears-dog.webp" alt="" />
+              <svg class="tv-decor-img" viewBox="0 0 370 86" preserveAspectRatio="xMidYMax meet">
+                <path fill="#161616" d="M18 86 C9 55 20 18 49 3 C60 22 57 55 44 86 Z" />
+                <path fill="#161616" d="M352 86 C361 55 350 18 321 3 C310 22 313 55 326 86 Z" />
+              </svg>
+            </span>
+            <span class="tv-controls" aria-hidden="true">
+              <span class="tv-led"></span>
+              <span class="tv-knobs"><span class="tv-knob"></span><span class="tv-knob"></span></span>
             </span>
             <span class="tv-screen-wrap">
-              <span class="tv-screen"></span>
+              <span class="tv-screen">
+                <svg class="tv-icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+                  <path fill="currentColor" d="M8 44
+                    C 12 32, 20 19, 37 10
+                    C 43 7, 51 8, 55 12
+                    C 47 14, 41 18, 37 24
+                    C 45 22, 51 24, 54 28
+                    C 46 29, 40 33, 36 38
+                    C 43 37, 49 39, 52 43
+                    C 44 43, 37 46, 32 51
+                    C 37 49, 42 50, 45 53
+                    C 35 56, 21 55, 8 44 Z" />
+                </svg>
+              </span>
             </span>
           </a>
 
           <a class="tv" data-tv-role="about" data-tv-index="4" href="about.html" aria-label="브랜드 소개 보기">
-            <img class="tv-shell" src="images/tv/tv-4.webp" alt="" aria-hidden="true" width="374" height="331" />
+            <span class="tv-controls" aria-hidden="true">
+              <span class="tv-led"></span>
+              <span class="tv-knobs"><span class="tv-knob"></span><span class="tv-knob"></span></span>
+            </span>
             <span class="tv-screen-wrap">
-              <span class="tv-screen"></span>
+              <span class="tv-screen">
+                <svg class="tv-icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+                  <path fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" d="M22 14c-7 8-7 28 0 36" />
+                  <path fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" d="M42 14c7 8 7 28 0 36" />
+                  <line x1="24" y1="32" x2="40" y2="32" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" />
+                </svg>
+              </span>
             </span>
           </a>
 
           <a class="tv" data-tv-role="yin" data-tv-index="5" href="products.html?polarity=YIN" aria-label="YIN 룩 보기">
             <span class="tv-decor tv-decor-tail" aria-hidden="true">
-              <img class="tv-decor-img" src="images/decor/tail-right.webp" alt="" />
+              <svg class="tv-decor-img" viewBox="0 0 206 263" preserveAspectRatio="xMinYMin meet">
+                <path fill="none" stroke="#161616" stroke-width="9" stroke-linecap="round"
+                  d="M18 8 C 92 26, 132 66, 110 118 C 90 168, 28 176, 50 218" />
+                <path fill="#161616" d="M30 206 L70 212 L46 250 L52 214 Z" />
+              </svg>
             </span>
-            <img class="tv-shell" src="images/tv/tv-5.webp" alt="" aria-hidden="true" width="377" height="331" />
             <span class="tv-decor tv-decor-ears-cat" aria-hidden="true">
-              <img class="tv-decor-img" src="images/decor/ears-cat.webp" alt="" />
+              <svg class="tv-decor-img" viewBox="0 0 320 71" preserveAspectRatio="xMidYMax meet">
+                <path fill="#161616" d="M20 71 L47 5 L65 71 Z" />
+                <path fill="#161616" d="M300 71 L273 5 L255 71 Z" />
+              </svg>
+            </span>
+            <span class="tv-controls" aria-hidden="true">
+              <span class="tv-led"></span>
+              <span class="tv-knobs"><span class="tv-knob"></span><span class="tv-knob"></span></span>
             </span>
             <span class="tv-screen-wrap">
-              <span class="tv-screen"></span>
+              <span class="tv-screen">
+                <svg class="tv-icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+                  <path fill="currentColor" d="M8 44
+                    C 12 32, 20 19, 37 10
+                    C 43 7, 51 8, 55 12
+                    L 44 20
+                    L 53 24
+                    L 40 33
+                    L 50 38
+                    L 34 44
+                    L 42 48
+                    L 24 52
+                    L 8 44 Z" />
+                </svg>
+              </span>
             </span>
           </a>
 
