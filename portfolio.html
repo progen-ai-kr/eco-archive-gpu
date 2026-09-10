@@ -18,20 +18,29 @@
       <a href="index.html" class="logo"><img src="images/brand/echo-archive-logo.png" alt="ECHO ARCHIVE 홈" /></a>
       <button class="nav-toggle" aria-label="메뉴 열기" aria-expanded="false" aria-controls="primaryNav">☰</button>
       <nav class="nav-menu" id="primaryNav" aria-label="주요 메뉴">
-        <a href="about.html">About</a>
-        <a href="products.html">All Looks</a>
-        <a href="portfolio.html" class="active" aria-current="page">Portfolio</a>
-        <a href="contact.html">Contact</a>
+        <a href="about.html" data-ch="01">About</a>
+        <a href="products.html" data-ch="02">All Looks</a>
+        <a href="portfolio.html" data-ch="04" class="active" aria-current="page">Portfolio</a>
+        <a href="contact.html" data-ch="05">Contact</a>
       </nav>
     </div>
   </header>
 
   <main id="mainContent">
 
-    <section class="page-head">
+    <section class="page-head channel-head">
+      <div class="channel-head-top">
+        <p class="channel-code">CH.04 <strong>SIG_RECORD</strong></p>
+        <p class="channel-stamp">2026 F/W — YIN &amp; YANG</p>
+      </div>
       <h1>PORTFOLIO</h1>
       <p>옷과 이미지, 이야기가 하나의 신호로 연결된 프로젝트 기록입니다.</p>
     </section>
+
+    <div class="season-index-bar">
+      <span class="season-index-dot" aria-hidden="true"></span>
+      <p>2026 F/W · RECORDED SIGNALS</p>
+    </div>
 
     <section class="section">
       <!-- 브랜드 담당자가 관리자에서 작성한 한 개의 포트폴리오 문서가 여기에 표시됩니다.
@@ -39,6 +48,17 @@
       <article id="portfolioContent" class="portfolio-content glass-panel glass-corners" aria-live="polite">
         <p class="portfolio-status">포트폴리오를 불러오는 중입니다.</p>
       </article>
+    </section>
+
+    <div class="yy-rule" aria-hidden="true"><span class="yy-rule-node"></span></div>
+
+    <section class="section archive-note">
+      <p class="eyebrow">NEXT SIGNAL</p>
+      <h2>다음 기록도<br />궁금하신가요?</h2>
+      <p class="archive-note-links">
+        <a href="products.html" class="btn ghost">SIG_LOOKS 보기</a>
+        <a href="contact.html" class="btn ghost">협업 문의하기</a>
+      </p>
     </section>
 
   </main>

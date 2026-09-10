@@ -16,15 +16,22 @@
       <a href="index.html" class="logo"><img src="images/brand/echo-archive-logo.png" alt="ECHO ARCHIVE 홈" /></a>
       <button class="nav-toggle" aria-label="메뉴 열기" aria-expanded="false" aria-controls="primaryNav">☰</button>
       <nav class="nav-menu" id="primaryNav" aria-label="주요 메뉴">
-        <a href="about.html" class="active" aria-current="page">About</a>
-        <a href="products.html">All Looks</a>
-        <a href="portfolio.html">Portfolio</a>
-        <a href="contact.html">Contact</a>
+        <a href="about.html" data-ch="01" class="active" aria-current="page">About</a>
+        <a href="products.html" data-ch="02">All Looks</a>
+        <a href="portfolio.html" data-ch="04">Portfolio</a>
+        <a href="contact.html" data-ch="05">Contact</a>
       </nav>
     </div>
   </header>
 
   <main id="mainContent">
+    <div class="page-head channel-head about-channel-head">
+      <div class="channel-head-top">
+        <p class="channel-code">CH.01 <strong>SIG_ARCHIVE</strong></p>
+        <p class="channel-stamp">2026 F/W — YIN &amp; YANG</p>
+      </div>
+    </div>
+
     <section class="about-hero" aria-labelledby="aboutTitle">
       <div class="about-hero-panel about-hero-dark glass-panel glass-corners">
         <p class="k">MANIFESTO / 001</p>
@@ -37,9 +44,11 @@
       </div>
     </section>
 
-    <section class="section story-intro" aria-labelledby="storyTitle">
+    <div class="yy-rule" aria-hidden="true"><span class="yy-rule-node"></span></div>
+
+    <section class="section story-intro chapter" aria-labelledby="storyTitle">
       <div>
-        <p class="eyebrow">OUR STORY</p>
+        <p class="eyebrow"><span class="chapter-index">01</span> OUR STORY</p>
         <h2 id="storyTitle">기억을 입는<br />새로운 방식</h2>
       </div>
       <div class="story-copy">
@@ -48,8 +57,20 @@
       </div>
     </section>
 
-    <section class="section" aria-labelledby="valuesTitle">
-      <p class="eyebrow">CORE VALUES</p>
+    <!-- 반전 챕터 — 페이지에서 유일하게 색이 뒤집히는 구간. 2026 F/W 시즌 테마인
+         음양(Yin & Yang)의 조화를 선언한다. 심볼은 회전 애니메이션으로 균형·순환을 암시한다. -->
+    <section class="season-reversal" aria-labelledby="seasonTitle">
+      <div class="season-reversal-symbol" aria-hidden="true">☯</div>
+      <p class="eyebrow">2026 F/W THEME</p>
+      <h2 id="seasonTitle">음양의 조화<br />YIN &amp; YANG</h2>
+      <p class="lead">반대되는 존재는 적이 아니라 짝이자 거울입니다. 중요한 것은 대립이 아니라 조화와 순환입니다.</p>
+      <p class="season-reversal-tags"><span>흑 / 백</span><span>대칭 / 비대칭</span><span>부드러움 / 날카로움</span></p>
+    </section>
+
+    <div class="yy-rule" aria-hidden="true"><span class="yy-rule-node"></span></div>
+
+    <section class="section chapter" aria-labelledby="valuesTitle">
+      <p class="eyebrow"><span class="chapter-index">02</span> CORE VALUES</p>
       <h2 id="valuesTitle">Different signals.<br />One archive.</h2>
       <div class="value-grid">
         <article class="value-card glass-panel glass-corners"><span>01</span><strong>개성.</strong><p>각자의 취향과 기억을 숨기지 않는 선명한 정체성</p></article>
@@ -58,14 +79,22 @@
       </div>
     </section>
 
-    <section class="section brand-story-grid" aria-labelledby="craftTitle">
+    <div class="yy-rule" aria-hidden="true"><span class="yy-rule-node"></span></div>
+
+    <section class="section brand-story-grid chapter" aria-labelledby="craftTitle">
       <div class="brand-symbol-placeholder glass-panel glass-corners">
         <img src="images/brand/echo-archive-logo.png" alt="ECHO ARCHIVE 로고" loading="lazy" />
       </div>
       <div class="craft-copy glass-panel glass-corners">
-        <p class="eyebrow">LOCAL CRAFT</p>
+        <p class="eyebrow"><span class="chapter-index">03</span> LOCAL CRAFT</p>
         <h2 id="craftTitle">중촌동에서<br />완성되는 기록</h2>
         <p>대전 중촌동 패션 맞춤 거리의 제작 경험과 ECHO ARCHIVE의 서브컬처 감각을 연결합니다. 각 제품은 소량으로 제작해 디테일과 완성도를 지킵니다.</p>
+        <ol class="craft-steps">
+          <li><span>01</span>세계관과 실루엣 스케치</li>
+          <li><span>02</span>중촌동 장인과 소재·패턴 협의</li>
+          <li><span>03</span>소량 재단·봉제로 디테일 확인</li>
+          <li><span>04</span>검수 후 CAPSULE로 기록·공개</li>
+        </ol>
         <p class="about-cta"><a href="products.html" class="btn ghost">CAPSULE 열기</a></p>
       </div>
     </section>

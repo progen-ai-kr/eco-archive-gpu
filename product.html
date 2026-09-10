@@ -18,10 +18,10 @@
       <a href="index.html" class="logo"><img src="images/brand/echo-archive-logo.png" alt="ECHO ARCHIVE 홈" /></a>
       <button class="nav-toggle" aria-label="메뉴 열기" aria-expanded="false" aria-controls="primaryNav">☰</button>
       <nav class="nav-menu" id="primaryNav" aria-label="주요 메뉴">
-        <a href="about.html">About</a>
-        <a href="products.html" class="active" aria-current="page">All Looks</a>
-        <a href="portfolio.html">Portfolio</a>
-        <a href="contact.html">Contact</a>
+        <a href="about.html" data-ch="01">About</a>
+        <a href="products.html" data-ch="02" class="active" aria-current="page">All Looks</a>
+        <a href="portfolio.html" data-ch="04">Portfolio</a>
+        <a href="contact.html" data-ch="05">Contact</a>
       </nav>
     </div>
   </header>
@@ -225,9 +225,21 @@
       return "";
     }
 
+    function renderRelatedCard(item, dir) {
+      if (!item) return "";
+      const esc = ProductCatalog.escapeHtml;
+      const image = ProductCatalog.safeImageUrl(item.images && item.images[0]);
+      const img = image ? '<img src="' + esc(image) + '" alt="' + esc(item.name) + '" onerror="this.remove()" />' : "";
+      return '<a class="related-card glass-panel glass-corners" href="product.html?id=' + encodeURIComponent(item.id) + '">' +
+        '<div class="related-card-img">' + img + "</div>" +
+        '<div class="related-card-body"><p class="k">' + esc(dir) + '</p><h3>' + esc(item.name) + "</h3></div>" +
+      "</a>";
+    }
+
     ProductCatalog.loadVisibleProducts()
       .then((products) => {
-        const product = products.find((item) => item.id === productId);
+        const productIndex = products.findIndex((item) => item.id === productId);
+        const product = products[productIndex];
         if (!product) throw new Error("제품을 찾을 수 없습니다.");
 
         document.title = product.name + " — 제품 상세";
@@ -265,10 +277,24 @@
           sections = '<section class="product-block product-rich-text">' + paragraphs + "</section>";
         }
 
+        const episodeNumber = String(productIndex + 1).padStart(2, "0");
+        const prev = products[(productIndex - 1 + products.length) % products.length];
+        const next = products[(productIndex + 1) % products.length];
+        const relatedSection = products.length > 1
+          ? '<section class="section related-episodes">' +
+              '<p class="eyebrow">다음 신호</p>' +
+              '<div class="related-grid">' +
+                renderRelatedCard(prev, "PREV EPISODE") +
+                renderRelatedCard(next, "NEXT EPISODE") +
+              "</div>" +
+            "</section>"
+          : "";
+
         document.getElementById("mainContent").innerHTML =
           '<section class="section product-hero">' +
             '<div class="product-hero-gallery glass-panel glass-corners tv-frame">' + gallery + "</div>" +
             '<div class="product-info">' +
+              '<p class="channel-code">CH.03 <strong>SIG_EPISODE</strong> · EP.' + episodeNumber + "</p>" +
               '<p class="k">' + esc(product.label || product.category || "") + "</p>" +
               "<h1>" + esc(product.name) + "</h1>" +
               '<p class="product-summary">' + esc(product.summary || "") + "</p>" +
@@ -277,10 +303,19 @@
               buyButton +
             "</div>" +
           "</section>" +
-          (sections ? '<div class="product-story">' + sections + "</div>" : "");
+          (sections ? '<div class="product-story">' + sections + "</div>" : "") +
+          (relatedSection ? '<div class="yy-rule" aria-hidden="true"><span class="yy-rule-node"></span></div>' + relatedSection : "");
 
         setupProductCarousels();
         setupPurchaseDialog(product);
+        const relatedRule = document.querySelector(".yy-rule");
+        if (relatedRule && "IntersectionObserver" in window) {
+          new IntersectionObserver((entries, obs) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) { entry.target.classList.add("is-visible"); obs.unobserve(entry.target); }
+            });
+          }, { threshold: 0.4 }).observe(relatedRule);
+        }
       })
       .catch(() => {
         document.getElementById("mainContent").innerHTML =
