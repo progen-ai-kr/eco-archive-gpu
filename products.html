@@ -36,6 +36,10 @@
       <p>수집된 신호를 열고 각 CAPSULE의 세계를 탐색해 보세요.</p>
     </section>
 
+    <!-- 홈 TV(YIN/YANG)에서 ?polarity=로 들어왔을 때만 표시되는 안내 배너.
+         scripts/home-logic.js의 극성 매핑 결과에 따라 JS가 문구와 표시 여부를 채운다. -->
+    <div class="polarity-banner" id="polarityBanner" hidden></div>
+
     <section class="section products-toolbar-section" aria-label="카테고리 필터">
       <div class="filter-rail" id="productFilterRail" hidden>
         <p class="filter-rail-label">FILTER</p>
@@ -78,11 +82,16 @@
 
   <script src="script.js?v=20260902-design-1b"></script>
   <script src="catalog.js?v=20260826-rich-editor-1"></script>
+  <!-- 홈 TV Wall의 YIN/YANG 극성 쿼리 매핑 로직(순수 함수, 테스트 있음)과 시즌 프레젠테이션
+       데이터를 그대로 재사용한다 — products.json 스키마는 건드리지 않는다. -->
+  <script src="scripts/home-logic.js?v=20260910-polarity-1"></script>
+  <script src="scripts/capsule-data.js?v=20260910-polarity-1"></script>
   <script>
     // 공개된 products.json 제품을 카드로 그립니다. 학생은 CSS로 자유롭게 디자인할 수 있습니다.
     const productListBox = document.getElementById("product-list");
     const filterRail = document.getElementById("productFilterRail");
     const filterChipsBox = document.getElementById("productFilterChips");
+    const polarityBanner = document.getElementById("polarityBanner");
 
     function formatPrice(value) {
       const text = String(value || "").trim();
@@ -95,12 +104,32 @@
     // 플레이스홀더로 보여준다 — 상업 사이트는 로딩·빈 상태에서 완성도가 갈린다.
     function renderEmptyState() {
       filterRail.hidden = true;
+      polarityBanner.hidden = true;
       const placeholder = '<div class="card card-placeholder" aria-hidden="true"><div class="card-img"></div><div class="card-body"><p class="k">SIGNAL</p><h3>SYNCING</h3></div></div>';
       productListBox.innerHTML = placeholder.repeat(3);
       const status = document.createElement("p");
       status.className = "portfolio-status";
       status.textContent = "CAPSULE ARCHIVE SYNCING — 공개된 제품이 아직 없습니다.";
       productListBox.after(status);
+    }
+
+    // 홈 TV의 YIN/YANG 아이콘은 products.html?polarity=YIN|YANG으로 링크한다.
+    // scripts/home-logic.js의 순수 함수(단위 테스트 있음)로 그 쿼리를 해석하고,
+    // scripts/capsule-data.js의 시즌 프레젠테이션 매핑으로 실제 제품과 대조한다.
+    const requestedPolarity = window.EchoHomeLogic
+      ? window.EchoHomeLogic.resolvePolarityQuery(new URLSearchParams(location.search).get("polarity"))
+      : null;
+
+    function renderPolarityBanner(polarity, matchedCount) {
+      if (!polarity) { polarityBanner.hidden = true; return; }
+      const text = matchedCount > 0
+        ? polarity + " 신호 · " + matchedCount + "개 표시 중"
+        : polarity + " 신호로 분류된 제품이 아직 없어 전체 컬렉션을 보여드립니다";
+      polarityBanner.innerHTML =
+        '<span class="polarity-banner-dot" aria-hidden="true"></span>' +
+        "<p>" + ProductCatalog.escapeHtml(text) + "</p>" +
+        '<a href="products.html" class="polarity-banner-clear">전체보기 ×</a>';
+      polarityBanner.hidden = false;
     }
 
     ProductCatalog.loadVisibleProducts()
@@ -110,7 +139,16 @@
           return;
         }
 
-        productListBox.innerHTML = products
+        const capsuleEntries = window.EchoCapsuleData || [];
+        const matchedByPolarity = requestedPolarity
+          ? products.filter((p) => window.EchoHomeLogic.resolveProductPolarity(p, capsuleEntries) === requestedPolarity)
+          : [];
+        // 매칭된 제품이 없으면(현재 운영 제품명이 시즌 캡슐 이름과 다름) 숨기지 않고
+        // 전체 목록으로 폴백하되, 배너로 그 사실을 정직하게 알린다 — 고장처럼 보이지 않게.
+        const baseProducts = requestedPolarity && matchedByPolarity.length ? matchedByPolarity : products;
+        renderPolarityBanner(requestedPolarity, matchedByPolarity.length);
+
+        productListBox.innerHTML = baseProducts
           .map((p) => {
             const image = ProductCatalog.safeImageUrl(p.images && p.images[0]);
             const img = image
@@ -135,8 +173,9 @@
           .join("");
 
         // 카테고리가 둘 이상일 때만 필터를 보여준다 — 하나뿐이면 필터가 의미 없다.
+        // (현재 화면에 실제로 걸려 있는 baseProducts 기준으로 뽑아야 극성 필터와 겹칠 때도 맞다)
         const categories = Array.from(new Set(
-          products.map((p) => String(p.category || "").trim()).filter(Boolean)
+          baseProducts.map((p) => String(p.category || "").trim()).filter(Boolean)
         ));
         if (categories.length > 1) {
           const cards = Array.from(productListBox.querySelectorAll(".card"));
@@ -164,6 +203,7 @@
       })
       .catch(() => {
         filterRail.hidden = true;
+        polarityBanner.hidden = true;
         productListBox.innerHTML =
           '<p class="portfolio-status">SIGNAL LOST — 제품 기록을 불러오지 못했습니다. 로컬 정적 서버에서 다시 확인해 주세요.</p>';
       });
