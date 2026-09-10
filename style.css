@@ -269,35 +269,68 @@ main { min-height: calc(100vh - 166px); }
   width: 100%;
   height: 100%;
 }
-/* z-index: 3·5번의 귀 장식이 위쪽 1·2번 TV 앞으로 나와야 해서 3·5번을 가장 위에 둔다.
-   1번은 안테나가 2번 위로 걸쳐야 해서 2번보다 한 단계 높다. */
+/* 레이어 순서(원본 시안 기준, 앞 → 뒤):
+     3·5번(귀 달린 TV)  … 귀가 위쪽 1·2번 TV 앞으로 올라와야 하므로 최상단
+     1번(안테나)        … 안테나가 2번 위로 걸쳐야 해서 2번보다 위
+     2번
+     4번                … 3·5번의 귀·날개·꼬리가 이 위를 지나가므로 최하단
+   각 TV 안쪽 순서는 .tv::before(캐비닛=2)를 기준으로 나뉜다:
+     날개·꼬리(1) < 캐비닛(2) < 귀·안테나(3) < 화면(4) < 노브·전원등(6) */
 .tv[data-tv-index="1"] { left: 26.797%; top: 20.161%; width: 23.455%; height: 31.552%; z-index: 5; }
 .tv[data-tv-index="2"] { left: 49.496%; top: 20.363%; width: 22.509%; height: 31.149%; z-index: 4; }
-.tv[data-tv-index="3"] { left: 15.322%; top: 50.605%; width: 24.086%; height: 33.569%; z-index: 6; }
+.tv[data-tv-index="3"] { left: 15.322%; top: 50.605%; width: 24.086%; height: 33.569%; z-index: 7; }
 .tv[data-tv-index="4"] { left: 38.777%; top: 51.210%; width: 23.581%; height: 33.367%; z-index: 3; }
-.tv[data-tv-index="5"] { left: 62.043%; top: 51.008%; width: 23.770%; height: 33.367%; z-index: 6; }
+.tv[data-tv-index="5"] { left: 62.043%; top: 51.008%; width: 23.770%; height: 33.367%; z-index: 7; }
+
+/* 공용 머티리얼 defs 컨테이너 — 그리지 않고 정의만 담는다 */
+.tv-materials { position: absolute; width: 0; height: 0; overflow: hidden; }
 
 /* ── TV 캐비닛 ──
    사진 대신 CSS 그라데이션만으로 크롬 캐비닛을 그린다(사진 누끼 문제 원천 차단).
-   .tv 자체는 실측 %좌표로 배치되는 클릭 영역이자 캐비닛 본체다. */
+   .tv 자체는 배경을 갖지 않고 ::before가 캐비닛 몸체를 그린다 — 그래야 날개·꼬리를
+   캐비닛보다 낮은 z-index에 두어 "뒤에서 뻗어나오는" 원본 레이어링을 재현할 수 있다.
+   (요소 자신의 background는 항상 모든 자식 아래에 깔려서 그 표현이 불가능하다.) */
 .tv {
   position: absolute;
   display: block;
   min-width: 0;
   border: 0;
   border-radius: clamp(16px, 3.2cqw, 30px);
-  background:
-    radial-gradient(120% 150% at 18% -15%, rgba(255,255,255,.95), transparent 55%),
-    linear-gradient(165deg, var(--chrome-white) 0%, var(--chrome-100) 20%, var(--chrome-300) 40%, var(--chrome-white) 54%, var(--chrome-500) 74%, var(--chrome-300) 90%, var(--chrome-white) 100%);
-  box-shadow:
-    inset 0 2px 0 rgba(255,255,255,.9),
-    inset 0 -8px 14px rgba(60,66,74,.28),
-    inset 0 0 0 1px rgba(255,255,255,.5),
-    0 16px 32px -16px rgba(40,46,54,.4);
+  background: transparent;
   color: var(--chrome-900);
   text-decoration: none;
   cursor: pointer;
+  filter: drop-shadow(0 clamp(6px, 1.1cqw, 14px) clamp(10px, 1.8cqw, 24px) rgba(48,56,66,.3));
   transition: transform .26s ease, filter .26s ease;
+}
+/* 캐비닛 몸체. 크롬이 금속으로 읽히는 핵심은 중간의 급격한 어두움→흰색 전환이다. */
+.tv::before {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: inherit;
+  background:
+    linear-gradient(168deg,
+      #ffffff 0%, #f4f7fa 12%, #dbe1e7 26%, #b3bcc5 38%,
+      #7f8891 46%, #ffffff 53%, #e8edf1 64%, #b8c0c9 78%, #99a2ab 88%, #f0f4f7 100%);
+  box-shadow:
+    inset 0 2px 0 rgba(255,255,255,.95),
+    inset 0 -9px 16px rgba(52,60,70,.3),
+    inset 0 0 0 1px rgba(255,255,255,.55);
+  content: "";
+}
+/* 윗면 스페큘러 스윕 + 아랫면 그림자 → 납작한 판이 아니라 부풀어오른 덩어리로 보이게 한다. */
+.tv::after {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: inherit;
+  background:
+    radial-gradient(60% 26% at 32% 6%, rgba(255,255,255,.98), transparent 70%),
+    radial-gradient(46% 18% at 76% 9%, rgba(255,255,255,.7), transparent 72%),
+    radial-gradient(90% 30% at 50% 104%, rgba(60,70,82,.34), transparent 70%);
+  content: "";
+  pointer-events: none;
 }
 .tv:hover, .tv:focus-visible, .tv.is-focused {
   z-index: 12 !important;
@@ -335,12 +368,18 @@ main { min-height: calc(100vh - 166px); }
   width: clamp(9px, 1.7cqw, 17px);
   height: clamp(9px, 1.7cqw, 17px);
   border-radius: 50%;
-  background: radial-gradient(circle at 32% 28%, var(--chrome-white), var(--chrome-500) 60%, var(--chrome-900) 100%);
-  box-shadow: inset 0 -1px 1px rgba(255,255,255,.5), 0 1px 1px rgba(0,0,0,.3);
+  background:
+    radial-gradient(circle at 30% 24%, #ffffff 0%, #eef2f5 18%, #b6bfc8 46%, #6f7883 74%, #d3dae0 100%);
+  box-shadow:
+    inset 0 -1.5px 2px rgba(255,255,255,.65),
+    inset 0 1.5px 2px rgba(30,36,44,.45),
+    0 2px 3px rgba(40,48,58,.42);
 }
 
 /* 화면 베젤(안쪽 홈)과 유리 — 전부 CSS 그라데이션. 화면 영역은 실제 HTML 요소라서
    hover/focus/aria-pressed에 따라 밝기·주사선을 자유롭게 반응시킬 수 있다. */
+/* 화면을 감싸는 크롬 베젤 링. 바깥은 밝은 금속, 안쪽 경계는 어두운 홈이 되어
+   화면이 캐비닛 안으로 '파여 들어간' 깊이가 생긴다. */
 .tv-screen-wrap {
   position: absolute;
   left: 8.5%;
@@ -350,10 +389,15 @@ main { min-height: calc(100vh - 166px); }
   z-index: 4;
   min-width: 0;
   min-height: 0;
-  padding: clamp(2px, .6cqw, 6px);
-  border-radius: 11% 11% 10% 10% / 9% 9% 10% 10%;
-  background: linear-gradient(155deg, var(--chrome-900), #05070a 55%, var(--chrome-700));
-  box-shadow: inset 0 2px 3px rgba(0,0,0,.6), inset 0 -1px 0 rgba(255,255,255,.12), 0 1px 0 rgba(255,255,255,.4);
+  padding: clamp(3px, .9cqw, 9px);
+  border-radius: 13% 13% 12% 12% / 11% 11% 12% 12%;
+  background:
+    linear-gradient(160deg, #ffffff 0%, #dfe5ea 20%, #9aa3ac 44%, #ffffff 52%, #c8d0d7 70%, #8f98a1 88%, #eef2f5 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.95),
+    inset 0 -2px 4px rgba(60,68,78,.35),
+    0 1px 0 rgba(255,255,255,.7),
+    0 4px 10px -4px rgba(40,48,58,.45);
 }
 .tv-screen {
   position: relative;
@@ -368,6 +412,10 @@ main { min-height: calc(100vh - 166px); }
   background:
     radial-gradient(130% 160% at 50% 105%, rgba(255,255,255,.06), transparent 55%),
     radial-gradient(120% 140% at 30% 15%, #232a31 0%, #12161b 55%, #05070a 100%);
+  box-shadow:
+    inset 0 0 0 1px rgba(0,0,0,.9),
+    inset 0 5px 12px rgba(0,0,0,.85),
+    inset 0 -4px 9px rgba(0,0,0,.6);
 }
 .tv-screen::before {
   position: absolute;

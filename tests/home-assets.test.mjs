@@ -73,6 +73,27 @@ test("베젤의 노브·전원등은 실제 요소이며 CSS로만 그려진다"
   }
 });
 
+test("공용 머티리얼 defs가 있고 id가 중복되지 않는다", () => {
+  // 그라데이션/필터는 한 곳에서만 정의한다. 부품마다 defs를 두면 id가 중복돼
+  // CI의 validate_site.py가 거부하고, 브라우저도 첫 번째 정의만 쓴다.
+  assert.match(indexHtml, /class="tv-materials"/, "공용 머티리얼 SVG가 있어야 한다");
+  const ids = (indexHtml.match(/\sid="([^"]+)"/g) || []).map((raw) => raw.replace(/\sid="/, "").replace(/"$/, ""));
+  const seen = new Set();
+  for (const id of ids) {
+    assert.ok(!seen.has(id), "중복된 id가 있으면 안 된다: " + id);
+    seen.add(id);
+  }
+});
+
+test("장식 SVG는 단색이 아니라 그라데이션으로 입체감을 낸다", () => {
+  // 평면 단색으로 되돌아가는 회귀를 막는다 — 명암이 있어야 3D로 보인다.
+  const decorWrappers = indexHtml.match(/<span class="tv-decor[^"]*"[^>]*>[\s\S]*?<\/svg>/g) || [];
+  assert.equal(decorWrappers.length, 5, "장식은 5개(안테나·강아지귀·천사날개·꼬리·고양이귀)여야 한다");
+  for (const wrapper of decorWrappers) {
+    assert.match(wrapper, /url\(#mat[A-Za-z]+\)/, "장식은 공용 머티리얼을 참조해야 한다: " + wrapper.slice(0, 60));
+  }
+});
+
 test("index.html이 참조하는 로컬 이미지 파일이 모두 존재한다", () => {
   const sources = indexHtml.match(/(?:src|href)="([^"]+\.(?:png|webp|jpg|jpeg|svg|avif))(?:\?[^"]*)?"/g) || [];
   for (const raw of sources) {
