@@ -278,16 +278,22 @@ main { min-height: calc(100vh - 166px); }
 .tv[data-tv-index="5"] { left: 62.043%; top: 51.008%; width: 23.770%; height: 33.367%; z-index: 6; }
 
 /* ── TV 캐비닛 ──
-   캐비닛·베젤·노브·전원등은 렌더 자산(.tv-shell)이 담당한다.
-   .tv 자체는 실측 %좌표로 배치되는 클릭 영역이며, 이미지 로드 실패에 대비한
-   아주 단순한 크롬 그라데이션만 폴백으로 남겨둔다. */
+   사진 대신 CSS 그라데이션만으로 크롬 캐비닛을 그린다(사진 누끼 문제 원천 차단).
+   .tv 자체는 실측 %좌표로 배치되는 클릭 영역이자 캐비닛 본체다. */
 .tv {
   position: absolute;
   display: block;
   min-width: 0;
   border: 0;
-  border-radius: clamp(6px, 1cqw, 14px);
-  background: linear-gradient(150deg, var(--chrome-white) 0%, var(--chrome-300) 45%, var(--chrome-700) 55%, var(--chrome-300) 100%);
+  border-radius: clamp(16px, 3.2cqw, 30px);
+  background:
+    radial-gradient(120% 150% at 18% -15%, rgba(255,255,255,.95), transparent 55%),
+    linear-gradient(165deg, var(--chrome-white) 0%, var(--chrome-100) 20%, var(--chrome-300) 40%, var(--chrome-white) 54%, var(--chrome-500) 74%, var(--chrome-300) 90%, var(--chrome-white) 100%);
+  box-shadow:
+    inset 0 2px 0 rgba(255,255,255,.9),
+    inset 0 -8px 14px rgba(60,66,74,.28),
+    inset 0 0 0 1px rgba(255,255,255,.5),
+    0 16px 32px -16px rgba(40,46,54,.4);
   color: var(--chrome-900);
   text-decoration: none;
   cursor: pointer;
@@ -300,17 +306,41 @@ main { min-height: calc(100vh - 166px); }
 }
 .tv:focus-visible { outline: 3px solid #2b6fe0; outline-offset: 3px; }
 
-.tv-shell {
+/* 베젤 하단의 노브·전원등 — 이제 실제 요소라서 눌림 상태에 따라 CSS로 반응시킬 수 있다. */
+.tv-controls {
   position: absolute;
-  inset: 0;
-  z-index: 2;
-  width: 100%;
-  height: 100%;
+  left: 8.5%;
+  right: 8.5%;
+  bottom: 6.4%;
+  z-index: 6;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   pointer-events: none;
 }
+.tv-led {
+  width: clamp(4px, .8cqw, 8px);
+  height: clamp(4px, .8cqw, 8px);
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #eaf4ff, #8fc4ff 45%, var(--focus-ring) 100%);
+  box-shadow: 0 0 6px 2px var(--glow-cool-soft);
+  transition: box-shadow .2s ease, background .2s ease;
+}
+[aria-pressed="true"] .tv-led {
+  background: radial-gradient(circle at 35% 30%, #fff6e0, #ffd27a 45%, #e0972e 100%);
+  box-shadow: 0 0 8px 3px rgba(255, 197, 92, .55);
+}
+.tv-knobs { display: flex; gap: clamp(4px, .9cqw, 9px); }
+.tv-knob {
+  width: clamp(9px, 1.7cqw, 17px);
+  height: clamp(9px, 1.7cqw, 17px);
+  border-radius: 50%;
+  background: radial-gradient(circle at 32% 28%, var(--chrome-white), var(--chrome-500) 60%, var(--chrome-900) 100%);
+  box-shadow: inset 0 -1px 1px rgba(255,255,255,.5), 0 1px 1px rgba(0,0,0,.3);
+}
 
-/* 화면 유리(베젤 포함)는 자산에 이미 렌더돼 있다. 여기서는 실측한 화면
-   영역 위에 아이콘·글레어·주사선만 얹는다 — 배경은 투명이다. */
+/* 화면 베젤(안쪽 홈)과 유리 — 전부 CSS 그라데이션. 화면 영역은 실제 HTML 요소라서
+   hover/focus/aria-pressed에 따라 밝기·주사선을 자유롭게 반응시킬 수 있다. */
 .tv-screen-wrap {
   position: absolute;
   left: 8.5%;
@@ -320,6 +350,10 @@ main { min-height: calc(100vh - 166px); }
   z-index: 4;
   min-width: 0;
   min-height: 0;
+  padding: clamp(2px, .6cqw, 6px);
+  border-radius: 11% 11% 10% 10% / 9% 9% 10% 10%;
+  background: linear-gradient(155deg, var(--chrome-900), #05070a 55%, var(--chrome-700));
+  box-shadow: inset 0 2px 3px rgba(0,0,0,.6), inset 0 -1px 0 rgba(255,255,255,.12), 0 1px 0 rgba(255,255,255,.4);
 }
 .tv-screen {
   position: relative;
@@ -331,7 +365,17 @@ main { min-height: calc(100vh - 166px); }
   justify-content: center;
   overflow: hidden;
   border-radius: 9% 9% 8% 8% / 7% 7% 8% 8%;
-  background: transparent;
+  background:
+    radial-gradient(130% 160% at 50% 105%, rgba(255,255,255,.06), transparent 55%),
+    radial-gradient(120% 140% at 30% 15%, #232a31 0%, #12161b 55%, #05070a 100%);
+}
+.tv-screen::before {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(122deg, rgba(255,255,255,.16) 0%, transparent 26%, transparent 74%, rgba(255,255,255,.05) 100%);
+  content: "";
+  pointer-events: none;
 }
 .tv-icon {
   position: relative;
