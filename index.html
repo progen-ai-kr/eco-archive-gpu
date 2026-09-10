@@ -10,86 +10,111 @@
   <meta property="og:image" content="images/brand/echo-archive-logo.png" />
   <meta property="og:type" content="website" />
   <link rel="icon" href="images/brand/echo-archive-logo.png" />
-  <link rel="stylesheet" href="style.css?v=20260902-studio-2f" />
+  <link rel="stylesheet" href="style.css?v=20260908-y2k-1" />
 </head>
 <body class="home-page">
   <a class="skip-link" href="#mainContent">시즌 신호로 건너뛰기</a>
 
   <main id="mainContent" class="home-stage">
     <h1 class="sr-only">ECHO ARCHIVE 2026 F/W 제품 아카이브</h1>
-    <div class="studio-lights" aria-hidden="true">
-      <span class="studio-light"></span>
-    </div>
-    <div class="studio-desk" aria-hidden="true"></div>
-    <a class="logo home-logo" href="products.html" aria-label="ECHO ARCHIVE 전체 제품 보기">
-      <img src="images/brand/echo-archive-logo.png" alt="ECHO ARCHIVE" />
-    </a>
 
-    <echo-tv-wall aria-label="2026 F/W 제품 신호">
-      <p class="tv-wall-position" aria-live="polite">1 / 4</p>
+    <div class="home-frame">
+      <header class="home-header">
+        <a class="home-brand" href="index.html" aria-label="ECHO ARCHIVE 홈, Every Identity Echoes">
+          <img class="home-brand-mark" src="images/brand/echo-archive-logo.png" alt="ECHO ARCHIVE" />
+          <span class="home-brand-star" aria-hidden="true">✦</span>
+        </a>
+        <p class="home-brand-sub">EVERY IDENTITY ECHOES</p>
+        <nav class="home-nav" aria-label="주요 메뉴">
+          <a href="products.html">ALL LOOKS</a>
+          <a href="contact.html">CONTACT</a>
+        </nav>
+      </header>
+
+      <div class="tv-floor" aria-hidden="true"></div>
+
       <div class="tv-wall-stage">
         <div class="tv-wall">
-          <a class="tv polarity-yin" href="products.html" data-product-name="CAT_404" data-slot="0" data-polarity="YIN">
-            <span class="tv-body">
-              <span class="tv-screen-wrap">
-                <span class="tv-screen">
-                  <img src="images/capsule/cat-404.png" alt="CAT_404 시즌 룩" loading="eager" />
-                  <span class="tv-fallback" aria-hidden="true"></span>
-                  <span class="tv-screen-meta"><span class="tv-meta-bar"><span class="tv-meta">SIGNAL-001</span><span class="tv-polarity">YIN</span></span><span class="tv-name">CAT_404</span><span class="tv-sync-badge">ARCHIVE SYNCING</span></span>
-                </span>
-              </span>
-              <span class="tv-panel" aria-hidden="true"><span class="tv-power"></span><span class="tv-knob"></span><span class="tv-knob"></span><span class="tv-speaker"><span></span><span></span><span></span><span></span><span></span><span></span></span></span>
+
+          <a class="tv" data-tv-role="portfolio" data-tv-index="1" href="portfolio.html" aria-label="음양 시즌 포트폴리오 보기">
+            <img class="tv-shell" src="images/tv/tv-1.webp" alt="" aria-hidden="true" width="372" height="313" />
+            <span class="tv-decor tv-decor-antenna" aria-hidden="true">
+              <img class="tv-decor-img" src="images/decor/antenna.webp" alt="" />
+            </span>
+            <span class="tv-screen-wrap">
+              <span class="tv-screen"></span>
             </span>
           </a>
 
-          <a class="tv polarity-yang" href="products.html" data-product-name="DOG_404" data-slot="1" data-polarity="YANG">
-            <span class="tv-body">
-              <span class="tv-screen-wrap">
-                <span class="tv-screen">
-                  <img src="images/capsule/dog-404.png" alt="DOG_404 시즌 룩" loading="eager" />
-                  <span class="tv-fallback" aria-hidden="true"></span>
-                  <span class="tv-screen-meta"><span class="tv-meta-bar"><span class="tv-meta">SIGNAL-002</span><span class="tv-polarity">YANG</span></span><span class="tv-name">DOG_404</span><span class="tv-sync-badge">ARCHIVE SYNCING</span></span>
-                </span>
+          <button class="tv" type="button" data-tv-role="bgm" data-tv-index="2" aria-pressed="false" aria-label="배경음악 켜기">
+            <img class="tv-shell" src="images/tv/tv-2.webp" alt="" aria-hidden="true" width="357" height="309" />
+            <span class="tv-screen-wrap">
+              <span class="tv-screen">
+                <svg class="tv-icon tv-icon-bgm-on" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+                  <path fill="currentColor" d="M8 24v16h9l16 12V12L17 24H8z" />
+                  <path fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" d="M40 22c5 5 5 15 0 20" />
+                  <path fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" d="M47 15c9 9 9 25 0 34" />
+                </svg>
+                <svg class="tv-icon tv-icon-bgm-off" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+                  <path fill="currentColor" d="M8 24v16h9l16 12V12L17 24H8z" />
+                  <path fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" d="M38 22c5 5 5 15 0 20" />
+                  <path fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" d="M45 15c9 9 9 25 0 34" />
+                  <line x1="6" y1="8" x2="58" y2="56" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" />
+                </svg>
               </span>
-              <span class="tv-panel" aria-hidden="true"><span class="tv-power"></span><span class="tv-knob"></span><span class="tv-knob"></span><span class="tv-speaker"><span></span><span></span><span></span><span></span><span></span><span></span></span></span>
+            </span>
+          </button>
+
+          <a class="tv" data-tv-role="yang" data-tv-index="3" href="products.html?polarity=YANG" aria-label="YANG 룩 보기">
+            <span class="tv-decor tv-decor-wing-back" aria-hidden="true">
+              <img class="tv-decor-img" src="images/decor/wing-left.webp" alt="" />
+            </span>
+            <img class="tv-shell" src="images/tv/tv-3.webp" alt="" aria-hidden="true" width="382" height="333" />
+            <span class="tv-decor tv-decor-ears-dog" aria-hidden="true">
+              <img class="tv-decor-img" src="images/decor/ears-dog.webp" alt="" />
+            </span>
+            <span class="tv-screen-wrap">
+              <span class="tv-screen"></span>
             </span>
           </a>
 
-          <a class="tv polarity-yin" href="products.html" data-product-name="DEVIL_666" data-slot="2" data-polarity="YIN">
-            <span class="tv-body">
-              <span class="tv-screen-wrap">
-                <span class="tv-screen">
-                  <img src="images/capsule/devil-666.png" alt="DEVIL_666 시즌 룩" loading="lazy" />
-                  <span class="tv-fallback" aria-hidden="true"></span>
-                  <span class="tv-screen-meta"><span class="tv-meta-bar"><span class="tv-meta">SIGNAL-003</span><span class="tv-polarity">YIN</span></span><span class="tv-name">DEVIL_666</span><span class="tv-sync-badge">ARCHIVE SYNCING</span></span>
-                </span>
-              </span>
-              <span class="tv-panel" aria-hidden="true"><span class="tv-power"></span><span class="tv-knob"></span><span class="tv-knob"></span><span class="tv-speaker"><span></span><span></span><span></span><span></span><span></span><span></span></span></span>
+          <a class="tv" data-tv-role="about" data-tv-index="4" href="about.html" aria-label="브랜드 소개 보기">
+            <img class="tv-shell" src="images/tv/tv-4.webp" alt="" aria-hidden="true" width="374" height="331" />
+            <span class="tv-screen-wrap">
+              <span class="tv-screen"></span>
             </span>
           </a>
 
-          <a class="tv polarity-yang" href="products.html" data-product-name="ANGEL_777" data-slot="3" data-polarity="YANG">
-            <span class="tv-body">
-              <span class="tv-screen-wrap">
-                <span class="tv-screen">
-                  <img src="images/capsule/angel-777.png" alt="ANGEL_777 시즌 룩" loading="lazy" />
-                  <span class="tv-fallback" aria-hidden="true"></span>
-                  <span class="tv-screen-meta"><span class="tv-meta-bar"><span class="tv-meta">SIGNAL-004</span><span class="tv-polarity">YANG</span></span><span class="tv-name">ANGEL_777</span><span class="tv-sync-badge">ARCHIVE SYNCING</span></span>
-                </span>
-              </span>
-              <span class="tv-panel" aria-hidden="true"><span class="tv-power"></span><span class="tv-knob"></span><span class="tv-knob"></span><span class="tv-speaker"><span></span><span></span><span></span><span></span><span></span><span></span></span></span>
+          <a class="tv" data-tv-role="yin" data-tv-index="5" href="products.html?polarity=YIN" aria-label="YIN 룩 보기">
+            <span class="tv-decor tv-decor-tail" aria-hidden="true">
+              <img class="tv-decor-img" src="images/decor/tail-right.webp" alt="" />
+            </span>
+            <img class="tv-shell" src="images/tv/tv-5.webp" alt="" aria-hidden="true" width="377" height="331" />
+            <span class="tv-decor tv-decor-ears-cat" aria-hidden="true">
+              <img class="tv-decor-img" src="images/decor/ears-cat.webp" alt="" />
+            </span>
+            <span class="tv-screen-wrap">
+              <span class="tv-screen"></span>
             </span>
           </a>
+
         </div>
       </div>
-    </echo-tv-wall>
+
+      <footer class="home-footer">
+        <p class="home-footer-copy">© ECHO ARCHIVE. ALL RIGHTS RESERVED.</p>
+        <p class="home-footer-brand">SAME SOULS <span class="home-footer-rule" aria-hidden="true"></span> DIFFERENT SIDES</p>
+        <a class="home-footer-admin" href="/admin">ADMIN</a>
+      </footer>
+    </div>
+
+    <span id="bgmLiveStatus" class="sr-only" role="status" aria-live="polite"></span>
   </main>
 
   <signal-transition></signal-transition>
-  <script src="catalog.js?v=20260902-design-1b"></script>
-  <script src="scripts/motion.js?v=20260902-design-1b"></script>
-  <script src="scripts/capsule-data.js?v=20260902-design-1b"></script>
-  <script src="scripts/components/signal-transition.js?v=20260902-portal-2e"></script>
-  <script src="scripts/components/echo-tv-wall.js?v=20260902-design-1b"></script>
+  <script src="scripts/motion.js?v=20260908-y2k-1"></script>
+  <script src="scripts/home-logic.js?v=20260908-y2k-1"></script>
+  <script src="scripts/components/signal-transition.js?v=20260908-y2k-1"></script>
+  <script src="scripts/home.js?v=20260908-y2k-1"></script>
 </body>
 </html>

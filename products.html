@@ -18,7 +18,7 @@
       <button class="nav-toggle" aria-label="메뉴 열기" aria-expanded="false" aria-controls="primaryNav">☰</button>
       <nav class="nav-menu" id="primaryNav" aria-label="주요 메뉴">
         <a href="about.html">About</a>
-        <a href="products.html" class="active" aria-current="page">Archive</a>
+        <a href="products.html" class="active" aria-current="page">All Looks</a>
         <a href="portfolio.html">Portfolio</a>
         <a href="contact.html">Contact</a>
       </nav>
@@ -28,7 +28,7 @@
   <main id="mainContent">
 
     <section class="page-head">
-      <h1>ARCHIVE</h1>
+      <h1>ALL LOOKS</h1>
       <p>수집된 신호를 열고 각 CAPSULE의 세계를 탐색해 보세요.</p>
     </section>
 
@@ -64,19 +64,30 @@
           box.innerHTML = '<p class="portfolio-status">CAPSULE ARCHIVE SYNCING — 공개된 제품이 아직 없습니다.</p>';
           return;
         }
+        function formatPrice(value) {
+          const text = String(value || "").trim();
+          if (!text) return "";
+          if (!/^\d+$/.test(text)) return text;
+          return Number(text).toLocaleString("ko-KR") + "원";
+        }
+
         box.innerHTML = products
           .map((p) => {
             const image = ProductCatalog.safeImageUrl(p.images && p.images[0]);
             const img = image
               ? '<img src="' + ProductCatalog.escapeHtml(image) + '" alt="' + ProductCatalog.escapeHtml(p.name) + '" onerror="this.remove()" />'
               : "";
-            const price = p.price ? '<p class="price">' + ProductCatalog.escapeHtml(p.price) + "</p>" : "";
+            const displayPrice = formatPrice(p.price);
+            const price = displayPrice ? '<p class="price">' + ProductCatalog.escapeHtml(displayPrice) + "</p>" : "";
             return (
-              '<a class="card" href="product.html?id=' + encodeURIComponent(p.id) + '">' +
+              '<a class="card glass-panel glass-corners" href="product.html?id=' + encodeURIComponent(p.id) + '">' +
               '<div class="card-img">' + img + "</div>" +
+              '<div class="card-body">' +
               '<p class="k">' + ProductCatalog.escapeHtml(p.label || p.category || "") + "</p>" +
               "<h3>" + ProductCatalog.escapeHtml(p.name) + "</h3>" +
               "<p>" + ProductCatalog.escapeHtml(p.summary || "") + "</p>" + price +
+              '<span class="view-look">자세히 보기 <span aria-hidden="true">→</span></span>' +
+              "</div>" +
               "</a>"
             );
           })
