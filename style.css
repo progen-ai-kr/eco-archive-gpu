@@ -308,6 +308,8 @@ main { min-height: calc(100vh - 166px); }
   position: absolute;
   inset: 0;
   z-index: 2;
+  /* 선화 — 장식이 전부 선화로 그려져 있어서 캐비닛에도 같은 선을 둘러야 화풍이 맞는다 */
+  border: clamp(1.5px, .3cqw, 3px) solid #16191d;
   border-radius: inherit;
   background:
     linear-gradient(168deg,
@@ -340,11 +342,13 @@ main { min-height: calc(100vh - 166px); }
 .tv:focus-visible { outline: 3px solid #2b6fe0; outline-offset: 3px; }
 
 /* 베젤 하단의 노브·전원등 — 이제 실제 요소라서 눌림 상태에 따라 CSS로 반응시킬 수 있다. */
+/* 베젤을 절반으로 줄였으므로 노브·전원등도 얇아진 아래 띠(높이 7.95%) 안에 맞춰
+   같이 축소·재배치한다. 안 그러면 컨트롤이 화면을 침범한다. */
 .tv-controls {
   position: absolute;
-  left: 8.5%;
-  right: 8.5%;
-  bottom: 6.4%;
+  left: 4.25%;
+  right: 4.5%;
+  bottom: 2.2%;
   z-index: 6;
   display: flex;
   align-items: center;
@@ -352,8 +356,8 @@ main { min-height: calc(100vh - 166px); }
   pointer-events: none;
 }
 .tv-led {
-  width: clamp(4px, .8cqw, 8px);
-  height: clamp(4px, .8cqw, 8px);
+  width: clamp(3px, .55cqw, 6px);
+  height: clamp(3px, .55cqw, 6px);
   border-radius: 50%;
   background: radial-gradient(circle at 35% 30%, #eaf4ff, #8fc4ff 45%, var(--focus-ring) 100%);
   box-shadow: 0 0 6px 2px var(--glow-cool-soft);
@@ -363,10 +367,10 @@ main { min-height: calc(100vh - 166px); }
   background: radial-gradient(circle at 35% 30%, #fff6e0, #ffd27a 45%, #e0972e 100%);
   box-shadow: 0 0 8px 3px rgba(255, 197, 92, .55);
 }
-.tv-knobs { display: flex; gap: clamp(4px, .9cqw, 9px); }
+.tv-knobs { display: flex; gap: clamp(3px, .6cqw, 6px); }
 .tv-knob {
-  width: clamp(9px, 1.7cqw, 17px);
-  height: clamp(9px, 1.7cqw, 17px);
+  width: clamp(6px, 1.1cqw, 11px);
+  height: clamp(6px, 1.1cqw, 11px);
   border-radius: 50%;
   background:
     radial-gradient(circle at 30% 24%, #ffffff 0%, #eef2f5 18%, #b6bfc8 46%, #6f7883 74%, #d3dae0 100%);
@@ -380,16 +384,19 @@ main { min-height: calc(100vh - 166px); }
    hover/focus/aria-pressed에 따라 밝기·주사선을 자유롭게 반응시킬 수 있다. */
 /* 화면을 감싸는 크롬 베젤 링. 바깥은 밝은 금속, 안쪽 경계는 어두운 홈이 되어
    화면이 캐비닛 안으로 '파여 들어간' 깊이가 생긴다. */
+/* 베젤 두께 = 이 요소의 바깥 여백. 기존의 절반으로 줄여 화면을 키웠다
+   (좌 8.5→4.25, 우 9.0→4.5, 상 13.9→6.95, 하 15.9→7.95). */
 .tv-screen-wrap {
   position: absolute;
-  left: 8.5%;
-  top: 13.9%;
-  width: 82.5%;
-  height: 70.2%;
+  left: 4.25%;
+  top: 6.95%;
+  width: 91.25%;
+  height: 85.1%;
   z-index: 4;
   min-width: 0;
   min-height: 0;
-  padding: clamp(3px, .9cqw, 9px);
+  padding: clamp(1.5px, .45cqw, 5px);
+  border: clamp(1.5px, .3cqw, 3px) solid #16191d;
   border-radius: 13% 13% 12% 12% / 11% 11% 12% 12%;
   background:
     linear-gradient(160deg, #ffffff 0%, #dfe5ea 20%, #9aa3ac 44%, #ffffff 52%, #c8d0d7 70%, #8f98a1 88%, #eef2f5 100%);
@@ -479,8 +486,10 @@ main { min-height: calc(100vh - 166px); }
 
 /* 1번 TV 안테나 — 원본 시안(1586×992)에서 직접 분리한 단일 소켓 자산.
    좌표는 그 자산의 실제 경계를 tv1 박스 기준으로 실측한 값이다. */
+/* 소켓이 SVG 박스의 가로 중앙(viewBox 88/176)에 있으므로,
+   박스를 TV 가운데에 맞추면(left = 50% − width/2) 소켓이 정확히 TV 정중앙에 온다. */
 .tv-decor-antenna {
-  left: 16.13%;
+  left: 4.71%;
   top: -55.91%;
   width: 90.59%;
   height: 61.66%;

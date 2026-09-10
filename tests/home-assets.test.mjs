@@ -85,12 +85,16 @@ test("공용 머티리얼 defs가 있고 id가 중복되지 않는다", () => {
   }
 });
 
-test("장식 SVG는 단색이 아니라 그라데이션으로 입체감을 낸다", () => {
-  // 평면 단색으로 되돌아가는 회귀를 막는다 — 명암이 있어야 3D로 보인다.
+test("장식 SVG는 웹툰 화풍(선화 + 셀 셰이딩)으로 그려진다", () => {
+  // 선화가 사라지거나 평면 단색으로 되돌아가는 회귀를 막는다.
+  // 선화가 실루엣을 강제로 또렷하게 만들고, 톤이 2개 이상이어야 입체로 읽힌다.
   const decorWrappers = indexHtml.match(/<span class="tv-decor[^"]*"[^>]*>[\s\S]*?<\/svg>/g) || [];
   assert.equal(decorWrappers.length, 5, "장식은 5개(안테나·강아지귀·천사날개·꼬리·고양이귀)여야 한다");
   for (const wrapper of decorWrappers) {
-    assert.match(wrapper, /url\(#mat[A-Za-z]+\)/, "장식은 공용 머티리얼을 참조해야 한다: " + wrapper.slice(0, 60));
+    const label = (wrapper.match(/tv-decor-[a-z-]+/) || ["?"])[0];
+    assert.match(wrapper, /stroke="#[0-9a-fA-F]{3,6}"/, label + ": 선화(stroke)가 있어야 한다");
+    const tones = new Set((wrapper.match(/fill="#[0-9a-fA-F]{3,6}"/g) || []));
+    assert.ok(tones.size >= 2, label + ": 톤이 2개 이상이어야 한다(현재 " + tones.size + "개)");
   }
 });
 
