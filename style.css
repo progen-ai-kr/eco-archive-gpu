@@ -284,6 +284,8 @@ main { min-height: calc(100vh - 166px); }
 @keyframes placeholdersweep { to { transform: translateX(60px); } }
 
 /* 제품 카테고리 필터 — 카테고리가 2개 이상일 때만 표시(JS가 hidden 토글) */
+.polarity-banner { width: min(100%,var(--maxw)); margin: 0 auto; padding: 12px var(--page-x); border-top: 1px solid var(--stage-ink-line); border-bottom: 1px solid var(--stage-ink-line); color: var(--stage-ink-soft); font: 600 11px var(--font-mono); letter-spacing: .06em; text-align: center; }
+.polarity-banner[hidden] { display: none; }
 .filter-rail { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; }
 .filter-rail[hidden] { display: none; }
 .filter-rail-label { color: var(--stage-ink-faint); font: 600 10px var(--font-mono); letter-spacing: .16em; }

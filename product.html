@@ -38,7 +38,8 @@
     <section class="section"><p role="status" aria-live="polite">제품 정보를 불러오는 중…</p></section>
   </main>
 
-  <dialog id="purchaseDialog" class="purchase-dialog glass-corners" aria-labelledby="purchaseDialogTitle">
+  <!-- dialog API를 지원하지 않는 브라우저에서도 안내가 처음부터 노출되지 않게 hidden을 둡니다. -->
+  <dialog id="purchaseDialog" class="purchase-dialog glass-corners" aria-labelledby="purchaseDialogTitle" hidden>
     <section class="purchase-dialog-card">
       <header class="purchase-dialog-header">
         <div>
@@ -183,10 +184,42 @@
       const productContent = document.getElementById("purchaseDialogContent");
       if (productLabel) productLabel.textContent = product.name || "";
       if (productContent) productContent.textContent = String(product.buyNotice || "").trim();
-      trigger.addEventListener("click", () => dialog.showModal());
-      dialog.addEventListener("click", (event) => {
-        if (event.target === dialog) dialog.close();
+      const supportsDialog = typeof dialog.showModal === "function" && typeof dialog.close === "function";
+      const closeButtons = dialog.querySelectorAll('form[method="dialog"] button');
+
+      // 오래된 브라우저는 기본 dialog 대신 같은 안내를 일반 영역으로 열고 닫습니다.
+      function closeFallbackDialog() {
+        dialog.removeAttribute("open");
+        dialog.removeAttribute("aria-modal");
+        dialog.hidden = true;
+        trigger.focus();
+      }
+
+      trigger.addEventListener("click", () => {
+        dialog.hidden = false;
+        if (supportsDialog) dialog.showModal();
+        else {
+          dialog.setAttribute("open", "");
+          dialog.setAttribute("role", "dialog");
+          dialog.setAttribute("aria-modal", "true");
+          closeButtons[0]?.focus();
+        }
       });
+      dialog.addEventListener("click", (event) => {
+        if (event.target === dialog && supportsDialog) dialog.close();
+      });
+      if (!supportsDialog) {
+        closeButtons.forEach((button) => button.addEventListener("click", (event) => {
+          event.preventDefault();
+          closeFallbackDialog();
+        }));
+        dialog.addEventListener("keydown", (event) => {
+          if (event.key === "Escape") {
+            event.preventDefault();
+            closeFallbackDialog();
+          }
+        });
+      }
     }
 
     function formatDisplayPrice(value) {

@@ -62,6 +62,9 @@ test("product.html은 캐러셀·구매 다이얼로그 DOM 속성 계약 이름
   for (const token of requiredTokens) {
     assert.ok(html.includes(token), "product.html에 " + token + " 계약이 남아있어야 한다");
   }
+  assert.match(html, /id="purchaseDialog"[^>]*\bhidden\b/, "구매 안내는 dialog API 미지원 브라우저에서도 처음부터 숨겨져야 한다");
+  assert.match(html, /typeof dialog\.showModal === "function"/, "구매 안내는 dialog API 지원 여부를 확인해야 한다");
+  assert.match(html, /event\.key === "Escape"/, "대체 구매 안내는 Esc 키로 닫을 수 있어야 한다");
 });
 
 test("product.html은 채널 코드(CH.03 SIG_EPISODE)와 이전/다음 에피소드 카드를 렌더한다", () => {
@@ -83,6 +86,9 @@ test("products.html은 카테고리 필터 자리와 EP 배지를 위한 카드 
   assert.match(html, /id="productFilterRail"/, "필터 레일 컨테이너가 있어야 한다");
   assert.match(html, /id="productFilterChips"/, "필터 칩 컨테이너가 있어야 한다");
   assert.match(html, /card-ep/, "카드에 EP 배지 클래스를 렌더하는 코드가 있어야 한다");
+  assert.match(html, /function setupCategoryFilter\(products\)/, "카테고리 필터가 실제 제품 목록을 다시 렌더해야 한다");
+  assert.match(html, /scripts\/home-logic\.js/, "홈의 YIN\/YANG 쿼리를 해석하는 로직을 불러와야 한다");
+  assert.match(html, /new URLSearchParams\(window\.location\.search\)/, "YIN\/YANG 링크의 polarity 쿼리를 읽어야 한다");
 });
 
 test("index.html이 아닌 서브페이지는 style.css의 채널 헤드/음양 룰 클래스를 정의에서 찾을 수 있다", () => {
