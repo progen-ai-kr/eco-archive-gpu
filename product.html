@@ -326,7 +326,9 @@
         const next = products[(productIndex + 1) % products.length];
         const relatedSection = products.length > 1
           ? '<section class="section related-episodes">' +
-              '<p class="eyebrow">다음 신호</p>' +
+              // 카드가 h3라서 h2가 없으면 h1 → h3로 건너뛴다. 시각적으로는 기존
+              // eyebrow와 동일하게 보이도록 클래스를 그대로 쓴다.
+              '<h2 class="eyebrow related-episodes-title">다음 신호</h2>' +
               '<div class="related-grid">' +
                 renderRelatedCard(prev, "PREV EPISODE") +
                 renderRelatedCard(next, "NEXT EPISODE") +

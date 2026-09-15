@@ -30,7 +30,10 @@
   --ice-3: #d8dee4;
   --stage-ink: #121212;
   --stage-ink-soft: rgba(18, 18, 18, 0.6);
-  --stage-ink-faint: rgba(18, 18, 18, 0.32);
+  /* .58 미만으로 내리지 말 것 — 이 토큰을 쓰는 곳은 전부 실제 텍스트(채널 코드,
+     eyebrow, .k, 푸터, 상태 문구)이고, .32에서는 명암비가 2.09:1로 WCAG AA(4.5:1)에
+     한참 못 미쳐 6개 페이지 전부가 판독 곤란했다. .58이 약 4.6:1로 기준을 넘는 최소값. */
+  --stage-ink-faint: rgba(18, 18, 18, 0.58);
   --stage-ink-line: rgba(18, 18, 18, 0.14);
   --chrome-white: #ffffff;
   --chrome-100: #eef1f4;
@@ -365,6 +368,9 @@ main { min-height: calc(100vh - 166px); }
 .home-brand-star { margin-top: -.1em; color: var(--stage-ink); font-size: clamp(11px, 1.4cqw, 17px); line-height: 1; }
 .home-nav { display: flex; align-items: center; gap: clamp(14px, 1.8cqw, 26px); }
 .home-nav a {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
   color: var(--stage-ink);
   font: 600 clamp(9px, .82cqw, 12px) var(--font-mono);
   letter-spacing: .14em;
@@ -689,7 +695,7 @@ main { min-height: calc(100vh - 166px); }
   white-space: nowrap;
 }
 .home-footer-rule { display: inline-block; width: clamp(14px, 2cqw, 28px); height: 1px; background: var(--stage-ink-line); }
-.home-footer-admin { color: var(--stage-ink-soft); text-decoration: underline; text-underline-offset: 3px; }
+.home-footer-admin { display: inline-flex; min-height: 44px; align-items: center; color: var(--stage-ink-soft); text-decoration: underline; text-underline-offset: 3px; }
 
 signal-transition { display: contents; }
 .signal-transition { position: fixed; inset: 0; z-index: 120; display: block; overflow: hidden; background: #050403; pointer-events: none; }
@@ -963,6 +969,9 @@ body.transition-active .tv:not(.is-focused) { opacity: 0; filter: brightness(.2)
 
 /* 다음 에피소드 — 상세 페이지 이탈 방지의 표준 장치. 이전/다음 제품으로 바로 이동 */
 .related-episodes { padding-top: 12px; }
+/* 헤딩 위계상 h2지만(h1 → h3 건너뛰기 방지) 보이기는 eyebrow 라벨이어야 하므로
+   .section h2의 대형 이탤릭 스타일을 여기서만 되돌린다. */
+.section h2.related-episodes-title { margin: 0; font: 10px var(--font-mono); font-style: normal; letter-spacing: .15em; }
 .related-grid { display: grid; gap: 16px; margin-top: 18px; }
 .related-card { display: grid; grid-template-columns: 96px 1fr; gap: 16px; align-items: center; padding: 14px; color: var(--stage-ink); text-decoration: none; transition: transform .2s ease; }
 .related-card:hover, .related-card:focus-visible { transform: translateY(-2px); }
@@ -1030,9 +1039,12 @@ body.transition-active .tv:not(.is-focused) { opacity: 0; filter: brightness(.2)
 
 /* 공통 푸터 */
 .footer { width: min(100%,var(--maxw)); margin: 20px auto 0; padding: 22px var(--page-x); border-top: 1px solid var(--stage-ink-line); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px; color: var(--stage-ink-faint); font: 18px var(--font-mono); }
+.footer .logo { min-height: 44px; }
 .footer .logo img { height: 20px !important; }
 .footer .logo::after { font-size: 12px; }
-.footer a { color: var(--stage-ink-soft); text-decoration: none; }
+/* 터치 타깃 44px 확보 — 인라인 링크라 기본 높이가 23px밖에 안 됐다.
+   inline-flex + min-height로 글자 크기는 그대로 두고 눌리는 영역만 넓힌다. */
+.footer a { display: inline-flex; min-height: 44px; align-items: center; color: var(--stage-ink-soft); text-decoration: none; }
 
 /* nav는 200% 확대된 글자를 담기에 720px는 폭이 부족해(가장 좁은 폰트로도 넘침)
    900px부터 별도로 가로 배치한다 — 720~899px는 계속 모바일 드롭다운(☰) 메뉴를 쓴다. */
@@ -1107,6 +1119,11 @@ body.transition-active .tv:not(.is-focused) { opacity: 0; filter: brightness(.2)
     height: auto;
     margin: 0;
   }
+  /* 꼬리·날개 장식은 자기 TV 바깥으로 폭의 절반 이상 뻗도록 설계돼 있어(데스크톱
+     캔버스에서는 여유가 있다) 2x2 그리드에서는 뷰포트를 넘어 잘려 보인다.
+     좁은 화면에서는 안쪽으로 당기고 크기를 줄여 프레임 안에 들어오게 한다. */
+  .tv-decor-tail { left: 82%; width: 34%; }
+  .tv-decor-wing-back { left: -34%; width: 40%; }
   /* BGM(2번)은 4개 그리드에서 완전히 빼서 화면 우하단에 작은 원형 버튼으로 고정한다 —
      2×2 그리드(portfolio·yang·about·yin)와 분리된 상시 음향 토글이라는 걸
      모양으로도 드러낸다. 소스 순서상 그리드의 두 번째 자리를 차지하지 않도록
@@ -1145,10 +1162,14 @@ body.transition-active .tv:not(.is-focused) { opacity: 0; filter: brightness(.2)
   .home-footer { flex-wrap: wrap; justify-content: center; gap: 8px 18px; padding: 18px 20px 28px; text-align: center; }
 }
 
+/* 장식용 화살표는 태블릿부터 숨긴다 — 링크가 아니라 순수 장식이고,
+   900px 미만에서는 라벨/값 간격이 좁아져 오히려 잡음이 된다. */
+@media (max-width: 899px) {
+  .contact-arrow { display: none; }
+}
 @media (max-width: 719px) {
   .footer { flex-direction: column; text-align: center; }
   .contact-item { flex-wrap: wrap; align-items: flex-start; gap: 6px 14px; }
-  .contact-arrow { display: none; }
   .contact-item .value { flex-basis: 100%; text-align: left; }
 }
 

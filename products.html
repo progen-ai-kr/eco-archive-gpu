@@ -56,7 +56,10 @@
     <!-- ===== 제품 목록 =====
          ★ 제품은 여기 HTML이 아니라 products.json 파일에서 관리합니다.
          products.json에 제품을 추가하면 이 목록과 상세 페이지에 자동으로 나타납니다. -->
-    <section class="section">
+    <section class="section" aria-labelledby="productListTitle">
+      <!-- 카드 제목이 h3라서 h2가 없으면 h1 → h3로 건너뛴다. 화면에는 이미 "ALL LOOKS"
+           헤드가 있어 중복이므로 스크린리더에만 읽히도록 .sr-only로 둔다. -->
+      <h2 id="productListTitle" class="sr-only">제품 목록</h2>
       <div class="grid" id="product-list" aria-live="polite">
         <!-- products.json 내용이 자동으로 채워집니다 -->
       </div>
