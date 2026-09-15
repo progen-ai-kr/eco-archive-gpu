@@ -736,77 +736,91 @@ signal-transition { display: contents; }
 body.transition-active { overflow: hidden; }
 body.transition-active .tv:not(.is-focused) { opacity: 0; filter: brightness(.2); }
 
-/* 브랜드 소개 */
-.about-hero { display: grid; width: min(calc(100% - (var(--page-x) * 2)),calc(var(--maxw) - (var(--page-x) * 2))); margin: 24px auto 0; gap: 14px; }
-.about-hero-panel { position: relative; z-index: 1; display: flex; min-height: 280px; flex-direction: column; justify-content: flex-end; padding: clamp(30px,5vw,64px); }
-.about-hero-dark { color: var(--stage-ink); }
-.about-hero-dark::before { background: radial-gradient(ellipse 70% 50% at 85% 100%, rgba(180,196,216,.5), transparent 70%); }
-.about-hero-light { color: var(--stage-ink); }
-.about-hero h1, .about-echo-word { font: 800 clamp(42px,7vw,84px)/.94 var(--font-display); font-style: italic; letter-spacing: -.03em; text-transform: uppercase; }
-.about-hero .about-echo-word { max-width: none; margin: 0; color: var(--stage-ink); opacity: .5; }
-.about-hero p { max-width: 440px; margin-top: 18px; color: var(--stage-ink-soft); font-size: 14px; }
-.about-hero .k { margin: 0 0 18px; color: var(--stage-ink-faint); }
-.story-intro { display: grid; gap: 28px; align-items: start; }
-.story-copy { padding-top: 6px; color: var(--stage-ink-soft); font-size: clamp(15px,1.5vw,18px); }
-.story-copy p + p { margin-top: 20px; }
-.story-copy strong { color: var(--stage-ink); font-family: var(--font-mono); font-size: .85em; letter-spacing: .08em; }
-
-.value-grid { display: grid; grid-template-columns: 1fr; gap: 14px; }
-.value-card { position: relative; z-index: 1; display: flex; min-height: 260px; flex-direction: column; overflow: hidden; padding: clamp(24px,3vw,32px); color: var(--stage-ink); }
-.value-card span { color: var(--stage-ink-faint); font: 600 10px var(--font-mono); letter-spacing: .16em; }
-.value-card strong { margin-top: auto; font: 800 clamp(24px,3vw,32px)/1 var(--font-display); font-style: italic; text-transform: uppercase; }
-.value-card p { max-width: 260px; margin-top: 12px; color: var(--stage-ink-soft); font-size: 12px; }
-/* 값 카드 배경의 추상 유리 형태 — 사진 없이 CSS 그라데이션만으로 표현 */
-.value-card::after {
-  position: absolute;
-  right: -20%;
-  bottom: -30%;
-  z-index: -1;
-  width: 65%;
-  aspect-ratio: 1;
-  border-radius: 40% 60% 55% 45% / 50% 45% 55% 50%;
-  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.95), rgba(200,214,230,.25) 60%, transparent 75%);
-  box-shadow: inset 0 0 30px rgba(255,255,255,.6), inset -10px -10px 20px rgba(120,140,165,.18);
-  content: "";
-  filter: blur(.3px);
+/* 브랜드 소개 — 기본 상태는 항상 읽을 수 있고, JS 준비 후에만 흐림을 적용합니다. */
+.about-page { overflow-x: hidden; --about-blur: 6px; --about-dim: .45; --about-fallback-blur: 6px; --about-fallback-dim: .45; }
+.about-page .about-channel-head { padding-bottom: 0; }
+.about-page .about-intro { width: min(100%,var(--maxw)); margin: 0 auto; padding: 56px var(--page-x) 72px; }
+.about-page .about-intro h1 { margin: 32px 0 40px; color: var(--stage-ink); font: 700 clamp(52px,12.4vw,160px)/.91 var(--font-display); letter-spacing: -.065em; }
+.about-page .about-intro h1 span { color: var(--chrome-700); font-style: italic; }
+.about-page .about-intro-bottom { display: flex; flex-direction: column; align-items: flex-start; gap: 28px; }
+.about-page .about-intro-bottom > p { color: var(--stage-ink-soft); font-size: clamp(14px,1.5vw,18px); line-height: 1.9; word-break: keep-all; }
+.about-page .about-start { display: inline-flex; align-items: center; gap: 32px; min-height: 44px; color: var(--stage-ink); font: 10px var(--font-mono); letter-spacing: .12em; text-decoration: none; border-bottom: 1px solid var(--stage-ink-line); }
+.about-page .about-start span { font-size: 20px; }
+.about-page .about-scene { width: min(100%,var(--maxw)); margin: 0 auto; padding: 52px var(--page-x) 72px; opacity: 1; filter: none; scroll-margin-top: 64px; }
+.about-page .about-scene-inner { display: grid; grid-template-columns: minmax(0,1fr); gap: 36px; opacity: 1; filter: none; }
+.about-page .about-scene-visual { position: static; min-width: 0; width: 100%; margin: 0; align-self: start; }
+.about-page .about-scene-visual > img { width: 100%; height: auto; }
+.about-page .about-scene-visual figcaption { padding-top: 12px; color: var(--stage-ink-soft); font: 9px var(--font-mono); letter-spacing: .1em; }
+.about-page .about-scene-copy { min-width: 0; align-self: center; color: var(--stage-ink-soft); font-size: 14px; line-height: 1.95; word-break: keep-all; overflow-wrap: break-word; }
+.about-page .about-scene-index { margin-bottom: 24px; padding-bottom: 12px; border-bottom: 1px solid var(--stage-ink-line); color: var(--chrome-700); font: 11px var(--font-mono); letter-spacing: .12em; }
+.about-page .eyebrow { color: var(--stage-ink); font: 500 11px var(--font-mono); letter-spacing: .14em; }
+.about-page .about-scene-copy h2 { margin: 16px 0 28px; color: var(--stage-ink); font: 600 clamp(29px,3.2vw,48px)/1.3 var(--font-main); letter-spacing: -.065em; }
+.about-page .about-scene-copy > p + p { margin-top: 16px; }
+.about-page .about-scene-copy .about-scene-lead { color: var(--stage-ink); font-size: clamp(16px,1.4vw,20px); line-height: 1.75; letter-spacing: -.035em; }
+.about-page .about-scene-meta { color: var(--chrome-700); font: 9px/1.9 var(--font-mono); letter-spacing: .07em; overflow-wrap: anywhere; }
+.about-page .about-scene-copy .about-scene-meta { margin-top: 32px; }
+/* 기록의 순서를 실제 목록으로 남겨 보조기기와 JS 없는 환경에서도 읽을 수 있습니다. */
+.about-page .about-translation-steps, .about-page .craft-steps { display: grid; margin-top: 28px; list-style: none; }
+.about-page .about-translation-steps { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 18px; }
+.about-page .about-translation-steps li { padding-top: 12px; border-top: 1px solid var(--stage-ink-line); color: var(--stage-ink); font-size: 13px; }
+.about-page .about-translation-steps span { display: block; margin-bottom: 4px; color: var(--chrome-700); font: 9px var(--font-mono); }
+.about-page .craft-steps { gap: 12px; }
+.about-page .craft-steps li { display: flex; align-items: baseline; gap: 18px; padding-bottom: 12px; border-bottom: 1px solid var(--stage-ink-line); font-size: 13px; }
+.about-page .craft-steps li span { color: var(--chrome-700); font: 10px var(--font-mono); }
+.about-page .brand-story-grid { display: grid; }
+.about-page .brand-symbol-placeholder { display: flex; min-height: 300px; aspect-ratio: 1; flex-direction: column; align-items: center; justify-content: center; gap: 36px; padding: 32px; }
+.about-page .brand-symbol-placeholder > img { width: min(100%,280px); height: auto; }
+.about-page .brand-symbol-placeholder .about-scene-meta { text-align: center; }
+.about-page .craft-copy { position: relative; }
+.about-page .about-scene-copy .about-cta { margin-top: 32px; }
+/* 링크는 기본적으로 본문에 표시. 동작 준비 후 진행 위치에 고정합니다. */
+.about-page .about-progress { width: fit-content; max-width: 100%; margin: 0 auto; padding: 12px; color: var(--stage-ink-soft); background: var(--ice-0); font: 10px var(--font-mono); }
+.about-page .about-progress-count { display: none; color: var(--stage-ink); font-variant-numeric: tabular-nums; letter-spacing: .12em; }
+.about-page .about-progress-links { display: flex; list-style: none; }
+.about-page .about-progress a { position: relative; display: flex; align-items: center; justify-content: center; gap: 12px; min-width: 44px; min-height: 44px; text-decoration: none; }
+.about-page .about-progress a::before { width: 4px; height: 4px; border-radius: 50%; background: currentColor; content: ''; }
+.about-page .about-progress a[aria-current] { color: var(--stage-ink); }
+.about-page .about-progress a[aria-current]::before { box-shadow: 0 0 0 3px var(--ice-0), 0 0 0 4px var(--chrome-500); }
+.about-page .about-progress-label { display: none; }
+.about-page.has-scene-progress .about-progress { position: fixed; inset: 0 0 auto; z-index: 30; width: 100%; margin: 0; padding: 14px var(--page-x); border-bottom: 1px solid var(--stage-ink-line); opacity: 0; pointer-events: none; }
+.about-page.has-scene-progress.is-reading .about-progress, .about-page.has-scene-progress .about-progress:focus-within { opacity: 1; pointer-events: auto; }
+.about-page.has-scene-progress .about-progress-count { display: block; text-align: right; }
+/* 모바일에서는 번호만 보이되 Tab으로 접근하면 다섯 이동 링크를 펼칩니다. */
+.about-page.has-scene-progress .about-progress-links { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+.about-page.has-scene-progress .about-progress:focus-within .about-progress-links { position: static; width: auto; height: auto; overflow: visible; clip-path: none; justify-content: flex-end; }
+.about-page.js-scenes .about-scene-inner { opacity: var(--about-fallback-dim); filter: blur(var(--about-fallback-blur)); transform: translateY(20px); transition: opacity .5s ease, filter .5s ease, transform .5s ease; }
+.about-page.js-scenes .about-scene.is-active .about-scene-inner { opacity: 1; filter: none; transform: none; }
+/* 지원 브라우저와 Observer 폴백은 서로 다른 클래스만 사용합니다. */
+@supports (animation-timeline: view()) {
+  .about-page.has-scene-motion .about-scene-inner {
+    animation: about-focus linear both;
+    animation-timeline: view();
+    animation-range: entry 10% exit 90%;
+  }
+  @keyframes about-focus {
+    0% { opacity: var(--about-dim); filter: blur(var(--about-blur)); transform: scale(.94) translateY(28px); }
+    35%, 65% { opacity: 1; filter: blur(0); transform: scale(1) translateY(0); }
+    100% { opacity: var(--about-dim); filter: blur(var(--about-blur)); transform: scale(.94) translateY(-28px); }
+  }
 }
-.value-card:nth-child(2)::after { border-radius: 55% 45% 60% 40% / 45% 55% 45% 55%; }
-.value-card:nth-child(3)::after { border-radius: 50% 50% 40% 60% / 60% 40% 60% 40%; }
-
-.about-channel-head { padding-bottom: 0; }
-.chapter-index { display: inline-block; margin-right: 8px; color: var(--stage-ink-soft); font-weight: 700; }
-
-/* 반전 챕터 — 페이지에서 유일하게 색이 뒤집히는 구간(2026 F/W 음양 선언) */
-.season-reversal {
-  width: 100%;
-  padding: clamp(64px,12vw,140px) var(--page-x);
-  background: var(--stage-ink);
-  color: var(--ice-0);
-  text-align: center;
+/* 키보드로 본문 링크에 도달하면 스크롤 위치와 관계없이 읽을 수 있게 합니다. */
+.about-page .about-scene:focus-within .about-scene-inner { animation: none !important; opacity: 1; filter: none; transform: none; }
+@media (min-width: 900px) {
+  .about-page { --about-blur: 14px; --about-dim: .25; --about-fallback-blur: 10px; --about-fallback-dim: .3; }
+  .about-page .about-intro { min-height: calc(100svh - 220px); padding-top: 56px; padding-right: calc(var(--page-x) + 100px); }
+  .about-page .about-intro-bottom { flex-direction: row; align-items: flex-end; justify-content: space-between; }
+  .about-page .about-scene { padding: 72px calc(var(--page-x) + 100px) 96px var(--page-x); scroll-margin-top: 24px; }
+  .about-page .about-scene-inner, .about-page .brand-story-grid { grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: clamp(44px,6vw,100px); min-height: 105svh; align-items: start; }
+  .about-page .about-scene-visual { position: sticky; top: 72px; max-width: 50svh; justify-self: center; }
+  .about-page .about-scene-copy { padding: 80px 0; font-size: 15px; }
+  .about-page .about-translation-steps { grid-template-columns: repeat(4,minmax(0,1fr)); gap: 12px; }
+  .about-page .brand-symbol-placeholder { min-height: 360px; }
+  .about-page.has-scene-progress .about-progress { inset: 50% 12px auto auto; width: 76px; padding: 12px 4px; border: 1px solid var(--stage-ink-line); transform: translateY(-50%); opacity: 1; pointer-events: auto; }
+  .about-page.has-scene-progress .about-progress-count { margin-bottom: 12px; text-align: center; font-size: 9px; }
+  .about-page.has-scene-progress .about-progress-links, .about-page.has-scene-progress .about-progress:focus-within .about-progress-links { position: static; width: auto; height: auto; overflow: visible; clip-path: none; flex-direction: column; }
+  .about-page .about-progress a { min-height: 48px; }
+  .about-page .about-progress a:focus-visible .about-progress-label { position: absolute; right: calc(100% + 12px); display: block; padding: 12px; white-space: nowrap; background: var(--ice-0); border: 1px solid var(--stage-ink-line); }
 }
-.season-reversal .eyebrow { color: rgba(255,255,255,.5); }
-.season-reversal h2 { max-width: 900px; margin: 10px auto 20px; color: var(--ice-0); font: 800 clamp(30px,5.5vw,60px)/1.1 var(--font-display); font-style: italic; letter-spacing: -.02em; }
-.season-reversal .lead { max-width: 620px; margin: 0 auto; color: rgba(255,255,255,.68); }
-.season-reversal-symbol { margin-bottom: 18px; color: var(--ice-0); font-size: clamp(48px,7vw,84px); line-height: 1; animation: seasonspin 16s linear infinite; }
-.season-reversal-tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 26px; }
-.season-reversal-tags span { padding: 7px 14px; border: 1px solid rgba(255,255,255,.28); border-radius: 999px; color: rgba(255,255,255,.75); font: 10px var(--font-mono); letter-spacing: .1em; text-transform: uppercase; }
-@keyframes seasonspin { to { transform: rotate(360deg); } }
-
-/* 장인 제작 공정 스텝 */
-.craft-steps { display: grid; gap: 12px; margin-top: 22px; }
-.craft-steps li { display: flex; align-items: baseline; gap: 12px; padding-bottom: 12px; border-bottom: 1px solid var(--stage-ink-line); color: var(--stage-ink-soft); font-size: 13px; }
-.craft-steps li:last-child { border-bottom: 0; }
-.craft-steps li span { color: var(--stage-ink-faint); font: 700 11px var(--font-mono); }
-
-.brand-story-grid { display: grid; gap: 20px; }
-.brand-symbol-placeholder, .craft-copy { position: relative; z-index: 1; min-height: 220px; }
-.brand-symbol-placeholder { display: grid; place-items: center; padding: 32px; }
-.brand-symbol-placeholder img { width: min(100%,280px); }
-.craft-copy { display: flex; flex-direction: column; justify-content: center; padding: clamp(28px,4vw,48px); }
-.craft-copy p { color: var(--stage-ink-soft); }
-.craft-copy .eyebrow { color: var(--stage-ink-faint); }
-.craft-copy h2 { color: var(--stage-ink); }
-.about-cta { margin-top: 28px; }
 
 /* 페이지별 채널 헤드 조정 */
 .contact-page .page-head { text-align: center; }
@@ -955,10 +969,6 @@ body.transition-active .tv:not(.is-focused) { opacity: 0; filter: brightness(.2)
 }
 @media (min-width: 720px) {
   .grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
-  .about-hero { grid-template-columns: 1fr 1fr; }
-  .value-grid { grid-template-columns: repeat(3,1fr); }
-  .brand-story-grid { grid-template-columns: 340px 1fr; }
-  .story-intro { grid-template-columns: minmax(0,.85fr) minmax(0,1.15fr); }
   .product-hero { grid-template-columns: minmax(0,1.08fr) minmax(360px,.92fr); }
   .product-image-text { grid-template-columns: 1fr 1fr; align-items: center; }
   .product-image-text.reverse .product-block-image { order: 2; }
@@ -1080,4 +1090,12 @@ body.transition-active .tv:not(.is-focused) { opacity: 0; filter: brightness(.2)
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
   .signal-transition-clone { transform: none !important; }
+  .about-page .about-scene-inner {
+    animation-timeline: none !important;
+    animation: none !important;
+    opacity: 1 !important;
+    filter: none !important;
+    transform: none !important;
+  }
+  .about-page .about-scene-visual { position: static !important; }
 }
