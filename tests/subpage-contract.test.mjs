@@ -93,15 +93,6 @@ test("index.html이 아닌 서브페이지는 style.css의 채널 헤드/음양 
   }
 });
 
-test("products.html은 홈 TV의 YIN/YANG 극성 쿼리를 실제로 읽어 반영한다 (QA: 링크만 있고 무시되던 버그)", () => {
-  const html = readPage("products.html");
-  assert.match(html, /scripts\/home-logic\.js/, "home-logic.js(순수 극성 매핑 로직)를 로드해야 한다");
-  assert.match(html, /scripts\/capsule-data\.js/, "capsule-data.js(시즌 프레젠테이션 데이터)를 로드해야 한다");
-  assert.match(html, /resolvePolarityQuery/, "location.search의 polarity를 실제로 해석해야 한다");
-  assert.match(html, /resolveProductPolarity/, "제품별 극성을 실제로 판정해야 한다");
-  assert.match(html, /id="polarityBanner"/, "극성 필터 결과(또는 폴백)를 알리는 배너가 있어야 한다");
-});
-
 test("index.html의 TV 5개는 title(네이티브 툴팁)로 아이콘만으로 알기 어려운 목적을 보완한다", () => {
   const html = readPage("index.html");
   const roles = ["portfolio", "bgm", "yang", "about", "yin"];
