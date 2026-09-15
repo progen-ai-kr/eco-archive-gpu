@@ -18,6 +18,7 @@
   --font-display: "Space Grotesk", "Arial Black", sans-serif;
   --font-main: "Inter", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
   --font-mono: "JetBrains Mono", Consolas, monospace;
+  --font-fashion: "Playfair Display", "Noto Serif KR", serif;
   --radius: 10px;
   --maxw: 1504px;
   --page-x: clamp(22px, 3vw, 48px);
@@ -132,19 +133,19 @@ a:focus-visible, button:focus-visible { outline: 3px solid var(--focus-ring); ou
    현재 페이지에는 홈 TV의 전원등과 같은 부품을 재사용해 점등시킨다(::after). */
 .nav { position: relative; z-index: 40; background: transparent; border-bottom: 1px solid var(--stage-ink-line); }
 .nav-inner { width: min(100%, var(--maxw)); min-height: 84px; margin: 0 auto; padding: 20px var(--page-x); display: flex; align-items: center; justify-content: space-between; gap: 28px; }
+.nav-inner .logo { flex-shrink: 0; }
 .logo { display: inline-flex; align-items: center; gap: 8px; text-decoration: none; }
 .logo img { width: auto; height: clamp(24px, 2.6vw, 34px); }
 .logo::after { color: var(--stage-ink); content: "✦"; font-size: 16px; }
+/* 포트폴리오 페이지는 로고를 160% 키운 전용 스케일을 쓴다(요청 범위: 이 페이지 한정) */
+.portfolio-page .logo img { height: clamp(38px, 4.16vw, 54px); }
 .nav-toggle { width: 44px; height: 44px; border: 1px solid var(--stage-ink-line); border-radius: 8px; background: rgba(255,255,255,.6); color: var(--stage-ink); cursor: pointer; }
 .nav-menu { position: absolute; top: 74px; left: var(--page-x); right: var(--page-x); display: none; flex-direction: column; overflow: hidden; border: 1px solid var(--stage-ink-line); border-radius: 10px; background: rgba(250,251,252,.98); box-shadow: 0 18px 48px rgba(70,82,100,.18); backdrop-filter: blur(8px); }
 .nav-menu.open { display: flex; }
-.nav-menu a { position: relative; display: flex; align-items: center; gap: 8px; padding: 14px 18px; border-bottom: 1px solid var(--stage-ink-line); color: var(--stage-ink-soft); font-family: var(--font-mono); font-size: 12px; letter-spacing: .1em; text-decoration: none; text-transform: uppercase; }
+.nav-menu a { position: relative; display: flex; align-items: center; gap: 8px; padding: 14px 18px; border-radius: 999px; border-bottom: 1px solid var(--stage-ink-line); color: var(--stage-ink-soft); font-family: var(--font-mono); font-size: clamp(13px, 4vw, 20px); letter-spacing: .1em; text-decoration: none; text-transform: uppercase; white-space: nowrap; transition: background .18s ease; }
 .nav-menu a:last-child { border-bottom: 0; }
 .nav-menu a:hover, .nav-menu a.active { color: var(--stage-ink); }
-.nav-menu a::before { color: var(--stage-ink-faint); content: "CH." attr(data-ch); font-size: 9px; letter-spacing: .05em; opacity: .7; }
-.nav-menu a.active::before { color: var(--stage-ink-soft); opacity: 1; }
-.nav-menu a::after { display: inline-block; width: 5px; height: 5px; border-radius: 50%; background: var(--stage-ink-line); content: ""; flex-shrink: 0; }
-.nav-menu a.active::after { background: radial-gradient(circle at 35% 30%, #eaf4ff, #8fc4ff 45%, var(--focus-ring) 100%); box-shadow: 0 0 6px 1px var(--glow-cool); }
+.nav-menu a.active { background: rgba(0,0,0,.05); }
 
 /* 공통 페이지 */
 main { min-height: calc(100vh - 166px); }
@@ -202,6 +203,14 @@ main { min-height: calc(100vh - 166px); }
 .btn:hover { box-shadow: 0 8px 20px -10px var(--glass-shadow); transform: translateY(-1px); }
 .btn.ghost { background: transparent; }
 .btn.ghost:hover { border-color: var(--stage-ink-soft); }
+/* 음양(YIN/YANG) 대비 버튼 쌍 — 검정/흰색으로 서로 반전된 한 벌.
+   아이콘은 conic-gradient 반원 두 개로 CSS만으로 그린다(사진 자산 없이). */
+.btn-yinyang-icon { width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0; }
+.btn-yang { border-color: var(--stage-ink); background: var(--stage-ink); color: var(--ice-0); }
+.btn-yang:hover { border-color: var(--stage-ink); box-shadow: 0 8px 20px -10px rgba(18,18,18,.45); }
+.btn-yang .btn-yinyang-icon { background: conic-gradient(from 90deg, var(--ice-0) 0deg 180deg, var(--stage-ink) 180deg 360deg); }
+.btn-yin { border-color: var(--stage-ink); background: var(--ice-0); color: var(--stage-ink); }
+.btn-yin .btn-yinyang-icon { background: conic-gradient(from 90deg, var(--stage-ink) 0deg 180deg, var(--ice-0) 180deg 360deg); box-shadow: inset 0 0 0 1px var(--stage-ink); }
 .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
 .tags span { padding: 7px 10px; border: 1px solid var(--stage-ink-line); border-radius: 999px; color: var(--stage-ink-soft); font-family: var(--font-mono); font-size: 10px; }
 
@@ -247,10 +256,10 @@ main { min-height: calc(100vh - 166px); }
   transform: translateX(120%);
   transition: transform .62s ease, opacity .62s ease;
 }
-.card-body { position: relative; z-index: 1; padding: clamp(18px,2.4vw,28px); }
+.card-body { position: relative; z-index: 1; display: flex; flex-direction: column; height: 100%; padding: clamp(18px,2.4vw,28px); }
 .card .k { margin-top: 0; }
-.card h3 { margin-top: 6px; font: 700 20px/1.25 var(--font-display); }
-.card > .card-body > p:not(.k):not(.price) { margin-top: 8px; color: var(--stage-ink-soft); font-size: 13px; }
+.card h3 { margin-top: 6px; font: 700 20px/1.25 var(--font-fashion); font-style: italic; }
+.card > .card-body > p:not(.k):not(.price) { flex: 1; margin-top: 8px; color: var(--stage-ink-soft); font-size: 13px; }
 .card .price { margin-top: 10px; font-family: var(--font-mono); font-size: 12px; color: var(--stage-ink-soft); }
 .card .view-look { display: inline-flex; align-items: center; margin-top: 18px; color: var(--stage-ink); font-size: 18px; opacity: 0; transform: translateX(-4px); transition: opacity .2s ease, transform .2s ease; }
 .card:hover .view-look, .card:focus-visible .view-look { opacity: 1; transform: translateX(0); }
@@ -269,25 +278,6 @@ main { min-height: calc(100vh - 166px); }
 .card-placeholder h3 { color: var(--stage-ink-faint); }
 @keyframes placeholdersweep { to { transform: translateX(60px); } }
 
-/* YIN/YANG 극성 배너 — 홈 TV에서 ?polarity=로 들어왔을 때만 JS가 채우고 보여준다.
-   매칭된 제품이 없어 전체 목록으로 폴백했을 때도 이 배너로 그 사실을 알려
-   "필터가 고장났다"는 오해를 막는다. */
-.polarity-banner {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  width: min(100%, var(--maxw));
-  margin: 0 auto;
-  padding: 12px var(--page-x);
-  color: var(--stage-ink-soft);
-  font: 600 12px var(--font-mono);
-  letter-spacing: .04em;
-}
-.polarity-banner[hidden] { display: none; }
-.polarity-banner-dot { width: 7px; height: 7px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #eaf4ff, #8fc4ff 45%, var(--focus-ring) 100%); box-shadow: 0 0 6px 1px var(--glow-cool); flex-shrink: 0; }
-.polarity-banner p { flex: 1; }
-.polarity-banner-clear { color: var(--stage-ink-faint); text-decoration: underline; text-underline-offset: 3px; white-space: nowrap; }
-
 /* 제품 카테고리 필터 — 카테고리가 2개 이상일 때만 표시(JS가 hidden 토글) */
 .filter-rail { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; }
 .filter-rail[hidden] { display: none; }
@@ -298,9 +288,9 @@ main { min-height: calc(100vh - 166px); }
 .filter-chip[aria-pressed="true"] { background: var(--stage-ink); color: var(--ice-0); border-color: var(--stage-ink); }
 .products-toolbar-section { padding-top: 0; padding-bottom: 0; }
 
-.archive-note { text-align: center; }
+.archive-note { text-align: center; padding-top: clamp(24px,3vw,40px); padding-bottom: clamp(24px,3vw,40px); }
 .archive-note h2 { margin-left: auto; margin-right: auto; }
-.archive-note-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 22px; }
+.archive-note-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
 
 @media (min-width: 1180px) {
   .grid { grid-template-columns: repeat(4, minmax(0,1fr)); }
@@ -364,18 +354,8 @@ main { min-height: calc(100vh - 166px); }
   gap: 16px;
 }
 .home-brand { display: inline-flex; align-items: flex-start; gap: 6px; text-decoration: none; }
-.home-brand-mark { height: clamp(15px, 2cqw, 24px); filter: none; }
+.home-brand-mark { height: clamp(37px, 5cqw, 60px); filter: none; }
 .home-brand-star { margin-top: -.1em; color: var(--stage-ink); font-size: clamp(11px, 1.4cqw, 17px); line-height: 1; }
-.home-brand-sub {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  margin-top: .55em;
-  color: var(--stage-ink-faint);
-  font: 500 clamp(7px, .68cqw, 10px) var(--font-mono);
-  letter-spacing: .22em;
-  white-space: nowrap;
-}
 .home-nav { display: flex; align-items: center; gap: clamp(14px, 1.8cqw, 26px); }
 .home-nav a {
   color: var(--stage-ink);
@@ -691,7 +671,7 @@ main { min-height: calc(100vh - 166px); }
   justify-content: space-between;
   gap: 12px;
   color: var(--stage-ink-faint);
-  font: 600 clamp(7px, .7cqw, 10px) var(--font-mono);
+  font: 600 clamp(14px, 1.4cqw, 20px) var(--font-mono);
   letter-spacing: .12em;
 }
 .home-footer-brand {
@@ -896,25 +876,6 @@ body.transition-active .tv:not(.is-focused) { opacity: 0; filter: brightness(.2)
 .related-card-body .k { margin-top: 0; }
 .related-card-body h3 { margin-top: 4px; font: 700 16px var(--font-display); }
 
-/* 시즌 인덱스 바 — 포트폴리오 문서가 하나뿐이어도 "아카이브 색인"처럼 보이게 하는 sticky 앵커.
-   항목이 늘어나면 이 자리에 시즌별 앵커를 추가로 붙일 수 있다. */
-.season-index-bar {
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  width: min(100%, var(--maxw));
-  margin: 0 auto;
-  padding: 12px var(--page-x);
-  background: rgba(250,251,252,.86);
-  backdrop-filter: blur(6px);
-  border-bottom: 1px solid var(--stage-ink-line);
-}
-.season-index-dot { width: 7px; height: 7px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #eaf4ff, #8fc4ff 45%, var(--focus-ring) 100%); box-shadow: 0 0 6px 1px var(--glow-cool); flex-shrink: 0; }
-.season-index-bar p { color: var(--stage-ink-soft); font: 600 10px var(--font-mono); letter-spacing: .14em; text-transform: uppercase; }
-
 /* 포트폴리오 — 하나의 큰 유리 프레임 안에 리치 텍스트를 그대로 담는다 */
 .portfolio-content { position: relative; z-index: 1; max-width: 1200px; margin: 0 auto; padding: clamp(28px,4vw,56px); overflow-wrap: anywhere; }
 .portfolio-page .section { padding-top: 20px; }
@@ -979,16 +940,20 @@ body.transition-active .tv:not(.is-focused) { opacity: 0; filter: brightness(.2)
 .contact-arrow { flex-shrink: 0; color: var(--stage-ink-faint); font-size: 20px; }
 
 /* 공통 푸터 */
-.footer { width: min(100%,var(--maxw)); margin: 20px auto 0; padding: 22px var(--page-x); border-top: 1px solid var(--stage-ink-line); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px; color: var(--stage-ink-faint); font: 9px var(--font-mono); }
+.footer { width: min(100%,var(--maxw)); margin: 20px auto 0; padding: 22px var(--page-x); border-top: 1px solid var(--stage-ink-line); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px; color: var(--stage-ink-faint); font: 18px var(--font-mono); }
 .footer .logo img { height: 20px !important; }
 .footer .logo::after { font-size: 12px; }
 .footer a { color: var(--stage-ink-soft); text-decoration: none; }
 
-@media (min-width: 720px) {
+/* nav는 200% 확대된 글자를 담기에 720px는 폭이 부족해(가장 좁은 폰트로도 넘침)
+   900px부터 별도로 가로 배치한다 — 720~899px는 계속 모바일 드롭다운(☰) 메뉴를 쓴다. */
+@media (min-width: 900px) {
   .nav-toggle { display: none; }
   .nav-menu { position: static; display: flex; flex-direction: row; border: 0; background: transparent; box-shadow: none; }
-  .nav-menu a { padding: 8px 0; border: 0; font-size: 10px; }
-  .nav-menu a + a { margin-left: 28px; }
+  .nav-menu a { padding: 8px 14px; border: 0; font-size: clamp(12px, calc(-4.5px + 1.85vw), 22px); }
+  .nav-menu a + a { margin-left: 14px; }
+}
+@media (min-width: 720px) {
   .grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
   .about-hero { grid-template-columns: 1fr 1fr; }
   .value-grid { grid-template-columns: repeat(3,1fr); }
@@ -1036,7 +1001,6 @@ body.transition-active .tv:not(.is-focused) { opacity: 0; filter: brightness(.2)
      TV1의 안테나 장식이 자기 TV 밖으로(-55.91% top) 크게 튀어나오는데, static이면
      z-index가 무효화돼 장식이 로고·메뉴 위를 덮어버린다(실제로 재현된 버그). */
   .home-header { position: relative; top: auto; right: auto; left: auto; z-index: 40; flex-direction: column; align-items: flex-start; gap: 10px; padding: 18px 20px 0; background: var(--ice-0); }
-  .home-brand-sub { position: static; margin-top: 6px; white-space: normal; }
   .home-nav { flex-wrap: wrap; }
 
   .tv-floor { display: none; }
