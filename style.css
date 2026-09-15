@@ -743,15 +743,17 @@ body.transition-active .tv:not(.is-focused) { opacity: 0; filter: brightness(.2)
 
 /* 브랜드 소개 — 기본 상태는 항상 읽을 수 있고, JS 준비 후에만 흐림을 적용합니다. */
 .about-page { overflow-x: hidden; --about-blur: 6px; --about-dim: .45; --about-fallback-blur: 6px; --about-fallback-dim: .45; }
+.about-page #mainContent { overflow-x: clip; }
 .about-page .about-channel-head { padding-bottom: 0; }
 .about-page .about-intro { width: min(100%,var(--maxw)); margin: 0 auto; padding: 56px var(--page-x) 72px; }
 .about-page .about-intro h1 { margin: 32px 0 40px; color: var(--stage-ink); font: 700 clamp(52px,12.4vw,160px)/.91 var(--font-display); letter-spacing: -.065em; }
-.about-page .about-intro h1 span { color: var(--chrome-700); font-style: italic; }
+.about-page .about-intro-line { display: block; }
+.about-page .about-intro h1 .about-echoes { color: var(--chrome-700); font-style: italic; }
 .about-page .about-intro-bottom { display: flex; flex-direction: column; align-items: flex-start; gap: 28px; }
 .about-page .about-intro-bottom > p { color: var(--stage-ink-soft); font-size: clamp(14px,1.5vw,18px); line-height: 1.9; word-break: keep-all; }
 .about-page .about-start { display: inline-flex; align-items: center; gap: 32px; min-height: 44px; color: var(--stage-ink); font: 10px var(--font-mono); letter-spacing: .12em; text-decoration: none; border-bottom: 1px solid var(--stage-ink-line); }
 .about-page .about-start span { font-size: 20px; }
-.about-page .about-scene { width: min(100%,var(--maxw)); margin: 0 auto; padding: 52px var(--page-x) 72px; opacity: 1; filter: none; scroll-margin-top: 64px; }
+.about-page .about-scene { width: min(100%,var(--maxw)); margin: 0 auto; padding: 24px var(--page-x); opacity: 1; filter: none; scroll-margin-top: 64px; }
 .about-page .about-scene-inner { display: grid; grid-template-columns: minmax(0,1fr); gap: 36px; opacity: 1; filter: none; }
 .about-page .about-scene-visual { position: static; min-width: 0; width: 100%; margin: 0; align-self: start; }
 .about-page .about-scene-visual > img { width: 100%; height: auto; }
@@ -766,12 +768,12 @@ body.transition-active .tv:not(.is-focused) { opacity: 0; filter: brightness(.2)
 .about-page .about-scene-copy .about-scene-meta { margin-top: 32px; }
 /* 기록의 순서를 실제 목록으로 남겨 보조기기와 JS 없는 환경에서도 읽을 수 있습니다. */
 .about-page .about-translation-steps, .about-page .craft-steps { display: grid; margin-top: 28px; list-style: none; }
-.about-page .about-translation-steps { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 18px; }
+.about-page .about-translation-steps { grid-template-columns: minmax(0,1fr); gap: 18px; }
 .about-page .about-translation-steps li { padding-top: 12px; border-top: 1px solid var(--stage-ink-line); color: var(--stage-ink); font-size: 13px; }
-.about-page .about-translation-steps span { display: block; margin-bottom: 4px; color: var(--chrome-700); font: 9px var(--font-mono); }
+.about-page .about-translation-steps li > span:not(.about-move), .about-page .about-step-number { display: block; margin-bottom: 4px; color: var(--chrome-700); font: 9px var(--font-mono); }
 .about-page .craft-steps { gap: 12px; }
 .about-page .craft-steps li { display: flex; align-items: baseline; gap: 18px; padding-bottom: 12px; border-bottom: 1px solid var(--stage-ink-line); font-size: 13px; }
-.about-page .craft-steps li span { color: var(--chrome-700); font: 10px var(--font-mono); }
+.about-page .craft-steps li > span:not(.about-move), .about-page .craft-steps .about-step-number { color: var(--chrome-700); font: 10px var(--font-mono); }
 .about-page .brand-story-grid { display: grid; }
 .about-page .brand-symbol-placeholder { display: flex; min-height: 300px; aspect-ratio: 1; flex-direction: column; align-items: center; justify-content: center; gap: 36px; padding: 32px; }
 .about-page .brand-symbol-placeholder > img { width: min(100%,280px); height: auto; }
@@ -793,31 +795,55 @@ body.transition-active .tv:not(.is-focused) { opacity: 0; filter: brightness(.2)
 /* 모바일에서는 번호만 보이되 Tab으로 접근하면 다섯 이동 링크를 펼칩니다. */
 .about-page.has-scene-progress .about-progress-links { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
 .about-page.has-scene-progress .about-progress:focus-within .about-progress-links { position: static; width: auto; height: auto; overflow: visible; clip-path: none; justify-content: flex-end; }
-.about-page.js-scenes .about-scene-inner { opacity: var(--about-fallback-dim); filter: blur(var(--about-fallback-blur)); transform: translateY(20px); transition: opacity .5s ease, filter .5s ease, transform .5s ease; }
-.about-page.js-scenes .about-scene.is-active .about-scene-inner { opacity: 1; filter: none; transform: none; }
-/* 지원 브라우저와 Observer 폴백은 서로 다른 클래스만 사용합니다. */
-@supports (animation-timeline: view()) {
-  .about-page.has-scene-motion .about-scene-inner {
-    animation: about-focus linear both;
-    animation-timeline: view();
-    animation-range: entry 10% exit 90%;
-  }
-  @keyframes about-focus {
-    0% { opacity: var(--about-dim); filter: blur(var(--about-blur)); transform: scale(.94) translateY(28px); }
-    35%, 65% { opacity: 1; filter: blur(0); transform: scale(1) translateY(0); }
-    100% { opacity: var(--about-dim); filter: blur(var(--about-blur)); transform: scale(.94) translateY(-28px); }
-  }
-}
-/* 키보드로 본문 링크에 도달하면 스크롤 위치와 관계없이 읽을 수 있게 합니다. */
-.about-page .about-scene:focus-within .about-scene-inner { animation: none !important; opacity: 1; filter: none; transform: none; }
+/* 판정 wrapper / 이동 / 흐림을 분리해 움직임이 자신의 판정을 흔들지 않게 합니다. */
+.about-page .about-move, .about-page .about-focus, .about-page .about-title-line { display: block; }
+.about-page .about-image-anchor img { display: block; width: 100%; height: auto; }
+.about-page .brand-symbol-placeholder .about-image-anchor { width: min(100%,280px); }
+.about-page .craft-steps .about-focus { display: flex; align-items: baseline; gap: 18px; }
+.about-page .about-focus-anchor { --move-x: 0px; --move-y: 12px; --move-time: 320ms; --move-delay: 0ms; }
+.about-page .about-image-anchor { --move-x: -24px; --move-y: 0px; --move-time: 420ms; }
+.about-page h2 { --title-x: 16px; --title-y: 0px; }
+.about-page #scene-translate .about-image-anchor { --move-x: 24px; }
+.about-page #scene-translate h2 { --title-x: -16px; }
+.about-page #scene-everyday .about-image-anchor { --move-x: 0px; --move-y: 12px; --move-time: 320ms; }
+.about-page #scene-everyday h2 { --title-x: 0px; --title-y: 12px; }
+.about-page #scene-craft .about-image-anchor { --move-x: 0px; --move-y: 16px; --move-time: 320ms; }
+.about-page .about-archive-card .about-image-anchor { --move-x: -20px; --move-time: 360ms; }
+.about-page .about-intro-line { --move-x: -20px; --move-y: 0px; --move-time: 360ms; }
+.about-page .about-intro-line:nth-child(2) { --move-x: 20px; --move-delay: 60ms; }
+.about-page .about-intro-line:nth-child(3) { --move-x: 0px; --move-y: 12px; --move-delay: 120ms; }
+.about-page.has-about-motion .about-focus { filter: blur(var(--about-fallback-blur)); opacity: var(--about-fallback-dim); transition: filter 280ms ease, opacity 280ms ease; }
+.about-page.has-about-timeline .about-focus { filter: blur(var(--about-blur)); opacity: var(--about-dim); }
+.about-page.has-about-motion .is-focused > .about-move > .about-focus,
+.about-page.has-about-motion .about-focus-anchor:focus-within > .about-move > .about-focus { filter: blur(0); opacity: 1; transition-duration: 120ms; }
+.about-page.has-about-motion .about-move { transform: translate(var(--move-x),var(--move-y)); transition: transform var(--move-time) cubic-bezier(.2,.7,.2,1) var(--move-delay); }
+.about-page.has-about-motion .is-seen > .about-move { transform: none; }
+.about-page.has-about-motion h2 > .about-move { transform: none; }
+.about-page.has-about-motion .about-title-line { transform: translate(var(--title-x),var(--title-y)); transition: transform 360ms cubic-bezier(.2,.7,.2,1) calc(var(--line) * 60ms); }
+.about-page.has-about-motion .is-seen .about-title-line { transform: none; }
+.about-page.has-about-motion .is-direct-entry .about-move,
+.about-page.has-about-motion .is-direct-entry .about-title-line { transition: none; }
+.about-page .about-translation-steps li, .about-page .craft-steps li { position: relative; }
+.about-page .about-translation-steps li::before, .about-page .craft-steps li::before { position: absolute; left: -10px; top: 0; bottom: 0; width: 1px; background: var(--stage-ink); content: ''; transform-origin: top; }
+.about-page.has-about-motion .about-translation-steps li::before, .about-page.has-about-motion .craft-steps li::before { transform: scaleY(0); transition: transform 480ms ease; }
+.about-page.has-about-motion .about-translation-steps li.is-seen::before, .about-page.has-about-motion .craft-steps li.is-seen::before { transform: scaleY(1); }
+.about-page .about-archive-stage { display: block; }
+.about-page .about-archive-proxy { display: none; position: absolute; left: 1px; width: 1px; pointer-events: none; visibility: hidden; }
+.about-page .has-archive-scroll .about-archive-proxy { display: block; }
+.about-page .about-archive-window { margin-top: 28px; }
+.about-page .about-archive-track { display: grid; gap: 28px; }
+.about-page .about-archive-card { margin: 0; min-width: 0; }
+.about-page .about-archive-card > img { display: block; width: 100%; height: auto; }
+.about-page .about-archive-card figcaption { padding: 12px 0 8px; color: var(--stage-ink-soft); font: 9px/1.6 var(--font-mono); letter-spacing: .08em; }
+.about-page:not(.has-about-motion) .about-scene-visual { position: static; }
 @media (min-width: 900px) {
   .about-page { --about-blur: 14px; --about-dim: .25; --about-fallback-blur: 10px; --about-fallback-dim: .3; }
   .about-page .about-intro { min-height: calc(100svh - 220px); padding-top: 56px; padding-right: calc(var(--page-x) + 100px); }
   .about-page .about-intro-bottom { flex-direction: row; align-items: flex-end; justify-content: space-between; }
-  .about-page .about-scene { padding: 72px calc(var(--page-x) + 100px) 96px var(--page-x); scroll-margin-top: 24px; }
-  .about-page .about-scene-inner, .about-page .brand-story-grid { grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: clamp(44px,6vw,100px); min-height: 105svh; align-items: start; }
+  .about-page .about-scene { padding: 40px calc(var(--page-x) + 100px) 40px var(--page-x); scroll-margin-top: 24px; }
+  .about-page .about-scene-inner, .about-page .brand-story-grid { grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: clamp(44px,6vw,100px); align-items: start; }
   .about-page .about-scene-visual { position: sticky; top: 72px; max-width: 50svh; justify-self: center; }
-  .about-page .about-scene-copy { padding: 80px 0; font-size: 15px; }
+  .about-page .about-scene-copy { padding: 32px 0; font-size: 15px; }
   .about-page .about-translation-steps { grid-template-columns: repeat(4,minmax(0,1fr)); gap: 12px; }
   .about-page .brand-symbol-placeholder { min-height: 360px; }
   .about-page.has-scene-progress .about-progress { inset: 50% 12px auto auto; width: 76px; padding: 12px 4px; border: 1px solid var(--stage-ink-line); transform: translateY(-50%); opacity: 1; pointer-events: auto; }
@@ -825,6 +851,54 @@ body.transition-active .tv:not(.is-focused) { opacity: 0; filter: brightness(.2)
   .about-page.has-scene-progress .about-progress-links, .about-page.has-scene-progress .about-progress:focus-within .about-progress-links { position: static; width: auto; height: auto; overflow: visible; clip-path: none; flex-direction: column; }
   .about-page .about-progress a { min-height: 48px; }
   .about-page .about-progress a:focus-visible .about-progress-label { position: absolute; right: calc(100% + 12px); display: block; padding: 12px; white-space: nowrap; background: var(--ice-0); border: 1px solid var(--stage-ink-line); }
+  .about-page .about-focus-anchor { --move-y: 16px; }
+  .about-page .about-image-anchor { --move-x: -120px; --move-y: 0px; --move-time: 600ms; }
+  .about-page h2 { --title-x: 56px; }
+  .about-page #scene-translate .about-scene-visual { grid-column: 2; grid-row: 1; }
+  .about-page #scene-translate .about-scene-copy { grid-column: 1; grid-row: 1; }
+  .about-page #scene-translate .about-image-anchor { --move-x: 100px; }
+  .about-page #scene-translate h2 { --title-x: -48px; }
+  .about-page #scene-everyday .about-scene-visual { position: static; }
+  .about-page #scene-everyday .about-image-anchor { --move-y: 20px; }
+  .about-page #scene-everyday h2 { --title-y: 20px; }
+  .about-page #scene-craft .about-image-anchor { --move-x: -48px; --move-y: 0px; --move-time: 480ms; }
+  .about-page #scene-craft h2 { --title-x: 40px; }
+  .about-page .about-intro-line { --move-x: -64px; --move-y: 0px; --move-time: 520ms; }
+  .about-page .about-intro-line:nth-child(2) { --move-x: 64px; --move-delay: 90ms; }
+  .about-page .about-intro-line:nth-child(3) { --move-x: 0px; --move-y: 24px; --move-delay: 180ms; }
+  .about-page.has-about-motion .about-focus { transition-duration: 320ms; }
+  .about-page.has-about-motion .is-focused > .about-move > .about-focus { transition-duration: 160ms; }
+  .about-page.has-about-motion .about-title-line { transition-duration: 520ms; transition-delay: calc(100ms + var(--line) * 90ms); }
+  .about-page .about-translation-steps li::before { left: 0; top: 0; bottom: auto; width: 100%; height: 1px; transform-origin: left; }
+  .about-page.has-about-motion .about-translation-steps li::before { transform: scaleX(0); }
+  .about-page.has-about-motion .about-translation-steps li.is-seen::before { transform: scaleX(1); transition-delay: calc(var(--step,0) * 90ms); }
+  .about-page .about-translation-steps li:nth-child(2) { --step: 1; }
+  .about-page .about-translation-steps li:nth-child(3) { --step: 2; }
+  .about-page .about-translation-steps li:nth-child(4) { --step: 3; }
+  .about-page .about-archive-track { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .about-page .has-archive-scroll { view-timeline-name: --archive; view-timeline-axis: block; height: calc(100svh + var(--archive-travel,150svh)); }
+  .about-page .has-archive-scroll .about-archive-stage { position: sticky; top: calc(20px + (100svh - 32px) * .15); }
+  .about-page .has-archive-scroll .about-scene-copy { display: grid; grid-template-columns: 1fr 1fr; column-gap: 32px; padding: 0; font-size: 12px; line-height: 1.6; }
+  .about-page .has-archive-scroll .about-scene-index { display: none; }
+  .about-page .has-archive-scroll .eyebrow { grid-column: 1 / -1; margin: 0; }
+  .about-page .has-archive-scroll h2 { grid-column: 1; grid-row: 2 / 5; margin: 12px 0 0; font-size: clamp(29px,2.8vw,40px); }
+  .about-page .has-archive-scroll .about-scene-copy > p:not(.eyebrow):not(.about-scene-index) { grid-column: 2; margin-top: 8px; }
+  .about-page .has-archive-scroll .about-scene-lead { font-size: 16px; }
+  .about-page .has-archive-scroll .about-archive-window { overflow: clip; margin-top: 20px; padding: 8px 0; }
+  .about-page .has-archive-scroll .about-archive-track { display: flex; gap: 24px; width: 100%; animation: about-archive linear both; animation-timeline: --archive; animation-range: contain 0% contain 100%; }
+  .about-page .has-archive-scroll .about-archive-card { flex: 0 0 clamp(260px,30vw,430px); }
+  .about-page .has-archive-scroll .about-archive-card img { height: min(42svh,420px); object-fit: contain; object-position: left center; }
+  .about-page .has-archive-scroll .about-image-anchor { --move-x: 0px; --move-y: 0px; }
+  .about-page .has-archive-scroll .about-archive-card .about-move { transform: none; }
+  @keyframes about-archive { 0% { transform: translateX(0); } 85%, 100% { transform: translateX(var(--archive-distance,0px)); } }
+  @supports (animation-timeline: view()) {
+    .about-page.has-about-timeline #scene-memory .about-scene-visual { view-timeline-name: --memory-photo; }
+    .about-page.has-about-timeline #scene-memory .about-image-anchor > .about-move { animation: about-photo-entry linear both; animation-timeline: --memory-photo; animation-range: entry 0% entry 100%; }
+    .about-page.has-about-timeline #scene-everyday .about-scene-visual { view-timeline-name: --everyday-photo; }
+    .about-page.has-about-timeline #scene-everyday .about-image-anchor > .about-move { animation: about-drift linear both; animation-timeline: --everyday-photo; }
+    @keyframes about-photo-entry { from { transform: translateX(-120px); clip-path: inset(0 20% 0 0); } to { transform: none; clip-path: inset(0); } }
+    @keyframes about-drift { from { transform: translateY(20px); } to { transform: translateY(-20px); } }
+  }
 }
 
 /* 페이지별 채널 헤드 조정 */
@@ -1088,4 +1162,7 @@ body.transition-active .tv:not(.is-focused) { opacity: 0; filter: brightness(.2)
     transform: none !important;
   }
   .about-page .about-scene-visual { position: static !important; }
+  .about-page .about-move, .about-page .about-focus, .about-page .about-title-line, .about-page .about-archive-track { animation: none !important; transform: none !important; filter: none !important; opacity: 1 !important; clip-path: none !important; }
+  .about-page .has-archive-scroll { height: auto !important; }
+  .about-page .about-archive-stage { position: static !important; }
 }
