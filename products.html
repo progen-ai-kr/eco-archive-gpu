@@ -122,7 +122,7 @@
           .map((p) => {
             const image = ProductCatalog.safeImageUrl(p.images && p.images[0]);
             const img = image
-              ? '<img src="' + ProductCatalog.escapeHtml(image) + '" alt="' + ProductCatalog.escapeHtml(p.name) + '" loading="lazy" onerror="this.remove()" />'
+              ? '<img src="' + ProductCatalog.escapeHtml(image) + '" alt="' + ProductCatalog.escapeHtml(p.name) + '" loading="lazy" onerror="this.style.display=\'none\'" />'
               : "";
             const displayPrice = formatPrice(p.price);
             const price = displayPrice ? '<p class="price">' + ProductCatalog.escapeHtml(displayPrice) + "</p>" : "";
@@ -130,12 +130,11 @@
             return (
               '<a class="card glass-panel glass-corners" data-category="' + ProductCatalog.escapeHtml(category.toLowerCase()) +
               '" href="product.html?id=' + encodeURIComponent(p.id) + '" aria-label="' + ProductCatalog.escapeHtml(p.name) + ' 자세히 보기">' +
-              '<div class="card-img tv-frame"><span class="card-ep" aria-hidden="true"></span>' + img + "</div>" +
+              '<div class="card-img"><span class="card-ep" aria-hidden="true"></span>' + img + "</div>" +
               '<div class="card-body">' +
               '<p class="k">' + ProductCatalog.escapeHtml(p.label || p.category || "") + "</p>" +
               "<h3>" + ProductCatalog.escapeHtml(p.name) + "</h3>" +
               "<p>" + ProductCatalog.escapeHtml(p.summary || "") + "</p>" + price +
-              '<span class="view-look" aria-hidden="true">→</span>' +
               "</div>" +
               "</a>"
             );
