@@ -5,7 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>제품 상세 — ECHO ARCHIVE</title>
   <meta name="description" content="ECHO ARCHIVE 제품 상세 정보" />
+  <meta property="og:title" content="제품 상세 — ECHO ARCHIVE" />
+  <meta property="og:description" content="ECHO ARCHIVE 제품 상세 정보" />
+  <meta property="og:image" content="images/brand/echo-archive-logo.png" />
+  <meta property="og:type" content="website" />
   <link rel="icon" href="images/brand/echo-archive-logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@500;600;700&display=swap" />
   <link rel="stylesheet" href="style.css?v=20260902-design-1c" />
   <link rel="stylesheet" href="rich-content.css?v=20260826-rich-editor-1" />
 </head>
@@ -136,8 +143,10 @@
           if (currentLabel) currentLabel.textContent = String(current + 1);
         }
 
-        carousel.querySelector("[data-carousel-previous]").addEventListener("click", () => showSlide(current - 1));
-        carousel.querySelector("[data-carousel-next]").addEventListener("click", () => showSlide(current + 1));
+        const previousButton = carousel.querySelector("[data-carousel-previous]");
+        const nextButton = carousel.querySelector("[data-carousel-next]");
+        if (previousButton) previousButton.addEventListener("click", () => showSlide(current - 1));
+        if (nextButton) nextButton.addEventListener("click", () => showSlide(current + 1));
         dots.forEach((dot) => dot.addEventListener("click", () => showSlide(Number(dot.dataset.carouselIndex))));
 
         carousel.addEventListener("keydown", (event) => {
@@ -170,8 +179,10 @@
       const dialog = document.getElementById("purchaseDialog");
       if (!trigger || !dialog) return;
 
-      document.getElementById("purchaseDialogProduct").textContent = product.name || "";
-      document.getElementById("purchaseDialogContent").textContent = String(product.buyNotice || "").trim();
+      const productLabel = document.getElementById("purchaseDialogProduct");
+      const productContent = document.getElementById("purchaseDialogContent");
+      if (productLabel) productLabel.textContent = product.name || "";
+      if (productContent) productContent.textContent = String(product.buyNotice || "").trim();
       trigger.addEventListener("click", () => dialog.showModal());
       dialog.addEventListener("click", (event) => {
         if (event.target === dialog) dialog.close();
@@ -229,7 +240,7 @@
       if (!item) return "";
       const esc = ProductCatalog.escapeHtml;
       const image = ProductCatalog.safeImageUrl(item.images && item.images[0]);
-      const img = image ? '<img src="' + esc(image) + '" alt="' + esc(item.name) + '" onerror="this.remove()" />' : "";
+      const img = image ? '<img src="' + esc(image) + '" alt="' + esc(item.name) + '" loading="lazy" onerror="this.remove()" />' : "";
       return '<a class="related-card glass-panel glass-corners" href="product.html?id=' + encodeURIComponent(item.id) + '">' +
         '<div class="related-card-img">' + img + "</div>" +
         '<div class="related-card-body"><p class="k">' + esc(dir) + '</p><h3>' + esc(item.name) + "</h3></div>" +
