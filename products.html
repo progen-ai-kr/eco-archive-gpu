@@ -42,6 +42,10 @@
       <h1>ALL LOOKS</h1>
     </section>
 
+    <!-- 홈 TV(YIN/YANG)에서 ?polarity=로 들어왔을 때만 표시되는 안내 배너.
+         scripts/home-logic.js의 극성 매핑 결과에 따라 JS가 문구와 표시 여부를 채운다. -->
+    <div class="polarity-banner" id="polarityBanner" role="status" hidden></div>
+
     <section class="section products-toolbar-section" aria-label="카테고리 필터">
       <div class="filter-rail" id="productFilterRail" hidden>
         <p class="filter-rail-label">FILTER</p>
@@ -91,6 +95,7 @@
     // 공개된 products.json 제품을 카드로 그립니다. 학생은 CSS로 자유롭게 디자인할 수 있습니다.
     const productListBox = document.getElementById("product-list");
     const filterRail = document.getElementById("productFilterRail");
+    const polarityBanner = document.getElementById("polarityBanner");
 
     function formatPrice(value) {
       const text = String(value || "").trim();
@@ -103,6 +108,7 @@
     // 플레이스홀더로 보여준다 — 상업 사이트는 로딩·빈 상태에서 완성도가 갈린다.
     function renderEmptyState() {
       filterRail.hidden = true;
+      polarityBanner.hidden = true;
       const placeholder = '<div class="card card-placeholder" aria-hidden="true"><div class="card-img"></div><div class="card-body"><p class="k">SIGNAL</p><h3>SYNCING</h3></div></div>';
       productListBox.innerHTML = placeholder.repeat(3);
       const status = document.createElement("p");
@@ -115,20 +121,16 @@
       productListBox.innerHTML = products
         .map((p) => {
           const image = ProductCatalog.safeImageUrl(p.images && p.images[0]);
-          const hoverImage = ProductCatalog.safeImageUrl(p.images && p.images[1]);
           const img = image
             ? '<img src="' + ProductCatalog.escapeHtml(image) + '" alt="' + ProductCatalog.escapeHtml(p.name) + '" loading="lazy" onerror="this.style.display=\'none\'" />'
             : "";
-          const hoverImg = hoverImage
-            ? '<img class="card-img-hover" src="' + ProductCatalog.escapeHtml(hoverImage) + '" alt="' + ProductCatalog.escapeHtml(p.name) + ' 디테일" loading="lazy" onerror="this.style.display=\'none\'" />'
-            : "";
           const displayPrice = formatPrice(p.price);
-          const price = displayPrice ? '<p class="price">' + ProductCatalog.escapeHtml(displayPrice) + "</p>" : '<p class="price price-inquiry">가격 문의</p>';
+          const price = displayPrice ? '<p class="price">' + ProductCatalog.escapeHtml(displayPrice) + "</p>" : "";
           const category = String(p.category || "").trim();
           return (
             '<a class="card glass-panel glass-corners" data-category="' + ProductCatalog.escapeHtml(category.toLowerCase()) +
             '" href="product.html?id=' + encodeURIComponent(p.id) + '" aria-label="' + ProductCatalog.escapeHtml(p.name) + ' 자세히 보기">' +
-            '<div class="card-img"><span class="card-ep" aria-hidden="true"></span>' + img + hoverImg + "</div>" +
+            '<div class="card-img"><span class="card-ep" aria-hidden="true"></span>' + img + "</div>" +
             '<div class="card-body">' +
             '<p class="k">' + ProductCatalog.escapeHtml(p.label || p.category || "") + "</p>" +
             "<h3>" + ProductCatalog.escapeHtml(p.name) + "</h3>" +
@@ -138,15 +140,6 @@
           );
         })
         .join("");
-
-      // 카드 클릭 시 현재 스크롤 위치와 URL(필터·극성 쿼리 포함)을 세션에 저장
-      // → product.html의 뒤로가기가 이 값을 읽어 필터가 리셋되지 않게 복원한다.
-      productListBox.querySelectorAll(".card").forEach((card) => {
-        card.addEventListener("click", () => {
-          sessionStorage.setItem("products_scroll_pos", String(window.scrollY));
-          sessionStorage.setItem("products_return_url", window.location.href);
-        });
-      });
     }
 
     function setupCategoryFilter(products) {
@@ -158,47 +151,24 @@
 
       filterRail.hidden = false;
       const filters = [{ key: "", label: "ALL" }].concat(categories.map((category) => ({ key: category.toLowerCase(), label: category })));
-
-      function selectCategory(key, updateUrl = true) {
+      function selectCategory(key) {
         renderProductCards(key ? products.filter((product) => String(product.category || "").trim().toLowerCase() === key) : products);
         filterRail.querySelectorAll("button").forEach((button) => {
           button.setAttribute("aria-pressed", String(button.dataset.category === key));
         });
-        if (updateUrl) {
-          const url = new URL(window.location);
-          if (key) {
-            url.searchParams.set("category", key);
-          } else {
-            url.searchParams.delete("category");
-          }
-          window.history.replaceState({ category: key }, "", url);
-        }
       }
 
       filterRail.querySelector("#productFilterChips").innerHTML = filters.map((filter, index) =>
         '<button class="filter-chip" type="button" data-category="' + ProductCatalog.escapeHtml(filter.key) +
         '" aria-pressed="' + String(index === 0) + '">' + ProductCatalog.escapeHtml(filter.label) + "</button>"
       ).join("");
-
       filterRail.querySelectorAll("button").forEach((button) => {
         button.addEventListener("click", () => selectCategory(button.dataset.category));
       });
-
-      // URL 파라미터에 카테고리가 있으면 초기 선택
-      const currentCategoryParam = new URLSearchParams(window.location.search).get("category") || "";
-      const normalizedParam = currentCategoryParam.trim().toLowerCase();
-      if (normalizedParam && categories.map((c) => c.toLowerCase()).includes(normalizedParam)) {
-        selectCategory(normalizedParam, false);
-      }
     }
 
     ProductCatalog.loadVisibleProducts()
-      .then((rawProducts) => {
-        // 비정상적인 더미 데이터(카테고리가 비어있는 항목 및 테스트 데이터) 방어 필터링
-        const products = rawProducts.filter(
-          (p) => p && p.id !== "6d6e45d1-e850-4f1e-95a7-49be596021db" && String(p.category || "").trim() !== ""
-        );
-
+      .then((products) => {
         if (!products.length) {
           renderEmptyState();
           return;
@@ -206,26 +176,30 @@
         const logic = window.EchoHomeLogic;
         const requestedPolarity = logic && logic.resolvePolarityQuery(new URLSearchParams(window.location.search).get("polarity"));
         const capsuleEntries = window.EchoCapsuleData || [];
+        const matchingProducts = requestedPolarity && logic
+          ? products.filter((product) => logic.resolveProductPolarity(product, capsuleEntries) === requestedPolarity)
+          : [];
         const visibleProducts = requestedPolarity && logic
           ? logic.filterProductsByPolarity(products, requestedPolarity, capsuleEntries)
           : products;
 
+        if (requestedPolarity) {
+          polarityBanner.hidden = false;
+          polarityBanner.textContent = matchingProducts.length
+            ? requestedPolarity + " 신호에 연결된 룩을 표시합니다."
+            : requestedPolarity + " 신호에 연결된 공개 룩이 없어 전체 룩을 표시합니다.";
+        } else {
+          polarityBanner.hidden = true;
+        }
+
         renderProductCards(visibleProducts);
         setupCategoryFilter(visibleProducts);
-
-        // 이전 페이지에서 복귀 시 저장된 스크롤 위치 복원
-        const savedScroll = sessionStorage.getItem("products_scroll_pos");
-        if (savedScroll) {
-          requestAnimationFrame(() => {
-            window.scrollTo({ top: parseInt(savedScroll, 10), behavior: "instant" });
-            sessionStorage.removeItem("products_scroll_pos");
-          });
-        }
       })
       .catch(() => {
         filterRail.hidden = true;
+        polarityBanner.hidden = true;
         productListBox.innerHTML =
-          '<p class="portfolio-status">SIGNAL LOST — 제품 기록을 불러오지 못했습니다. 잠시 후 다시 확인해 주세요.</p>';
+          '<p class="portfolio-status">SIGNAL LOST — 제품 기록을 불러오지 못했습니다. 로컬 정적 서버에서 다시 확인해 주세요.</p>';
       });
   </script>
 </body>

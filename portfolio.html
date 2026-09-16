@@ -62,16 +62,6 @@
       </p>
     </section>
 
-    <!-- 이미지 확대 라이트박스 -->
-    <dialog id="portfolioLightbox" class="portfolio-lightbox" hidden>
-      <form method="dialog">
-        <button class="lightbox-close" type="submit" aria-label="닫기">×</button>
-      </form>
-      <div class="lightbox-body">
-        <img id="lightboxImage" src="" alt="포트폴리오 원본 확대 이미지" />
-      </div>
-    </dialog>
-
   </main>
 
   <footer class="footer">
@@ -94,39 +84,10 @@
         if (!alt || /\.(?:jpe?g|png|webp|gif)$/i.test(alt)) {
           image.alt = "ECHO ARCHIVE 포트폴리오 이미지 " + (index + 1);
         }
-        image.style.cursor = "zoom-in";
       });
     };
     new MutationObserver(improvePortfolioAlt).observe(portfolioRoot, { childList: true, subtree: true });
     improvePortfolioAlt();
-
-    // 라이트박스 열기
-    portfolioRoot.addEventListener("click", (e) => {
-      const img = e.target.closest("img");
-      if (img && img.src) {
-        const lb = document.getElementById("portfolioLightbox");
-        const lbImg = document.getElementById("lightboxImage");
-        if (lb && lbImg) {
-          lbImg.src = img.src;
-          lb.hidden = false;
-          if (typeof lb.showModal === "function") {
-            lb.showModal();
-          }
-        }
-      }
-    });
-
-    const lb = document.getElementById("portfolioLightbox");
-    if (lb) {
-      lb.addEventListener("click", (e) => {
-        if (e.target === lb && typeof lb.close === "function") {
-          lb.close();
-        }
-      });
-      lb.addEventListener("close", () => {
-        lb.hidden = true;
-      });
-    }
   </script>
   <script src="script.js?v=20260902-design-1b"></script>
 </body>
