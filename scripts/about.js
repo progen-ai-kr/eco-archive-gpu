@@ -44,7 +44,7 @@
   });
   const units = Array.from(document.querySelectorAll(
     ".about-intro-line, .about-intro > .about-scene-meta, .about-intro-bottom > p, " +
-    ".about-scene-copy > p:not(.about-cta), .about-scene-copy > h2, " +
+    ".about-scene-copy > p:not(.about-cta):not(.about-scene-sublink), .about-scene-copy > h2, " +
     ".about-image-anchor, .about-scene-visual > .about-scene-meta, " +
     ".about-scene-visual figcaption, .about-archive-card figcaption, " +
     ".about-translation-steps li, .craft-steps li"
