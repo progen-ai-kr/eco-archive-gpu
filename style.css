@@ -1052,6 +1052,74 @@ body.transition-active .tv:not(.is-focused) { opacity: 0; filter: brightness(.2)
   .nav-menu a { padding: 8px 14px; border: 0; font-size: clamp(12px, calc(-4.5px + 1.85vw), 22px); }
   .nav-menu a + a { margin-left: 14px; }
 }
+
+/* ===== 데스크톱(≥900px) 헤더·푸터 전용 정리 =====
+   모바일(≤899px)은 mobile.css가 전담하므로 이 블록은 900px 이상에서만 적용된다.
+   공통 영역의 .nav/.footer 선언은 그대로 두고 여기서만 덮어쓴다. */
+@media (min-width: 900px) {
+  /* --nav-h는 .nav-inner의 min-height와 같은 값. sticky 요소들의 top 기준이 된다. */
+  :root { --nav-h: 84px; }
+
+  /* GNB 상단 고정. fixed가 아닌 sticky를 쓰는 이유: 흐름에 남아야
+     main { min-height: calc(100vh - 166px) }의 166px 계산이 계속 맞는다. */
+  .nav {
+    position: sticky;
+    top: 0;
+    background: rgba(250,251,252,.88);
+    backdrop-filter: blur(8px);
+  }
+
+  /* 고정 헤더 아래로 파고들던 sticky 요소들을 헤더 높이만큼 내린다 */
+  .about-page .about-scene-visual { top: calc(var(--nav-h) + 12px); }
+  .about-page .about-scene { scroll-margin-top: calc(var(--nav-h) + 16px); }
+
+  /* 탐색 UI가 콘텐츠보다 커 보이던 문제 — eyebrow(10px)·btn(11px) 체계에 맞춘다 */
+  .nav-menu a { font-size: 13px; }
+
+  /* 현재 채널 점등 표시. 글자를 줄인 만큼 활성 상태를 분명히 보여준다.
+     data-ch 속성은 마크업 그대로 두고 CSS로만 읽는다. */
+  .nav-menu a.active { background: transparent; }
+  .nav-menu a.active::after {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    background: var(--stage-ink);
+    content: "";
+  }
+
+  /* 푸터: 18px mono는 사이트에서 가장 큰 본문 인접 폰트였다 */
+  .footer {
+    justify-content: center;
+    gap: 10px 28px;
+    font-size: 12px;
+  }
+  /* 44px 터치 타깃은 모바일 전용 — 데스크톱에서는 푸터만 두껍게 만든다.
+     .footer .logo(0,2,0)가 .footer a(0,1,1)보다 우선하므로 로고도 함께 지정한다. */
+  .footer a,
+  .footer .logo {
+    min-height: 0;
+  }
+  .footer a {
+    text-decoration: underline;
+    text-decoration-color: var(--stage-ink-line);
+    text-underline-offset: 4px;
+  }
+  /* 로고는 이미지라 밑줄이 어색하다 */
+  .footer .logo { text-decoration: none; }
+  .footer a:hover { text-decoration-color: var(--stage-ink); }
+
+  /* 데스크톱에서 ← 글리프 하나만 보이던 뒤로가기 버튼에 라벨을 되살린다.
+     mobile.css가 뒤에 로드돼 같은 특이도(0,2,0)면 그쪽이 이기므로 한 단계 높인다.
+     (mobile.css 자체는 건드리지 않는다 — 모바일은 GPT 작업 영역) */
+  .product-back .btn .mobile-back-label[hidden] { display: inline; }
+  /* .btn이 flex라 화살표와 라벨이 각각 플렉스 아이템이 되어 줄바꿈된다 */
+  .product-back .btn { gap: 8px; white-space: nowrap; }
+
+  /* 마지막 씬 CTA가 푸터 경계에 바짝 붙던 문제 */
+  .about-page #scene-craft { padding-bottom: 96px; }
+}
 @media (min-width: 720px) {
   .grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
   .product-hero { grid-template-columns: minmax(0,1.08fr) minmax(360px,.92fr); }
@@ -1062,7 +1130,9 @@ body.transition-active .tv:not(.is-focused) { opacity: 0; filter: brightness(.2)
 }
 
 @media (min-width: 980px) {
-  .product-info { position: sticky; top: 24px; align-self: start; }
+  /* 고정 헤더 아래로 내려 제품 정보가 헤더에 가리지 않게 한다.
+     (히어로 그리드가 짧아 sticky가 머무는 구간 자체는 원래도 길지 않다) */
+  .product-info { position: sticky; top: calc(var(--nav-h, 84px) + 12px); align-self: start; }
   .related-grid { grid-template-columns: repeat(2,1fr); }
 }
 /* 세로형 룩북 카드는 폭이 좁아도 되므로 넓은 화면에서 3열로 늘린다 */
