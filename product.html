@@ -59,7 +59,7 @@
   </dialog>
 
   <section class="section product-back">
-    <a href="products.html" id="productBackLink" class="btn ghost" aria-label="제품 목록으로 돌아가기">←</a>
+    <a href="products.html" class="btn ghost" aria-label="제품 목록으로 돌아가기">←</a>
   </section>
 
   <footer class="footer">
@@ -76,17 +76,6 @@
   <script src="catalog.js?v=20260826-rich-editor-1"></script>
   <script>
     const productId = new URLSearchParams(location.search).get("id");
-
-    // products.html에서 카드를 눌러 들어온 경우, 그때 보고 있던 필터·극성 쿼리가 담긴
-    // URL로 뒤로가기를 보내 목록 상태(카테고리 선택 등)가 리셋되지 않게 한다.
-    // 직접 이 페이지로 진입한 경우(저장된 값 없음)는 기존처럼 products.html로 이동한다.
-    (function restoreBackLink() {
-      const backLink = document.getElementById("productBackLink");
-      const returnUrl = sessionStorage.getItem("products_return_url");
-      if (backLink && returnUrl) {
-        backLink.href = returnUrl;
-      }
-    })();
 
     function imageMarkup(source, alt, className, eager) {
       const safeSource = ProductCatalog.safeImageUrl(source);
@@ -305,9 +294,7 @@
         const gallery = renderHeroGallery(product);
 
         const displayPrice = formatDisplayPrice(product.price);
-        const price = displayPrice
-          ? '<p class="product-price">' + esc(displayPrice) + "</p>"
-          : '<p class="product-price product-price-inquiry">가격 문의 (주문 제작)</p>';
+        const price = displayPrice ? '<p class="product-price">' + esc(displayPrice) + "</p>" : "";
         const buyLink = ProductCatalog.safeExternalUrl(product.buyLink);
         const buyNotice = String(product.buyNotice || "").trim();
         const publicBuyNotice = buyNotice === "계좌 0000-000-0000 김*수" ? "" : buyNotice;
@@ -317,7 +304,7 @@
           : publicBuyNotice
             ? '<button class="btn product-buy" type="button" data-purchase-dialog aria-haspopup="dialog">' +
               esc(product.buyLabel || "구매하기") + "</button>"
-            : '<a class="btn product-buy product-buy-inquiry" href="contact.html?product=' + encodeURIComponent(product.name) + '">제품 문의하기 <span aria-hidden="true">↗</span></a>';
+            : '<p class="product-sale-status" role="status">판매 준비 중 · 문의 채널을 이용해 주세요.</p>';
 
         const keywordLine = Array.isArray(product.keywords) && product.keywords.length
           ? '<p class="product-keywords">' + esc(product.keywords.join(" · ")) + "</p>"
@@ -334,11 +321,6 @@
           sections = '<section class="product-block product-rich-text">' + paragraphs + "</section>";
         }
 
-        const cleanSections = (sections || "").replace(/<p><br\/?><\/p>/gi, "").trim();
-        const finalSections = cleanSections
-          ? '<div class="product-story">' + sections + "</div>"
-          : '<div class="product-story"><section class="product-block product-empty-story glass-panel glass-corners"><p class="eyebrow">EPISODE RECORDING</p><h2>상세 기록 준비 중</h2><p>본 에피소드의 착용 기록과 제작 스토리는 순차적으로 아카이빙됩니다. 제품에 대한 문의는 Contact 채널을 이용해 주세요.</p><p style="margin-top:16px"><a href="contact.html?product=' + encodeURIComponent(product.name) + '" class="btn ghost">이 제품 문의하기 ↗</a></p></section></div>';
-
         const episodeNumber = String(productIndex + 1).padStart(2, "0");
         const prev = products[(productIndex - 1 + products.length) % products.length];
         const next = products[(productIndex + 1) % products.length];
@@ -354,23 +336,6 @@
             "</section>"
           : "";
 
-        const stickyBar =
-          '<aside id="productStickyBar" class="product-sticky-bar glass-panel" aria-label="구매 및 문의 바로가기" hidden>' +
-            '<div class="sticky-bar-inner">' +
-              '<div class="sticky-bar-info">' +
-                '<p class="sticky-bar-name">' + esc(product.name) + '</p>' +
-                (displayPrice ? '<p class="sticky-bar-price">' + esc(displayPrice) + '</p>' : '<p class="sticky-bar-price">가격 문의</p>') +
-              '</div>' +
-              '<div class="sticky-bar-action">' +
-                (buyLink
-                  ? '<a class="btn btn-sm" href="' + esc(buyLink) + '" target="_blank" rel="noopener noreferrer">' + esc(product.buyLabel || "구매하기") + ' ↗</a>'
-                  : publicBuyNotice
-                    ? '<button class="btn btn-sm" type="button" data-purchase-dialog>구매 안내</button>'
-                    : '<a class="btn btn-sm" href="contact.html?product=' + encodeURIComponent(product.name) + '">문의하기 ↗</a>') +
-              '</div>' +
-            '</div>' +
-          '</aside>';
-
         document.getElementById("mainContent").innerHTML =
           '<section class="section product-hero">' +
             '<div class="product-hero-gallery glass-panel glass-corners tv-frame">' + gallery + "</div>" +
@@ -384,31 +349,11 @@
               buyButton +
             "</div>" +
           "</section>" +
-          finalSections +
-          (relatedSection ? '<div class="yy-rule" aria-hidden="true"><span class="yy-rule-node"></span></div>' + relatedSection : "") +
-          stickyBar;
+          (sections ? '<div class="product-story">' + sections + "</div>" : "") +
+          (relatedSection ? '<div class="yy-rule" aria-hidden="true"><span class="yy-rule-node"></span></div>' + relatedSection : "");
 
         setupProductCarousels();
         setupPurchaseDialog(product);
-
-        // 스크롤 시 Sticky Bar 노출/숨김 Observer
-        const heroSection = document.querySelector(".product-hero");
-        const barEl = document.getElementById("productStickyBar");
-        if (heroSection && barEl && "IntersectionObserver" in window) {
-          const stickyObserver = new IntersectionObserver((entries) => {
-            entries.forEach((entry) => {
-              if (!entry.isIntersecting) {
-                barEl.hidden = false;
-                barEl.classList.add("is-visible");
-              } else {
-                barEl.classList.remove("is-visible");
-                barEl.hidden = true;
-              }
-            });
-          }, { threshold: 0.1 });
-          stickyObserver.observe(heroSection);
-        }
-
         const relatedRule = document.querySelector(".yy-rule");
         if (relatedRule && "IntersectionObserver" in window) {
           new IntersectionObserver((entries, obs) => {
