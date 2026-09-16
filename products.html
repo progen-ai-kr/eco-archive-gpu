@@ -42,10 +42,6 @@
       <h1>ALL LOOKS</h1>
     </section>
 
-    <!-- 홈 TV(YIN/YANG)에서 ?polarity=로 들어왔을 때만 표시되는 안내 배너.
-         scripts/home-logic.js의 극성 매핑 결과에 따라 JS가 문구와 표시 여부를 채운다. -->
-    <div class="polarity-banner" id="polarityBanner" role="status" hidden></div>
-
     <section class="section products-toolbar-section" aria-label="카테고리 필터">
       <div class="filter-rail" id="productFilterRail" hidden>
         <p class="filter-rail-label">FILTER</p>
@@ -95,7 +91,6 @@
     // 공개된 products.json 제품을 카드로 그립니다. 학생은 CSS로 자유롭게 디자인할 수 있습니다.
     const productListBox = document.getElementById("product-list");
     const filterRail = document.getElementById("productFilterRail");
-    const polarityBanner = document.getElementById("polarityBanner");
 
     function formatPrice(value) {
       const text = String(value || "").trim();
@@ -108,7 +103,6 @@
     // 플레이스홀더로 보여준다 — 상업 사이트는 로딩·빈 상태에서 완성도가 갈린다.
     function renderEmptyState() {
       filterRail.hidden = true;
-      polarityBanner.hidden = true;
       const placeholder = '<div class="card card-placeholder" aria-hidden="true"><div class="card-img"></div><div class="card-body"><p class="k">SIGNAL</p><h3>SYNCING</h3></div></div>';
       productListBox.innerHTML = placeholder.repeat(3);
       const status = document.createElement("p");
@@ -176,28 +170,15 @@
         const logic = window.EchoHomeLogic;
         const requestedPolarity = logic && logic.resolvePolarityQuery(new URLSearchParams(window.location.search).get("polarity"));
         const capsuleEntries = window.EchoCapsuleData || [];
-        const matchingProducts = requestedPolarity && logic
-          ? products.filter((product) => logic.resolveProductPolarity(product, capsuleEntries) === requestedPolarity)
-          : [];
         const visibleProducts = requestedPolarity && logic
           ? logic.filterProductsByPolarity(products, requestedPolarity, capsuleEntries)
           : products;
-
-        if (requestedPolarity) {
-          polarityBanner.hidden = false;
-          polarityBanner.textContent = matchingProducts.length
-            ? requestedPolarity + " 신호에 연결된 룩을 표시합니다."
-            : requestedPolarity + " 신호에 연결된 공개 룩이 없어 전체 룩을 표시합니다.";
-        } else {
-          polarityBanner.hidden = true;
-        }
 
         renderProductCards(visibleProducts);
         setupCategoryFilter(visibleProducts);
       })
       .catch(() => {
         filterRail.hidden = true;
-        polarityBanner.hidden = true;
         productListBox.innerHTML =
           '<p class="portfolio-status">SIGNAL LOST — 제품 기록을 불러오지 못했습니다. 로컬 정적 서버에서 다시 확인해 주세요.</p>';
       });
