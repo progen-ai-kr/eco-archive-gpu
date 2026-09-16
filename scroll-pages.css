@@ -1,0 +1,68 @@
+/* Products / Contact 전용. 기본 문서는 JS 없이도 읽을 수 있습니다. */
+:is(.products-page, .contact-page) main { overflow-x: clip; }
+[data-scroll] { --enter-x: 0px; --enter-y: 18px; --enter-delay: 0ms; }
+[data-scroll="left"] { --enter-x: -36px; --enter-y: 0px; }
+[data-scroll="right"] { --enter-x: 36px; --enter-y: 0px; }
+[data-scroll="detail"] { --enter-y: 12px; --enter-delay: 65ms; }
+[data-scroll="row"] { --enter-x: -22px; --enter-y: 0px; }
+.scroll-content { display: block; min-width: 0; }
+.has-scroll-motion [data-scroll] > .scroll-content {
+  opacity: .62;
+  transform: translate(var(--enter-x), var(--enter-y));
+  transition: transform 650ms cubic-bezier(.2,.7,.2,1) var(--enter-delay), opacity 260ms ease, filter 260ms ease;
+}
+.has-scroll-motion [data-scroll].scroll-seen > .scroll-content { transform: none; }
+.has-scroll-motion [data-scroll].scroll-focused > .scroll-content,
+.has-scroll-motion [data-scroll]:focus-within > .scroll-content,
+.has-scroll-motion .card:focus-within [data-scroll] > .scroll-content { opacity: 1; filter: none; transform: none; }
+.has-scroll-motion :is(h1, h2, .channel-code, .channel-stamp)[data-scroll] > .scroll-content { filter: blur(3px); }
+.has-scroll-motion :is(h1, h2, .channel-code, .channel-stamp)[data-scroll].scroll-focused > .scroll-content { filter: none; }
+.contact-page h1 > [data-scroll] { display: block; }
+.contact-page h1 > [data-scroll]:last-child { --enter-delay: 85ms; }
+
+/* 제품 목록은 공통 섹션의 전체 폭을 사용합니다. */
+.products-page .products-grid-section { min-width: 0; }
+.products-page .card-img > .scroll-content { height: 100%; }
+.products-page .card-img[data-scroll] { --enter-y: 20px; }
+.has-scroll-motion .card-img > .scroll-content { filter: blur(3px); opacity: .55; }
+.has-scroll-motion .card-img.scroll-focused > .scroll-content { filter: none; opacity: 1; }
+.products-page .card-body h3 { --enter-delay: 100ms; }
+.products-page .card-body > p:not(.k):not(.price) { --enter-delay: 140ms; }
+/* 가격과 제품 정보에는 흐림을 쓰지 않아 비교와 구매를 방해하지 않습니다. */
+.products-page .card .price { opacity: 1; }
+.products-page .archive-note { padding-block: clamp(56px, 9vw, 130px); }
+.products-page .archive-note .eyebrow { margin-bottom: 22px; }
+.products-page .archive-note h2 { max-width: 18ch; font-style: normal; line-height: 1.35; word-break: keep-all; }
+.products-page .archive-note-links { margin-top: 32px; }
+
+/* 이메일은 하나의 링크로 유지하고 줄바꿈만 허용합니다. */
+.contact-page .contact-mail-hero { padding-block: clamp(24px, 5vw, 72px); }
+.contact-invitation { color: var(--stage-ink-soft); font-size: clamp(16px, 1.6vw, 20px); word-break: keep-all; }
+.contact-page .contact-mail-link { display: block; width: fit-content; max-width: 100%; margin: 24px auto; font-size: clamp(28px, 5.5vw, 80px); line-height: 1.25; letter-spacing: -.055em; }
+.contact-mail-link > .scroll-content { overflow-wrap: anywhere; }
+.contact-page .contact-mail-link::after { width: 100%; transform: scaleX(1); transform-origin: left; transition: transform 850ms cubic-bezier(.2,.7,.2,1); }
+.has-scroll-motion .contact-mail-link:not(.scroll-focused):not(:focus-within):not(:hover)::after { transform: scaleX(0); }
+.contact-item > .scroll-content { display: flex; flex: 1; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 6px 14px; }
+.contact-page .contact-return { padding-block: clamp(32px, 6vw, 80px); }
+.contact-page .contact-item { position: relative; }
+.contact-item::after { position: absolute; bottom: -1px; left: 0; right: 0; height: 1px; background: var(--stage-ink-soft); content: ""; transform: scaleX(0); transform-origin: left; transition: transform 650ms ease; }
+.has-scroll-motion .contact-item.scroll-focused::after { transform: scaleX(1); }
+
+@media (min-width: 720px) {
+  .contact-item > .scroll-content { flex-wrap: nowrap; align-items: center; gap: 20px; }
+}
+@media (min-width: 1000px) and (min-height: 650px) {
+  [data-scroll="left"] { --enter-x: -64px; }
+  [data-scroll="right"] { --enter-x: 64px; }
+  .products-page .card-img[data-scroll-side="left"] { --enter-x: -28px; --enter-y: 0px; }
+  .products-page .card-img[data-scroll-side="right"] { --enter-x: 28px; --enter-y: 0px; }
+}
+@media (hover: hover) and (pointer: fine) {
+  .has-scroll-motion .card:hover [data-scroll] > .scroll-content,
+  .has-scroll-motion .contact-mail-link:hover > .scroll-content { filter: none; opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .has-scroll-motion [data-scroll] > .scroll-content { opacity: 1; filter: none; transform: none; transition: none; }
+  .contact-item::after { display: none; }
+  .has-scroll-motion .contact-mail-link::after { transform: none !important; transition: none; }
+}

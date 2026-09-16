@@ -1,6 +1,6 @@
 // 모바일 메뉴(햄버거 ☰) 열고 닫기
 const toggle = document.querySelector(".nav-toggle");
-const menu = document.querySelector(".nav-menu");
+const menu = document.querySelector(".nav-menu, .home-nav");
 
 function setMenuOpen(open) {
   menu.classList.toggle("open", open);
@@ -9,6 +9,7 @@ function setMenuOpen(open) {
 }
 
 if (toggle && menu) {
+  document.body.classList.add("has-mobile-menu");
   toggle.addEventListener("click", () => setMenuOpen(!menu.classList.contains("open")));
   // 메뉴 항목을 누르면 자동으로 닫히게
   menu.querySelectorAll("a").forEach((link) => {
@@ -21,6 +22,14 @@ if (toggle && menu) {
       toggle.focus();
     }
   });
+  // 메뉴 밖을 누르거나 초점을 옮기면 닫아 본문을 가리지 않습니다.
+  document.addEventListener("click", (event) => {
+    if (!menu.contains(event.target) && !toggle.contains(event.target)) setMenuOpen(false);
+  });
+  document.addEventListener("focusin", (event) => {
+    if (!menu.contains(event.target) && event.target !== toggle) setMenuOpen(false);
+  });
+  window.matchMedia("(min-width: 900px)").addEventListener("change", () => setMenuOpen(false));
 }
 
 // 음양 룰(.yy-rule) — 화면에 들어오면 경계 노드가 좌→우로 미끄러진다.
