@@ -15,6 +15,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@500;600;700&display=swap" />
   <link rel="stylesheet" href="style.css?v=20260902-design-1c" />
   <link rel="stylesheet" href="rich-content.css?v=20260826-rich-editor-1" />
+  <link rel="stylesheet" href="mobile.css?v=20260916-1" media="(max-width: 899px)" />
 </head>
 <body class="product-page">
 
@@ -59,7 +60,7 @@
   </dialog>
 
   <section class="section product-back">
-    <a href="products.html" class="btn ghost" aria-label="제품 목록으로 돌아가기">←</a>
+    <a href="products.html" class="btn ghost" aria-label="제품 목록으로 돌아가기">← <span class="mobile-back-label" hidden>제품 목록</span></a>
   </section>
 
   <footer class="footer">
@@ -72,8 +73,9 @@
     <p>© ECHO ARCHIVE. All rights reserved.</p>
   </footer>
 
-  <script src="script.js?v=20260902-design-1b"></script>
+  <script src="script.js?v=20260916-mobile-1"></script>
   <script src="catalog.js?v=20260826-rich-editor-1"></script>
+  <script src="scripts/mobile.js?v=20260916-1"></script>
   <script>
     const productId = new URLSearchParams(location.search).get("id");
 
@@ -234,7 +236,13 @@
       const rich = ProductCatalog.sanitizeRichText;
 
       if (section.type === "rich_text") {
-        return '<section class="product-block product-rich-text">' + rich(section.body) + "</section>";
+        const content = rich(section.body);
+        // 편집기에 빈 문단만 남은 경우에도 운영 데이터는 그대로 두고 빈 화면만 접습니다.
+        const parsed = document.createElement("template");
+        parsed.innerHTML = content;
+        const hasContent = parsed.content.textContent.replace(/\u200b/g, "").trim() ||
+          parsed.content.querySelector("img, video, iframe, audio, table, hr");
+        return hasContent ? '<section class="product-block product-rich-text">' + content + "</section>" : "";
       }
 
       if (section.type === "full_image") {
@@ -354,6 +362,7 @@
 
         setupProductCarousels();
         setupPurchaseDialog(product);
+        document.dispatchEvent(new Event("echo:product-rendered"));
         const relatedRule = document.querySelector(".yy-rule");
         if (relatedRule && "IntersectionObserver" in window) {
           new IntersectionObserver((entries, obs) => {

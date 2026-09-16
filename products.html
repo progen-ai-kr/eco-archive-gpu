@@ -14,6 +14,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@500;600;700&family=Playfair+Display:ital@1&display=swap" />
   <link rel="stylesheet" href="style.css?v=20260902-design-1c" />
+  <link rel="stylesheet" href="scroll-pages.css?v=20260916-1" />
+  <link rel="stylesheet" href="mobile.css?v=20260916-1" media="(max-width: 899px)" />
 </head>
 <body class="products-page">
 
@@ -36,35 +38,31 @@
 
     <section class="page-head channel-head">
       <div class="channel-head-top">
-        <p class="channel-code">CH.02 <strong>SIG_LOOKS</strong></p>
-        <p class="channel-stamp">PRODUCT ARCHIVE</p>
+        <p class="channel-code" data-scroll="left">CH.02 <strong>SIG_LOOKS</strong></p>
+        <p class="channel-stamp" data-scroll="right">PRODUCT ARCHIVE</p>
       </div>
-      <h1>ALL LOOKS</h1>
-    </section>
-
-    <section class="section products-toolbar-section" aria-label="카테고리 필터">
-      <div class="filter-rail" id="productFilterRail" hidden>
-        <p class="filter-rail-label">FILTER</p>
-        <div class="filter-chips" id="productFilterChips" role="group" aria-label="카테고리로 필터"></div>
-      </div>
+      <h1 data-scroll="left">ALL LOOKS</h1>
     </section>
 
     <!-- ===== 제품 목록 =====
          ★ 제품은 여기 HTML이 아니라 products.json 파일에서 관리합니다.
          products.json에 제품을 추가하면 이 목록과 상세 페이지에 자동으로 나타납니다. -->
-    <section class="section" aria-labelledby="productListTitle">
+    <section class="section products-grid-section" aria-labelledby="productListTitle">
       <!-- 카드 제목이 h3라서 h2가 없으면 h1 → h3로 건너뛴다. 화면에는 이미 "ALL LOOKS"
            헤드가 있어 중복이므로 스크린리더에만 읽히도록 .sr-only로 둔다. -->
       <h2 id="productListTitle" class="sr-only">제품 목록</h2>
-      <div class="grid" id="product-list" aria-live="polite">
+      <div class="grid" id="product-list" aria-live="polite" aria-busy="true">
         <!-- products.json 내용이 자동으로 채워집니다 -->
       </div>
+      <noscript><p>제품 목록을 보려면 JavaScript를 켜 주세요. 제품 문의는 <a href="mailto:echo_archive@gmail.com">이메일</a>로 보내실 수 있습니다.</p></noscript>
     </section>
 
     <div class="yy-rule" aria-hidden="true"><span class="yy-rule-node"></span></div>
 
     <section class="section archive-note">
-      <p class="archive-note-links">
+      <p class="eyebrow" data-scroll="left">THE ARCHIVE CONTINUES</p>
+      <h2 data-scroll="up">기록은 계속 이어집니다.</h2>
+      <p class="archive-note-links" data-scroll="up">
         <a href="portfolio.html" class="btn btn-yang"><span class="btn-yinyang-icon" aria-hidden="true"></span>SIG_RECORD 보기</a>
         <a href="contact.html" class="btn btn-yin"><span class="btn-yinyang-icon" aria-hidden="true"></span>문의하기</a>
       </p>
@@ -82,15 +80,21 @@
     <p>© ECHO ARCHIVE. All rights reserved.</p>
   </footer>
 
-  <script src="script.js?v=20260902-design-1b"></script>
+  <script src="script.js?v=20260916-mobile-1"></script>
   <!-- 홈 TV의 YIN/YANG 링크를 같은 기준으로 해석합니다. 제품 운영 데이터는 건드리지 않습니다. -->
   <script src="scripts/home-logic.js"></script>
   <script src="scripts/capsule-data.js"></script>
   <script src="catalog.js?v=20260826-rich-editor-1"></script>
+  <script src="scripts/scroll-pages.js?v=20260916-1"></script>
   <script>
     // 공개된 products.json 제품을 카드로 그립니다. 학생은 CSS로 자유롭게 디자인할 수 있습니다.
     const productListBox = document.getElementById("product-list");
-    const filterRail = document.getElementById("productFilterRail");
+
+    // 제품을 불러온 뒤 새 요소의 스크롤 초점을 연결합니다.
+    function notifyProductsRendered() {
+      productListBox.setAttribute("aria-busy", "false");
+      document.dispatchEvent(new Event("echo:products-rendered"));
+    }
 
     function formatPrice(value) {
       const text = String(value || "").trim();
@@ -99,21 +103,15 @@
       return Number(text).toLocaleString("ko-KR") + "원";
     }
 
-    // 빈 상태(제품이 아직 없을 때)도 텍스트 한 줄 대신 스캔라인이 흐르는 카드형
-    // 플레이스홀더로 보여준다 — 상업 사이트는 로딩·빈 상태에서 완성도가 갈린다.
+    // 빈 목록은 로딩 카드 대신 짧은 안내를 보여 푸터까지 바로 이동할 수 있게 합니다.
     function renderEmptyState() {
-      filterRail.hidden = true;
-      const placeholder = '<div class="card card-placeholder" aria-hidden="true"><div class="card-img"></div><div class="card-body"><p class="k">SIGNAL</p><h3>SYNCING</h3></div></div>';
-      productListBox.innerHTML = placeholder.repeat(3);
-      const status = document.createElement("p");
-      status.className = "portfolio-status";
-      status.textContent = "CAPSULE ARCHIVE SYNCING — 공개된 제품이 아직 없습니다.";
-      productListBox.after(status);
+      productListBox.innerHTML = '<p class="portfolio-status" role="status">공개된 제품이 아직 없습니다. 새로운 기록을 준비하고 있습니다.</p>';
+      notifyProductsRendered();
     }
 
     function renderProductCards(products) {
       productListBox.innerHTML = products
-        .map((p) => {
+        .map((p, index) => {
           const image = ProductCatalog.safeImageUrl(p.images && p.images[0]);
           const img = image
             ? '<img src="' + ProductCatalog.escapeHtml(image) + '" alt="' + ProductCatalog.escapeHtml(p.name) + '" loading="lazy" onerror="this.style.display=\'none\'" />'
@@ -124,41 +122,17 @@
           return (
             '<a class="card glass-panel glass-corners" data-category="' + ProductCatalog.escapeHtml(category.toLowerCase()) +
             '" href="product.html?id=' + encodeURIComponent(p.id) + '" aria-label="' + ProductCatalog.escapeHtml(p.name) + ' 자세히 보기">' +
-            '<div class="card-img"><span class="card-ep" aria-hidden="true"></span>' + img + "</div>" +
+            '<div class="card-img" data-scroll="image" data-scroll-side="' + (index % 2 ? 'right' : 'left') + '"><span class="card-ep" aria-hidden="true"></span>' + img + "</div>" +
             '<div class="card-body">' +
-            '<p class="k">' + ProductCatalog.escapeHtml(p.label || p.category || "") + "</p>" +
-            "<h3>" + ProductCatalog.escapeHtml(p.name) + "</h3>" +
-            "<p>" + ProductCatalog.escapeHtml(p.summary || "") + "</p>" + price +
+            '<p class="k" data-scroll="detail">' + ProductCatalog.escapeHtml(p.label || p.category || "") + "</p>" +
+            '<h3 data-scroll="detail">' + ProductCatalog.escapeHtml(p.name) + "</h3>" +
+            '<p data-scroll="detail">' + ProductCatalog.escapeHtml(p.summary || "") + "</p>" + price +
             "</div>" +
             "</a>"
           );
         })
         .join("");
-    }
-
-    function setupCategoryFilter(products) {
-      const categories = [...new Set(products.map((product) => String(product.category || "").trim()).filter(Boolean))];
-      if (categories.length < 2) {
-        filterRail.hidden = true;
-        return;
-      }
-
-      filterRail.hidden = false;
-      const filters = [{ key: "", label: "ALL" }].concat(categories.map((category) => ({ key: category.toLowerCase(), label: category })));
-      function selectCategory(key) {
-        renderProductCards(key ? products.filter((product) => String(product.category || "").trim().toLowerCase() === key) : products);
-        filterRail.querySelectorAll("button").forEach((button) => {
-          button.setAttribute("aria-pressed", String(button.dataset.category === key));
-        });
-      }
-
-      filterRail.querySelector("#productFilterChips").innerHTML = filters.map((filter, index) =>
-        '<button class="filter-chip" type="button" data-category="' + ProductCatalog.escapeHtml(filter.key) +
-        '" aria-pressed="' + String(index === 0) + '">' + ProductCatalog.escapeHtml(filter.label) + "</button>"
-      ).join("");
-      filterRail.querySelectorAll("button").forEach((button) => {
-        button.addEventListener("click", () => selectCategory(button.dataset.category));
-      });
+      notifyProductsRendered();
     }
 
     ProductCatalog.loadVisibleProducts()
@@ -175,12 +149,13 @@
           : products;
 
         renderProductCards(visibleProducts);
-        setupCategoryFilter(visibleProducts);
       })
       .catch(() => {
-        filterRail.hidden = true;
         productListBox.innerHTML =
-          '<p class="portfolio-status">SIGNAL LOST — 제품 기록을 불러오지 못했습니다. 로컬 정적 서버에서 다시 확인해 주세요.</p>';
+          '<div class="catalog-feedback"><p class="portfolio-status" role="status">제품을 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.</p>' +
+          '<button class="btn ghost" type="button" data-retry-products>다시 불러오기</button></div>';
+        productListBox.querySelector("[data-retry-products]").addEventListener("click", () => location.reload());
+        notifyProductsRendered();
       });
   </script>
 </body>

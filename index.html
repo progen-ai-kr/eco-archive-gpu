@@ -14,6 +14,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@500;600;700&display=swap" />
   <link rel="stylesheet" href="style.css?v=20260908-y2k-1" />
+  <link rel="stylesheet" href="mobile.css?v=20260916-1" media="(max-width: 899px)" />
 </head>
 <body class="home-page">
   <a class="skip-link" href="#mainContent">시즌 신호로 건너뛰기</a>
@@ -63,10 +64,8 @@
           <img class="home-brand-mark" src="images/brand/echo-archive-logo.png" alt="ECHO ARCHIVE" />
           <span class="home-brand-star" aria-hidden="true">✦</span>
         </a>
-        <!-- 4개 메뉴를 모두 노출한다 — 데스크톱은 TV 화면으로도 About/Portfolio에
-             갈 수 있지만, 모바일에서는 TV가 2x2로 재배치되며 그 경로가 좁아져
-             여기 없으면 두 페이지에 도달할 방법이 사실상 사라진다. -->
-        <nav class="home-nav" aria-label="주요 메뉴">
+        <button class="nav-toggle home-menu-toggle" aria-label="메뉴 열기" aria-expanded="false" aria-controls="primaryNav">☰</button>
+        <nav class="home-nav" id="primaryNav" aria-label="주요 메뉴">
           <a href="about.html">ABOUT</a>
           <a href="products.html">ALL LOOKS</a>
           <a href="portfolio.html">PORTFOLIO</a>
@@ -80,6 +79,7 @@
         <div class="tv-wall">
 
           <a class="tv" data-tv-role="portfolio" data-tv-index="1" href="portfolio.html" aria-label="음양 시즌 포트폴리오 보기" title="PORTFOLIO — 음양 시즌 포트폴리오">
+            <span class="mobile-tv-label" hidden aria-hidden="true">포트폴리오</span>
             <span class="tv-decor tv-decor-antenna" aria-hidden="true">
               <!-- 크롬 소켓 위로 왼쪽=천사 날개(흰색), 오른쪽=악마 날개(광택 검정)가 뻗는다.
                    각 날개는 [본체 그라데이션 → 스페큘러 하이라이트 → 리브] 순으로 겹쳐 입체감을 만든다. -->
@@ -171,6 +171,7 @@
           </button>
 
           <a class="tv" data-tv-role="yang" data-tv-index="3" href="products.html?polarity=YANG" aria-label="YANG 룩 보기" title="YANG — 제품 보기">
+            <span class="mobile-tv-label" hidden aria-hidden="true">양 · 제품 보기</span>
             <span class="tv-decor tv-decor-wing-back" aria-hidden="true">
               <!-- 천사 날개: 깃털 18장을 3열(칼깃→둘째깃→덮깃)로 겹쳐 배치한다.
                    뒤쪽 열을 먼저 그려야 앞쪽 열이 위로 겹쳐 실제 날개의 층이 생긴다. -->
@@ -265,6 +266,7 @@
           </a>
 
           <a class="tv" data-tv-role="about" data-tv-index="4" href="about.html" aria-label="브랜드 소개 보기" title="ABOUT — 브랜드 소개">
+            <span class="mobile-tv-label" hidden aria-hidden="true">브랜드 소개</span>
             <span class="tv-controls" aria-hidden="true">
               <span class="tv-led"></span>
               <span class="tv-knobs"><span class="tv-knob"></span><span class="tv-knob"></span></span>
@@ -282,6 +284,7 @@
           </a>
 
           <a class="tv" data-tv-role="yin" data-tv-index="5" href="products.html?polarity=YIN" aria-label="YIN 룩 보기" title="YIN — 제품 보기">
+            <span class="mobile-tv-label" hidden aria-hidden="true">음 · 제품 보기</span>
             <span class="tv-decor tv-decor-tail" aria-hidden="true">
               <!-- 악마 꼬리: TV 뒤에서 나와 S자로 휘어 올라가고 끝에 스페이드가 달린다.
                    케이블 위쪽에 가는 하이라이트를 한 줄 얹어 원통(광택 튜브)처럼 보이게 한다. -->
@@ -377,6 +380,7 @@
   </main>
 
   <signal-transition></signal-transition>
+  <script src="script.js?v=20260916-mobile-1"></script>
   <script src="scripts/motion.js?v=20260908-y2k-1"></script>
   <script src="scripts/home-logic.js?v=20260910-bgm-1"></script>
   <script src="scripts/components/signal-transition.js?v=20260908-y2k-1"></script>

@@ -81,12 +81,10 @@ test("음양 룰(.yy-rule)은 섹션 구분선으로 존재하고 노드 요소�
   }
 });
 
-test("products.html은 카테고리 필터 자리와 EP 배지를 위한 카드 구조를 갖는다", () => {
+test("products.html은 필터 없이 EP 배지와 홈 극성 링크를 유지한다", () => {
   const html = readPage("products.html");
-  assert.match(html, /id="productFilterRail"/, "필터 레일 컨테이너가 있어야 한다");
-  assert.match(html, /id="productFilterChips"/, "필터 칩 컨테이너가 있어야 한다");
+  assert.doesNotMatch(html, /productFilterRail|productFilterChips|setupCategoryFilter/, "삭제한 카테고리 필터가 없어야 한다");
   assert.match(html, /card-ep/, "카드에 EP 배지 클래스를 렌더하는 코드가 있어야 한다");
-  assert.match(html, /function setupCategoryFilter\(products\)/, "카테고리 필터가 실제 제품 목록을 다시 렌더해야 한다");
   assert.match(html, /scripts\/home-logic\.js/, "홈의 YIN\/YANG 쿼리를 해석하는 로직을 불러와야 한다");
   assert.match(html, /new URLSearchParams\(window\.location\.search\)/, "YIN\/YANG 링크의 polarity 쿼리를 읽어야 한다");
 });

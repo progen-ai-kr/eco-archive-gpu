@@ -19,7 +19,7 @@ const assert=require('node:assert/strict');
   for(let i=0;i<10;i++){await p.evaluate(y=>scrollTo({top:y,behavior:'instant'}),end-middle+(i%2?5:-5));await p.waitForTimeout(40);assert(await e.evaluate(e=>e.classList.contains('is-focused')));}
   await p.evaluate(y=>scrollTo({top:y,behavior:'instant'}),end-bounds.keep+20);await p.waitForTimeout(400);
   assert(!(await e.evaluate(e=>e.classList.contains('is-focused'))));
-  assert.match(await e.locator('.about-focus').evaluate(e=>getComputedStyle(e).filter),width<900?/6px/:/14px/);
+  assert.match(await e.locator('.about-focus').evaluate(e=>getComputedStyle(e).filter),width<900?/none|blur\(0px\)/:/14px/);
   await e.evaluate(e=>e.scrollIntoView({block:'center',behavior:'instant'}));await p.waitForTimeout(250);
   assert.equal(await e.locator('.about-focus').evaluate(e=>getComputedStyle(e).filter),'blur(0px)');
   results.push(width+': 진입/유지/이탈 흐림/역스크롤, 10회 왕복 통과');
