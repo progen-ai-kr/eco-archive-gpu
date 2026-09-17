@@ -155,6 +155,21 @@
       render();
     }
 
+    // 브라우저가 스스로 재생을 멈추는 경우(탭 정리, 오디오 포커스 상실, 디코딩 실패)에도
+    // 감시 타이머를 정리하고 버튼을 꺼짐으로 되돌린다. 그러지 않으면 100ms 타이머가
+    // 계속 돌면서 "배경음악 켜짐"이라고 잘못 안내한다.
+    if (audio) {
+      var syncStopped = function () {
+        if (!state.pressed && loopGuardId === null) return;
+        stopLoopGuard();
+        state = logic.initialBgmState();
+        render();
+      };
+      audio.addEventListener("pause", syncStopped);
+      audio.addEventListener("ended", syncStopped);
+      audio.addEventListener("error", syncStopped);
+    }
+
     button.addEventListener("click", function () {
       if (!audio) {
         // 상태 전이를 만들지 않는다 — aria-pressed가 true→false로 튀면 "눌렀는데 꺼졌다"로

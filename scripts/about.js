@@ -12,11 +12,14 @@
   const links = Array.from(progress.querySelectorAll("a[href^='#scene-']"));
   const count = progress.querySelector(".about-progress-count");
   const episode = document.querySelector("#scene-episode");
-  const stage = episode.querySelector(".about-archive-stage");
-  const track = episode.querySelector(".about-archive-track");
-  const viewport = episode.querySelector(".about-archive-window");
+  const stage = episode && episode.querySelector(".about-archive-stage");
+  const track = episode && episode.querySelector(".about-archive-track");
+  const viewport = episode && episode.querySelector(".about-archive-window");
+  // 아카이브 가로 스크롤은 위 4개가 모두 있을 때만 씁니다. 하나라도 없으면
+  // 나머지 초점/진행 표시는 그대로 두고 이 연출만 건너뜁니다.
+  const hasArchive = Boolean(episode && stage && track && viewport);
   // 가로로 잘린 카드 대신 같은 높이의 기준선을 관찰해 좌우 노출에 따른 흐림을 없앱니다.
-  const archiveProxies = ["image", "caption"].map(function (kind) {
+  const archiveProxies = !hasArchive ? [] : ["image", "caption"].map(function (kind) {
     const proxy = document.createElement("span");
     proxy.className = "about-archive-proxy";
     proxy.setAttribute("aria-hidden", "true");
@@ -76,7 +79,7 @@
   });
 
   function updateProgress(scene) {
-    count.textContent = scene.dataset.scene + " / " + String(scenes.length).padStart(2, "0");
+    if (count) count.textContent = scene.dataset.scene + " / " + String(scenes.length).padStart(2, "0");
     scenes.forEach(function (item) { item.classList.toggle("is-current", item === scene); });
     links.forEach(function (link) {
       if (link.hash === "#" + scene.id) link.setAttribute("aria-current", "location");
@@ -85,6 +88,7 @@
   }
 
   function configureArchive(enabled) {
+    if (!hasArchive) return;
     episode.classList.remove("has-archive-scroll");
     episode.style.removeProperty("--archive-travel");
     episode.style.removeProperty("--archive-distance");
@@ -102,6 +106,7 @@
     const stageRect = stage.getBoundingClientRect();
     archiveProxies.forEach(function (proxy) {
       const sample = track.querySelector(proxy.dataset.kind === "image" ? ".about-image-anchor" : "figcaption");
+      if (!sample) return;
       const rect = sample.getBoundingClientRect();
       proxy.style.top = rect.top - stageRect.top + "px";
       proxy.style.height = rect.height + "px";
@@ -139,7 +144,7 @@
       const enter = intersects(rect, entryBand);
       const keep = intersects(rect, keepBand);
       states.set(unit, { enter: enter, keep: keep });
-      const proxy = episode.classList.contains("has-archive-scroll") && unit.closest(".about-archive-card")
+      const proxy = hasArchive && episode.classList.contains("has-archive-scroll") && unit.closest(".about-archive-card")
         ? archiveProxies[unit.classList.contains("about-image-anchor") ? 0 : 1] : unit;
       if (!observedUnits.has(proxy)) observedUnits.set(proxy, []);
       observedUnits.get(proxy).push(unit);
@@ -208,14 +213,16 @@
   });
   window.addEventListener("resize", scheduleConfigure);
   if (window.visualViewport) window.visualViewport.addEventListener("resize", scheduleConfigure);
-  reducedMotion.addEventListener("change", configure);
+  // 예약된 프레임과 겹치지 않도록 다른 이벤트와 같은 경로로 모읍니다.
+  reducedMotion.addEventListener("change", scheduleConfigure);
   document.querySelectorAll(".about-page main img").forEach(function (img) {
     if (!img.complete) img.addEventListener("load", scheduleConfigure, { once: true });
   });
   if (document.fonts) document.fonts.ready.then(scheduleConfigure);
   if (typeof ResizeObserver === "function") {
     const sizeObserver = new ResizeObserver(scheduleConfigure);
-    sizeObserver.observe(episode.querySelector(".about-scene-copy"));
+    const copy = episode && episode.querySelector(".about-scene-copy");
+    if (copy) sizeObserver.observe(copy);
     sizeObserver.observe(progress);
   }
   configure();
