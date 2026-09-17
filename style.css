@@ -1132,10 +1132,12 @@ body.transition-active .tv:not(.is-focused) { opacity: 0; filter: brightness(.2)
     font-size: 12px;
   }
   /* 44px 터치 타깃은 모바일 전용 — 데스크톱에서는 푸터만 두껍게 만든다.
-     .footer .logo(0,2,0)가 .footer a(0,1,1)보다 우선하므로 로고도 함께 지정한다. */
+     .footer .logo(0,2,0)가 .footer a(0,1,1)보다 우선하므로 로고도 함께 지정한다.
+     다만 0으로 두면 링크 높이가 16px까지 내려가 WCAG 2.5.8(최소 24px)에 미달하므로
+     24px를 하한으로 둔다. 푸터가 두꺼워지지 않으면서 클릭 실수를 줄인다. */
   .footer a,
   .footer .logo {
-    min-height: 0;
+    min-height: 24px;
   }
   .footer a {
     text-decoration: underline;

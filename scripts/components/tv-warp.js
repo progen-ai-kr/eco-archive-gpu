@@ -331,7 +331,17 @@
     if (active) { event.preventDefault(); event.stopImmediatePropagation(); }
   }, true);
   document.addEventListener("keydown", event => {
-    if (active && ["Tab", "Enter", " ", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(event.key)) {
+    if (!active) return;
+    // Escape로 언제든 전환을 취소하고 홈으로 돌아옵니다.
+    // 이 탈출구가 없으면 이동이 지연될 때(느린 통신·복구 타임아웃 12초) 키보드·
+    // 스크린리더 사용자가 그동안 아무 조작도 할 수 없습니다.
+    if (event.key === "Escape") {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      reset();
+      return;
+    }
+    if (["Tab", "Enter", " ", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(event.key)) {
       event.preventDefault();
       event.stopImmediatePropagation();
     }
