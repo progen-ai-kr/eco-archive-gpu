@@ -3,19 +3,22 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>포트폴리오 — ECHO ARCHIVE</title>
-  <meta name="description" content="ECHO ARCHIVE의 작업 사례를 소개합니다." />
-  <meta property="og:title" content="포트폴리오 — ECHO ARCHIVE" />
-  <meta property="og:description" content="ECHO ARCHIVE의 작업 사례를 소개합니다." />
+  <title>ARCHIVE — ECHO ARCHIVE</title>
+  <meta name="description" content="ECHO ARCHIVE의 아카이브를 소개합니다." />
+  <meta property="og:title" content="ARCHIVE — ECHO ARCHIVE" />
+  <meta property="og:description" content="ECHO ARCHIVE의 아카이브를 소개합니다." />
   <meta property="og:image" content="images/brand/echo-archive-logo.png" />
   <meta property="og:type" content="website" />
   <link rel="icon" href="images/brand/echo-archive-logo.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@500;600;700&display=swap" />
-  <link rel="stylesheet" href="style.css?v=20260902-design-1c" />
+  <link rel="stylesheet" href="style.css?v=20260917-tv-warp-1" />
   <link rel="stylesheet" href="rich-content.css?v=20260826-rich-editor-1" />
   <link rel="stylesheet" href="mobile.css?v=20260916-1" media="(max-width: 899px)" />
+  <link rel="stylesheet" href="archive.css?v=20260917-scroll-3" />
+  <link rel="stylesheet" href="transition.css?v=20260917-tv-warp-2" />
+  <script src="scripts/transition-entry.js?v=20260917-tv-warp-2"></script>
 </head>
 <body class="portfolio-page">
 
@@ -27,8 +30,8 @@
       <button class="nav-toggle" aria-label="메뉴 열기" aria-expanded="false" aria-controls="primaryNav">☰</button>
       <nav class="nav-menu" id="primaryNav" aria-label="주요 메뉴">
         <a href="about.html" data-ch="01">About</a>
-        <a href="products.html" data-ch="02">All Looks</a>
-        <a href="portfolio.html" data-ch="04" class="active" aria-current="page">Portfolio</a>
+        <a href="products.html" data-ch="02">Shop</a>
+        <a href="portfolio.html" data-ch="04" class="active" aria-current="page">Archive</a>
         <a href="contact.html" data-ch="05">Contact</a>
       </nav>
     </div>
@@ -36,29 +39,34 @@
 
   <main id="mainContent">
 
-    <section class="page-head channel-head">
+    <section class="page-head channel-head record-intro" aria-labelledby="archiveTitle">
       <div class="channel-head-top">
         <p class="channel-code">CH.04 <strong>SIG_RECORD</strong></p>
         <p class="channel-stamp">2026 F/W — YIN &amp; YANG</p>
       </div>
-      <h1>PORTFOLIO</h1>
+      <h1 id="archiveTitle"><span class="record-intro-motion record-intro-title">ARCHIVE<span class="record-title-star" aria-hidden="true">✦</span></span></h1>
+      <div class="record-intro-bottom">
+        <p class="record-intro-copy"><span class="record-intro-motion record-intro-line">서로 다른 모습이</span><span class="record-intro-motion record-intro-line">하나의 기록으로.</span></p>
+        <a class="record-start" href="#archiveRecords">기록 살펴보기 <span aria-hidden="true">↓</span></a>
+      </div>
+      <p class="record-edition" aria-hidden="true">ECHO ARCHIVE / COLLECTION RECORDS</p>
     </section>
 
-    <section class="section">
+    <section id="archiveRecords" class="section record-reader" aria-label="컬렉션 아카이브">
       <!-- 브랜드 담당자가 관리자에서 작성한 한 개의 포트폴리오 문서가 여기에 표시됩니다.
            학생은 이 컨테이너와 portfolio.js를 유지하고 CSS로 UI만 디자인하세요. -->
-      <article id="portfolioContent" class="portfolio-content glass-panel glass-corners" aria-live="polite">
+      <article id="portfolioContent" class="portfolio-content" aria-live="polite">
         <p class="portfolio-status">포트폴리오를 불러오는 중입니다.</p>
       </article>
     </section>
 
     <div class="yy-rule" aria-hidden="true"><span class="yy-rule-node"></span></div>
 
-    <section class="section archive-note">
-      <p class="eyebrow">NEXT SIGNAL</p>
-      <h2>다음 기록도<br />궁금하신가요?</h2>
+    <section class="section archive-note record-outro">
+      <p class="eyebrow" data-record-reveal>NEXT CHAPTER</p>
+      <h2 data-record-reveal>기록에서,<br />당신의 옷장으로.</h2>
       <p class="archive-note-links">
-        <a href="products.html" class="btn ghost">SIG_LOOKS 보기</a>
+        <a href="products.html" class="btn ghost">SHOP 살펴보기</a>
         <a href="contact.html" class="btn ghost">협업 문의하기</a>
       </p>
     </section>
@@ -69,7 +77,7 @@
     <a href="index.html" class="logo"><img src="images/brand/echo-archive-logo.png" alt="ECHO ARCHIVE 홈" /></a>
     <p class="biz">ECHO ARCHIVE / 방려명</p>
     <p>
-      <a href="https://instagram.com/echo_archive" target="_blank" rel="noopener noreferrer">@echo_archive</a>
+      <a href="https://instagram.com/echo___archive" target="_blank" rel="noopener noreferrer">@echo___archive</a>
       · <a href="mailto:echo_archive@gmail.com">echo_archive@gmail.com</a>
     </p>
     <p>© ECHO ARCHIVE. All rights reserved.</p>
@@ -77,20 +85,8 @@
 
   <script src="catalog.js?v=20260826-rich-editor-1"></script>
   <script src="portfolio.js"></script>
-  <script>
-    const portfolioRoot = document.getElementById("portfolioContent");
-    const improvePortfolioAlt = () => {
-      portfolioRoot.querySelectorAll("img").forEach((image, index) => {
-        const alt = String(image.alt || "").trim();
-        if (!alt || /\.(?:jpe?g|png|webp|gif)$/i.test(alt)) {
-          image.alt = "ECHO ARCHIVE 포트폴리오 이미지 " + (index + 1);
-        }
-      });
-    };
-    new MutationObserver(improvePortfolioAlt).observe(portfolioRoot, { childList: true, subtree: true });
-    improvePortfolioAlt();
-  </script>
   <script src="script.js?v=20260916-mobile-1"></script>
   <script src="scripts/mobile.js?v=20260916-1"></script>
+  <script src="scripts/archive-scroll.js?v=20260917-scroll-3"></script>
 </body>
 </html>

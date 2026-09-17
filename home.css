@@ -21,9 +21,17 @@
 .archive-canvas {
   position: relative;
   z-index: 1;
+  display: flex;
+  flex-direction: column;
   width: 100%;
   min-height: 100svh;
   margin-inline: auto;
+}
+.archive-scene {
+  position: relative;
+  flex-shrink: 0;
+  width: 100%;
+  margin-block: auto;
   aspect-ratio: 2 / 3;
 }
 .archive-artwork {
@@ -37,11 +45,19 @@
   pointer-events: none;
 }
 .archive-artwork img { display: block; width: 100%; height: auto; aspect-ratio: 2 / 3; }
-.archive-header { position: absolute; z-index: 30; inset: 0; pointer-events: none; }
+.archive-header {
+  position: relative;
+  z-index: 30;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 44px;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 12px 8px;
+  padding: max(20px, env(safe-area-inset-top)) 5% 12px;
+  pointer-events: none;
+}
 .archive-brand {
-  position: absolute;
-  top: 5%;
-  left: 7%;
+  position: static;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -53,9 +69,7 @@
 .archive-wordmark { font: 500 clamp(20px, 5.1vw, 30px)/1 var(--font-archive); letter-spacing: .12em; white-space: nowrap; }
 .archive-brand-star { font-size: clamp(16px, 4vw, 22px); line-height: 1; }
 .art-home .archive-menu-toggle {
-  position: absolute;
-  top: 5%;
-  right: 5%;
+  position: static;
   display: none;
   width: 44px;
   height: 44px;
@@ -66,10 +80,8 @@
 }
 .art-home.has-mobile-menu .archive-menu-toggle { display: block; }
 .art-home .archive-nav {
-  position: absolute;
-  top: calc(5% + 54px);
-  left: 7%;
-  right: 7%;
+  position: static;
+  grid-column: 1 / -1;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 0;
@@ -103,10 +115,10 @@
 .art-home .tv::before, .art-home .tv::after { content: none; display: none; }
 .art-home .tv:hover, .art-home .tv.is-focused, .art-home .tv:active { transform: none; filter: none; }
 .art-home .tv:focus-visible { outline: 3px solid var(--focus-ring); outline-offset: 5px; }
-/* 모바일은 TV 4개를 2×2로 쌓고 음악은 아래 원형 버튼으로 분리했습니다.
-   좌표는 echo-mobile.png(1024×1536)의 화면 유리 경계를 실측한 값입니다. */
+/* 모바일은 동일한 크기의 TV 4개를 2×2로 배치합니다.
+   ABOUT 화면도 본체 높이 보정에 맞춰 클릭 영역을 넓힙니다. */
 .art-home .tv[data-tv-role="portfolio"] { --tv-x: 22.07%; --tv-y: 29.23%; --tv-w: 26.17%; --tv-h: 15.36%; }
-.art-home .tv[data-tv-role="about"] { --tv-x: 52.54%; --tv-y: 29.10%; --tv-w: 25.10%; --tv-h: 13.80%; }
+.art-home .tv[data-tv-role="about"] { --tv-x: 52.54%; --tv-y: 29.23%; --tv-w: 25.10%; --tv-h: 15.36%; }
 .art-home .tv[data-tv-role="yang"] { --tv-x: 20.90%; --tv-y: 49.74%; --tv-w: 26.66%; --tv-h: 15.95%; }
 .art-home .tv[data-tv-role="yin"] { --tv-x: 52.93%; --tv-y: 49.74%; --tv-w: 26.95%; --tv-h: 15.95%; }
 .archive-screen {
@@ -217,10 +229,10 @@
    버튼 그림에 이미 크롬 테두리가 포함되어 있습니다. */
 .archive-bgm-button .archive-screen { display: none; }
 .archive-footer {
-  position: absolute;
-  left: 5%;
-  right: 5%;
-  bottom: 2%;
+  position: relative;
+  flex-shrink: 0;
+  margin: 0 5%;
+  padding-bottom: max(16px, env(safe-area-inset-bottom));
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -241,6 +253,7 @@
   /* 배경이 포함된 파노라마 한 장으로 채워 이미지 사이의 경계를 없앱니다. */
   .archive-backdrop { display: none; }
   .archive-canvas {
+    display: block;
     width: max(100%, calc(100dvh * 1.12 * 3));
     /* flex 항목은 기본적으로 줄어들 수 있어 위에서 키운 폭이 다시 깎인다 — 고정한다. */
     flex-shrink: 0;
@@ -248,15 +261,17 @@
     margin-inline: 0;
     aspect-ratio: 3 / 1;
   }
+  .archive-scene { height: 100%; margin: 0; aspect-ratio: 3 / 1; }
   .archive-artwork { position: static; transform: none; mask-image: none; }
   .art-home .archive-hotspots { inset: 0; height: 100%; aspect-ratio: auto; transform: none; }
   .archive-artwork img { aspect-ratio: 3 / 1; }
   /* PC 글자와 버튼은 이미지에서 분리해 실제 HTML 컴포넌트로 표시합니다. */
-  .archive-header { position: fixed; inset: 0; }
-  .archive-brand { top: max(20px, env(safe-area-inset-top)); left: 4.8%; width: auto; height: auto; padding: 0; border: 0; background: transparent; }
+  .archive-header { position: fixed; inset: 0; display: block; padding: 0; }
+  .archive-brand { position: absolute; top: max(20px, env(safe-area-inset-top)); left: 4.8%; width: auto; height: auto; padding: 0; border: 0; background: transparent; }
   .archive-wordmark { font-size: clamp(22px, 2.05vw, 34px); }
   .art-home.has-mobile-menu .archive-menu-toggle { display: none; }
   .art-home .archive-nav, .art-home.has-mobile-menu .archive-nav, .art-home.has-mobile-menu .archive-nav.open {
+    position: absolute;
     top: max(20px, env(safe-area-inset-top));
     right: 4.8%;
     bottom: auto;
@@ -298,7 +313,7 @@
   .art-home .tv[data-tv-role="about"] { --tv-x: 46.6%; --tv-y: 59.2%; --tv-w: 7.8%; --tv-h: 15.9%; }
   .art-home .tv[data-tv-role="yin"] { --tv-x: 56.4%; --tv-y: 59.2%; --tv-w: 7.7%; --tv-h: 15.9%; }
   .archive-tv-label { font-size: clamp(9px, 1vw, 13px); }
-  .archive-footer { position: fixed; z-index: 30; right: 4.8%; bottom: max(16px, env(safe-area-inset-bottom)); left: 4.8%; display: flex; pointer-events: none; }
+  .archive-footer { position: fixed; z-index: 30; right: 4.8%; bottom: max(16px, env(safe-area-inset-bottom)); left: 4.8%; display: flex; margin: 0; padding: 0; pointer-events: none; }
   .archive-footer-copy { pointer-events: auto; }
   .archive-admin { position: static; width: auto; height: auto; color: var(--stage-ink-soft); pointer-events: auto; }
 }

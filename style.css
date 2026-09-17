@@ -5,6 +5,8 @@
   /* 홈 렌더 이미지와 맞추는 배경·글꼴. 홈 전용 CSS도 이 토큰만 참조합니다. */
   --home-matte: #f7f7f7;
   --home-sky: #e4edf9;
+  --warp-white: #ffffff;
+  --warp-glow: rgba(195, 228, 255, .8);
   --home-screen-mid: #252d32;
   --home-screen-edge: #101619;
   --home-screen-light: rgba(230, 245, 255, .14);

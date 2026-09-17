@@ -1,0 +1,77 @@
+/* 전환 전용 레이어: 홈페이지 레이아웃과 독립적으로 뷰포트를 덮습니다. */
+.tv-warp {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483000;
+  display: block;
+  overflow: hidden;
+  isolation: isolate;
+  pointer-events: auto;
+  touch-action: none;
+  background: var(--home-sky);
+}
+.tv-warp[hidden] { display: none; }
+.tv-warp-world, .tv-warp-gpu, .tv-warp-lines, .tv-warp-white {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.tv-warp-world { z-index: 0; background: var(--home-sky); will-change: transform; }
+.tv-warp-world img { position: absolute; max-width: none; margin: 0; }
+.tv-warp-backdrop { position: absolute; }
+.tv-warp-gpu { z-index: 1; opacity: 0; }
+.tv-warp-lines { z-index: 2; }
+.tv-warp-spark {
+  position: absolute;
+  z-index: 3;
+  left: var(--spark-x);
+  top: var(--spark-y);
+  width: min(80vmin, 650px);
+  aspect-ratio: 1;
+  opacity: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--warp-white) 0 3%, var(--warp-glow) 9%, transparent 48%);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+.tv-warp-spark::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-conic-gradient(transparent 0deg 16deg, var(--warp-white) 17deg 18deg, transparent 19deg 30deg);
+  mask-image: radial-gradient(circle, transparent 5%, var(--warp-white) 10%, transparent 62%);
+}
+.tv-warp-white { z-index: 4; background: var(--warp-white); opacity: 0; }
+.tv-warp.is-covered { background: var(--warp-white); }
+.tv-warp.is-covered > :not(.tv-warp-white) { visibility: hidden; }
+.tv-warp.is-covered .tv-warp-white { opacity: 1; }
+html.warp-outgoing { overflow: hidden; }
+html.warp-outgoing body { cursor: progress; }
+/* 확대 레이어가 교체되더라도 원래 홈이 밑에서 비쳐 보이지 않게 합니다.
+   visibility만 바꿔 원래 배치와 스크롤 위치는 유지합니다. */
+html.warp-outgoing .archive-stage { visibility: hidden; }
+html.warp-outgoing .archive-header,
+html.warp-outgoing .archive-footer,
+html.warp-outgoing .archive-bgm-button,
+html.warp-outgoing .archive-tv-label { visibility: hidden; }
+
+/* 도착 페이지의 첫 페인트부터 흰색을 유지합니다. 직접 방문 시에는 생성되지 않습니다. */
+html.warp-arriving::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 2147483001;
+  background: var(--warp-white);
+  opacity: 1;
+  pointer-events: auto;
+  transition: opacity 560ms ease-out;
+  /* 스크립트가 중간에 멈춰도 화면과 입력을 영구적으로 가리지 않습니다. */
+  animation: warp-entry-release 560ms 2200ms forwards;
+}
+html.warp-arriving.warp-revealing::after { opacity: 0; pointer-events: none; animation: none; }
+@keyframes warp-entry-release { to { opacity: 0; visibility: hidden; pointer-events: none; } }
+@media (prefers-reduced-motion: reduce) {
+  html.warp-arriving::after { transition-duration: 240ms; }
+}

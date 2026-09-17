@@ -7,11 +7,12 @@
   <meta name="description" content="서로 다른 모습, 같은 영혼. 다섯 개의 크롬 TV에서 ECHO ARCHIVE의 컬렉션과 이야기를 만나보세요." />
   <meta property="og:title" content="ECHO ARCHIVE" />
   <meta property="og:description" content="다섯 개의 크롬 TV로 탐색하는 ECHO ARCHIVE" />
-  <meta property="og:image" content="images/home/echo-desktop-panorama-v3.png" />
+  <meta property="og:image" content="images/home/echo-desktop-hd-v4.png" />
   <meta property="og:type" content="website" />
   <link rel="icon" href="images/brand/echo-archive-logo.png" />
-  <link rel="stylesheet" href="style.css?v=20260917-layered-home-2" />
-  <link rel="stylesheet" href="home.css?v=20260917-panorama-4" />
+  <link rel="stylesheet" href="style.css?v=20260917-tv-warp-1" />
+  <link rel="stylesheet" href="home.css?v=20260917-mobile-hd-5" />
+  <link rel="stylesheet" href="transition.css?v=20260917-tv-warp-2" />
 </head>
 <body class="home-page art-home">
   <a class="skip-link" href="#mainContent">TV 아카이브로 건너뛰기</a>
@@ -21,12 +22,6 @@
     <div class="archive-canvas">
       <!-- [작성서 04 홈] 데스크톱은 배경까지 이어진 파노라마 한 장을 사용합니다.
            TV 장면과 클릭 영역은 같은 비율로 확대하고 글자는 별도로 표시합니다. -->
-      <picture class="archive-artwork">
-        <source media="(min-width: 720px)" srcset="images/home/echo-desktop-panorama-v3.png" width="2172" height="724" />
-        <img src="images/home/echo-mobile.png" width="1024" height="1536" fetchpriority="high" decoding="async"
-          alt="구름빛 배경과 반사되는 바닥 위 다섯 개의 은빛 TV. 천사와 악마 날개 안테나, 강아지 귀와 흰 날개, 고양이 귀와 악마 꼬리가 달려 있습니다." />
-      </picture>
-
       <header class="archive-header">
         <a class="archive-brand" href="index.html" aria-label="ECHO ARCHIVE 홈">
           <span class="archive-wordmark">ECHO ARCHIVE</span>
@@ -36,42 +31,52 @@
         <nav class="home-nav archive-nav" id="primaryNav" aria-label="주요 메뉴">
           <a class="archive-nav-about" href="about.html">ABOUT</a>
           <a class="archive-nav-products" href="products.html">ALL LOOKS</a>
-          <a class="archive-nav-portfolio" href="portfolio.html">PORTFOLIO</a>
+          <a class="archive-nav-portfolio" href="portfolio.html">ARCHIVE</a>
           <a class="archive-nav-contact" href="contact.html">CONTACT</a>
         </nav>
       </header>
 
-      <!-- 이미지는 장식, 링크와 음악 버튼은 실제 HTML입니다. 터치·키보드 모두 지원합니다. -->
-      <div class="tv-wall archive-hotspots" aria-label="TV 채널">
-        <a class="tv tv-hotspot" data-tv-role="portfolio" data-tv-index="1" href="portfolio.html" aria-label="PORTFOLIO — 포트폴리오 보기" title="PORTFOLIO — 포트폴리오 보기">
-          <span class="archive-screen" aria-hidden="true"><span class="archive-screen-corner"></span></span>
-          <span class="archive-tv-label" aria-hidden="true">PORTFOLIO</span>
-        </a>
-        <a class="tv tv-hotspot" data-tv-role="yang" data-tv-index="3" href="products.html?polarity=YANG" aria-label="YANG 룩 보기" title="YANG — 제품 보기">
-          <span class="archive-screen" aria-hidden="true"><span class="archive-screen-corner"></span></span>
-          <span class="archive-tv-label" aria-hidden="true">YANG</span>
-        </a>
-        <a class="tv tv-hotspot" data-tv-role="about" data-tv-index="4" href="about.html" aria-label="about - echo archive" title="about - echo archive">
-          <span class="archive-screen" aria-hidden="true"><span class="archive-screen-corner"></span></span>
-          <span class="archive-tv-label" aria-hidden="true">about - echo archive</span>
-        </a>
-        <a class="tv tv-hotspot" data-tv-role="yin" data-tv-index="5" href="products.html?polarity=YIN" aria-label="YIN 룩 보기" title="YIN — 제품 보기">
-          <span class="archive-screen" aria-hidden="true"><span class="archive-screen-corner"></span></span>
-          <span class="archive-tv-label" aria-hidden="true">YIN</span>
-        </a>
-      </div>
+      <!-- 모바일 메뉴는 일반 문서 흐름에 두어, 열리면 이 장면을 아래로 밀어냅니다.
+           이미지와 클릭 영역을 함께 묶어 이동 후에도 터치 위치를 유지합니다. -->
+      <div class="archive-scene">
+        <picture class="archive-artwork">
+          <source media="(min-width: 720px)" srcset="images/home/echo-desktop-hd-v4.png" width="4344" height="1448" />
+          <img src="images/home/echo-mobile-hd-v4.png" width="2048" height="3072" fetchpriority="high" decoding="async"
+            alt="구름빛 배경과 반사 바닥 위 은빛 TV들. 천사와 악마 날개 안테나, 강아지 귀와 흰 날개, 고양이 귀와 악마 꼬리가 달려 있습니다." />
+        </picture>
 
-      <!-- 음악 버튼은 TV 대열에서 분리했습니다. 모바일에서는 화면 오른쪽 아래
-           원형 버튼, 720px 이상에서는 그림 속 음소거 TV 위의 클릭 영역입니다. -->
-      <button class="archive-bgm-button" data-tv-role="bgm" data-tv-index="2" type="button" aria-pressed="false" aria-label="배경음악 켜기" title="SOUND — 배경음악 켜기">
-        <span class="archive-screen" aria-hidden="true"><span class="archive-screen-corner"></span></span>
-        <!-- 꺼짐 화면은 원본 그대로 둡니다. 켜짐 상태에서만 유리 위 음소거 아이콘을 교체합니다. -->
-        <span class="archive-sound-on" aria-hidden="true">
-          <svg viewBox="0 0 64 64" focusable="false"><path fill="currentColor" d="M9 25h10l15-12v38L19 39H9z" /><path fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" d="M41 23c5 5 5 13 0 18M47 16c9 9 9 23 0 32M53 9c13 13 13 33 0 46" /></svg>
-        </span>
-        <span class="archive-tv-label archive-sound-off-label" aria-hidden="true">SOUND OFF</span>
-        <span class="archive-tv-label archive-sound-on-label" aria-hidden="true">SOUND ON</span>
-      </button>
+        <!-- 이미지는 장식, 링크와 음악 버튼은 실제 HTML입니다. 터치·키보드 모두 지원합니다. -->
+        <div class="tv-wall archive-hotspots" aria-label="TV 채널">
+          <a class="tv tv-hotspot" data-tv-role="portfolio" data-tv-index="1" href="portfolio.html" aria-label="ARCHIVE — 포트폴리오 보기" title="ARCHIVE — 포트폴리오 보기">
+            <span class="archive-screen" aria-hidden="true"><span class="archive-screen-corner"></span></span>
+            <span class="archive-tv-label" aria-hidden="true">ARCHIVE</span>
+          </a>
+          <a class="tv tv-hotspot" data-tv-role="yang" data-tv-index="3" href="products.html?polarity=YANG" aria-label="YANG 룩 보기" title="YANG — 제품 보기">
+            <span class="archive-screen" aria-hidden="true"><span class="archive-screen-corner"></span></span>
+            <span class="archive-tv-label" aria-hidden="true">YANG</span>
+          </a>
+          <a class="tv tv-hotspot" data-tv-role="about" data-tv-index="4" href="about.html" aria-label="about - echo archive" title="about - echo archive">
+            <span class="archive-screen" aria-hidden="true"><span class="archive-screen-corner"></span></span>
+            <span class="archive-tv-label" aria-hidden="true">about - echo archive</span>
+          </a>
+          <a class="tv tv-hotspot" data-tv-role="yin" data-tv-index="5" href="products.html?polarity=YIN" aria-label="YIN 룩 보기" title="YIN — 제품 보기">
+            <span class="archive-screen" aria-hidden="true"><span class="archive-screen-corner"></span></span>
+            <span class="archive-tv-label" aria-hidden="true">YIN</span>
+          </a>
+        </div>
+
+        <!-- 음악 버튼은 TV 대열에서 분리했습니다. 모바일에서는 화면 오른쪽 아래
+             원형 버튼, 720px 이상에서는 그림 속 음소거 TV 위의 클릭 영역입니다. -->
+        <button class="archive-bgm-button" data-tv-role="bgm" data-tv-index="2" type="button" aria-pressed="false" aria-label="배경음악 켜기" title="SOUND — 배경음악 켜기">
+          <span class="archive-screen" aria-hidden="true"><span class="archive-screen-corner"></span></span>
+          <!-- 꺼짐 화면은 원본 그대로 둡니다. 켜짐 상태에서만 유리 위 음소거 아이콘을 교체합니다. -->
+          <span class="archive-sound-on" aria-hidden="true">
+            <svg viewBox="0 0 64 64" focusable="false"><path fill="currentColor" d="M9 25h10l15-12v38L19 39H9z" /><path fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" d="M41 23c5 5 5 13 0 18M47 16c9 9 9 23 0 32M53 9c13 13 13 33 0 46" /></svg>
+          </span>
+          <span class="archive-tv-label archive-sound-off-label" aria-hidden="true">SOUND OFF</span>
+          <span class="archive-tv-label archive-sound-on-label" aria-hidden="true">SOUND ON</span>
+        </button>
+      </div>
 
       <footer class="archive-footer">
         <p class="archive-footer-copy">© ECHO ARCHIVE. ALL RIGHTS RESERVED.</p>
@@ -81,9 +86,11 @@
     <audio id="bgmAudio" src="audio/velvet-shoreline.mp3" preload="none" hidden></audio>
     <span id="bgmLiveStatus" class="sr-only" role="status" aria-live="polite"></span>
   </main>
+  <signal-transition class="tv-warp" hidden aria-hidden="true"></signal-transition>
   <script src="script.js?v=20260916-mobile-1"></script>
   <script src="scripts/motion.js?v=20260908-y2k-1"></script>
   <script src="scripts/home-logic.js?v=20260910-bgm-1"></script>
-  <script src="scripts/home.js?v=20260917-image-home"></script>
+  <script src="scripts/components/tv-warp.js?v=20260917-tv-warp-2"></script>
+  <script src="scripts/home.js?v=20260917-tv-warp-2"></script>
 </body>
 </html>
