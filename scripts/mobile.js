@@ -21,6 +21,14 @@
       imageHistory = false;
       closingHistory = true;
       history.back();
+      // back()이 popstate를 내지 못하는 경우(되돌아갈 기록 없음)에도 잠기지 않게 풀어 줍니다.
+      setTimeout(function () {
+        if (!closingHistory) return;
+        closingHistory = false;
+        const next = queuedImage;
+        queuedImage = null;
+        if (next && next.image.isConnected) openImage(next.button, next.image);
+      }, 300);
     }
   }
 
@@ -86,7 +94,9 @@
       const index = Array.from(portfolio.querySelectorAll(".portfolio-zoom-open")).indexOf(button);
       history.pushState({ ...history.state, echoPortfolioImage: index }, "");
     }
-    imageHistory = true;
+    // 뒤로 가기로 복원한 확대 화면은 새 기록을 쌓지 않았으므로 history.back() 대상도 없습니다.
+    // 여기서 true로 두면 닫을 때 포트폴리오 밖으로 튕겨 나갑니다.
+    imageHistory = !restoreHistory;
     dialog.showModal();
     canvas.scrollTo(0, 0);
   }
@@ -118,7 +128,10 @@
     if (purchaseObserver) purchaseObserver.disconnect();
     if (purchaseSize) purchaseSize.disconnect();
     if (purchaseBar) purchaseBar.remove();
+    purchaseBar = null;
     document.body.classList.remove("has-mobile-purchase");
+    // 바를 걷어낸 뒤 남은 높이 변수는 본문 아래 빈 공간으로 보이므로 함께 지웁니다.
+    document.body.style.removeProperty("--mobile-purchase-height");
     const original = document.querySelector(".product-info .product-buy");
     if (!original || !mobile.matches || typeof IntersectionObserver !== "function") return;
     purchaseBar = document.createElement("div");
@@ -137,7 +150,10 @@
       document.body.style.setProperty("--mobile-purchase-height", purchaseBar.offsetHeight + "px");
     };
     purchaseObserver = new IntersectionObserver(function (entries) {
-      const visible = !entries[0].isIntersecting && mobile.matches;
+      // 이 콜백은 바를 교체한 뒤에도 한 번 더 도착할 수 있어 현재 바가 살아 있는지 확인합니다.
+      const latest = entries[entries.length - 1];
+      if (!latest || !purchaseBar) return;
+      const visible = !latest.isIntersecting && mobile.matches;
       purchaseBar.hidden = !visible;
       document.body.classList.toggle("has-mobile-purchase", visible);
       updateSize();
@@ -158,12 +174,14 @@
       imageHistory = false;
       const index = event.state && event.state.echoPortfolioImage;
       const button = Number.isInteger(index) && portfolio.querySelectorAll(".portfolio-zoom-open")[index];
-      if (button && mobile.matches) openImage(button, button.querySelector("img"), true);
+      // 포트폴리오가 다시 그려져 버튼 안 이미지가 사라졌으면 복원하지 않고 그냥 닫습니다.
+      const image = button && button.querySelector("img");
+      if (image && mobile.matches) openImage(button, image, true);
       else if (viewer && viewer.open) closeImage(false);
       if (queuedImage) {
         const next = queuedImage;
         queuedImage = null;
-        openImage(next.button, next.image);
+        if (next.image.isConnected) openImage(next.button, next.image);
       }
     });
   }

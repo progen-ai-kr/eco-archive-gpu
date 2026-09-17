@@ -54,17 +54,18 @@ test("2번 TV는 BGM 버튼이며 aria-pressed=false 초기값을 가진다", ()
   assert.match(bgm, /aria-pressed="false"/);
 });
 
-test("각 TV 화면 안에는 아이콘(svg) 하나만 존재한다", () => {
-  const screenBlocks = indexHtml.match(/<span class="tv-screen">[\s\S]*?<\/span>\s*<\/span>/g);
-  assert.ok(screenBlocks, "tv-screen 블록을 찾을 수 없다");
+test("이미지 위 TV 링크마다 화면을 보지 않아도 알 수 있는 이름이 있다", () => {
+  for (const role of ["portfolio", "bgm", "yang", "about", "yin"]) {
+    assert.match(extractTag(indexHtml, role), /aria-label="[^"]+"/);
+  }
 });
 
 test("화면 안에 금지된 가시 텍스트 문구가 없다", () => {
-  // <head>의 메타 설명 등은 화면에 그려지지 않으므로 본문(tv-wall-stage)만 검사한다.
-  const stageMatch = indexHtml.match(/<div class="tv-wall-stage">[\s\S]*?<\/div>\s*<\/div>/);
-  assert.ok(stageMatch, "tv-wall-stage 블록을 찾을 수 없다");
+  // 큰 홍보 문구는 제거하고, 선택한 TV의 간단한 기능 안내만 허용합니다.
+  const stageMatch = indexHtml.match(/<div class="tv-wall archive-hotspots"[\s\S]*?<\/div>/);
+  assert.ok(stageMatch, "TV 클릭 영역을 찾을 수 없다");
   const stageHtml = stageMatch[0];
-  const forbidden = ["2026 F/W", "BGM OFF", "YANG LOOK", "ABOUT ECHO", "YIN LOOK", "SIGNAL-00"];
+  const forbidden = ["TOUCH THE", "SCREEN!", "2026 F/W", "BGM OFF", "YANG LOOK", "ABOUT ECHO", "YIN LOOK", "SIGNAL-00"];
   for (const phrase of forbidden) {
     assert.ok(!stageHtml.includes(phrase), `"${phrase}" 문구가 화면 마크업에 남아있으면 안 된다`);
   }
@@ -76,16 +77,14 @@ test("화면 내부 메타 텍스트 클래스가 없다", () => {
 });
 
 test("장식 요소는 접근성 트리와 포인터 입력에서 제외된다", () => {
-  // 최상위 tv-decor 래퍼만 검사한다 — 그 안의 자식(tv-decor-img 등)은 부모가 이미 숨겼으므로
-  // 각각 aria-hidden을 반복할 필요가 없다.
-  const decorTags = indexHtml.match(/<[^>]*class="(?:[^"]*\s)?tv-decor(?:\s[^"]*)?"[^>]*>/g) || [];
-  assert.ok(decorTags.length > 0, "tv-decor 장식 요소가 있어야 한다");
+  const decorTags = indexHtml.match(/<span class="archive-screen"[^>]*>/g) || [];
+  assert.equal(decorTags.length, 5, "화면 효과는 5개 TV에만 붙습니다");
   for (const tag of decorTags) {
     assert.match(tag, /aria-hidden="true"/, "장식 요소는 aria-hidden=true여야 한다: " + tag);
   }
-  const cssPath = path.join(repoRoot, "style.css");
+  const cssPath = path.join(repoRoot, "home.css");
   const css = fs.readFileSync(cssPath, "utf8");
-  assert.match(css, /\.tv-decor\s*\{[^}]*pointer-events:\s*none/s, "style.css에 .tv-decor pointer-events:none 규칙이 있어야 한다");
+  assert.match(css, /\.archive-screen\s*\{[^}]*pointer-events:\s*none/s, "빛 효과가 TV 클릭을 가로채면 안 됩니다");
 });
 
 test("핵심 공개 경로가 유지된다", () => {

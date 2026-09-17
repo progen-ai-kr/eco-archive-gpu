@@ -4,386 +4,86 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ECHO ARCHIVE — Every Identity Echoes</title>
-  <meta name="description" content="서브컬처의 영감을 패션으로 재해석하는 ECHO ARCHIVE의 2026 F/W 신호를 탐색하세요." />
+  <meta name="description" content="서로 다른 모습, 같은 영혼. 다섯 개의 크롬 TV에서 ECHO ARCHIVE의 컬렉션과 이야기를 만나보세요." />
   <meta property="og:title" content="ECHO ARCHIVE" />
-  <meta property="og:description" content="Every Identity Echoes — 2026 F/W Yin & Yang" />
-  <meta property="og:image" content="images/brand/echo-archive-logo.png" />
+  <meta property="og:description" content="다섯 개의 크롬 TV로 탐색하는 ECHO ARCHIVE" />
+  <meta property="og:image" content="images/home/echo-desktop-panorama-v3.png" />
   <meta property="og:type" content="website" />
   <link rel="icon" href="images/brand/echo-archive-logo.png" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@500;600;700&display=swap" />
-  <link rel="stylesheet" href="style.css?v=20260908-y2k-1" />
-  <link rel="stylesheet" href="mobile.css?v=20260916-1" media="(max-width: 899px)" />
+  <link rel="stylesheet" href="style.css?v=20260917-layered-home-2" />
+  <link rel="stylesheet" href="home.css?v=20260917-panorama-4" />
 </head>
-<body class="home-page">
-  <a class="skip-link" href="#mainContent">시즌 신호로 건너뛰기</a>
+<body class="home-page art-home">
+  <a class="skip-link" href="#mainContent">TV 아카이브로 건너뛰기</a>
+  <main id="mainContent" class="archive-stage">
+    <h1 class="sr-only">ECHO ARCHIVE 제품과 브랜드 아카이브</h1>
+    <div class="archive-backdrop" aria-hidden="true"></div>
+    <div class="archive-canvas">
+      <!-- [작성서 04 홈] 데스크톱은 배경까지 이어진 파노라마 한 장을 사용합니다.
+           TV 장면과 클릭 영역은 같은 비율로 확대하고 글자는 별도로 표시합니다. -->
+      <picture class="archive-artwork">
+        <source media="(min-width: 720px)" srcset="images/home/echo-desktop-panorama-v3.png" width="2172" height="724" />
+        <img src="images/home/echo-mobile.png" width="1024" height="1536" fetchpriority="high" decoding="async"
+          alt="구름빛 배경과 반사되는 바닥 위 다섯 개의 은빛 TV. 천사와 악마 날개 안테나, 강아지 귀와 흰 날개, 고양이 귀와 악마 꼬리가 달려 있습니다." />
+      </picture>
 
-  <!-- ===== 공용 머티리얼 =====
-       TV 캐비닛·장식이 공유하는 그라데이션/필터를 한 번만 정의한다.
-       (validate_site.py가 중복 id를 거부하므로 부품마다 defs를 두지 않는다.)
-       크롬이 금속으로 읽히는 핵심은 중간의 급격한 '어두움→흰색' 전환이다 —
-       실제 크롬에 비치는 수평선 반사를 흉내낸 것. -->
-  <svg class="tv-materials" aria-hidden="true" focusable="false">
-    <defs>
-      <!-- 웹툰 화풍은 셀 셰이딩(딱 떨어지는 평면 톤)이라 그라데이션을 거의 쓰지 않는다.
-           남긴 건 소켓 하나뿐 — 실제 금속 원반이라 여기만 광택이 필요하다. -->
-      <radialGradient id="matChromeDisc" cx="0.34" cy="0.28" r="0.85">
-        <stop offset="0%" stop-color="#ffffff" />
-        <stop offset="42%" stop-color="#d4dae0" />
-        <stop offset="74%" stop-color="#89919a" />
-        <stop offset="100%" stop-color="#eaeef2" />
-      </radialGradient>
-      <!-- 깃털 한 장. 뿌리가 (0,0)이고 끝이 왼쪽(-x)을 향하며, 끝은 볼록한 U자다
-           (악마 날개의 오목한 막과 대비되는 지점).
-           날개는 이 한 장을 translate/rotate/scale로 배치해 층층이 쌓는다.
-           non-scaling-stroke가 없으면 scale에 따라 선 두께가 같이 커져서
-           깃털마다 선 굵기가 달라진다 — 웹툰 선화에서는 치명적이라 고정한다. -->
-      <!-- 깃털 한 장. 뿌리(0,0)가 넓고 끝(-x)으로 갈수록 좁아지는 물방울형이다 —
-           양끝이 둥근 알약 모양으로 그리면 겹쳤을 때 '접시 더미'로 보인다.
-           날개는 이 한 장을 translate/rotate/scale로 배치해 층층이 쌓는다.
-           non-scaling-stroke가 없으면 scale에 따라 선 두께가 같이 커져서
-           깃털마다 선 굵기가 달라진다 — 웹툰 선화에서는 치명적이라 고정한다. -->
-      <path id="matWingLobe" vector-effect="non-scaling-stroke"
-        d="M0 -16 C -24 -18, -48 -16, -64 -8 C -70 -5, -70 1, -64 3 C -48 9, -24 14, 0 16 C 6 12, 6 -12, 0 -16 Z" />
-      <filter id="fxDrop" x="-30%" y="-30%" width="160%" height="160%">
-        <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#4a545f" flood-opacity="0.34" />
-      </filter>
-      <filter id="fxDropSoft" x="-30%" y="-30%" width="160%" height="160%">
-        <feDropShadow dx="0" dy="5" stdDeviation="7" flood-color="#4a545f" flood-opacity="0.26" />
-      </filter>
-    </defs>
-  </svg>
-
-  <main id="mainContent" class="home-stage">
-    <h1 class="sr-only">ECHO ARCHIVE 2026 F/W 제품 아카이브</h1>
-
-    <div class="home-frame">
-      <header class="home-header">
-        <a class="home-brand" href="index.html" aria-label="ECHO ARCHIVE 홈, Every Identity Echoes">
-          <img class="home-brand-mark" src="images/brand/echo-archive-logo.png" alt="ECHO ARCHIVE" />
-          <span class="home-brand-star" aria-hidden="true">✦</span>
+      <header class="archive-header">
+        <a class="archive-brand" href="index.html" aria-label="ECHO ARCHIVE 홈">
+          <span class="archive-wordmark">ECHO ARCHIVE</span>
+          <span class="archive-brand-star" aria-hidden="true">✦</span>
         </a>
-        <button class="nav-toggle home-menu-toggle" aria-label="메뉴 열기" aria-expanded="false" aria-controls="primaryNav">☰</button>
-        <nav class="home-nav" id="primaryNav" aria-label="주요 메뉴">
-          <a href="about.html">ABOUT</a>
-          <a href="products.html">ALL LOOKS</a>
-          <a href="portfolio.html">PORTFOLIO</a>
-          <a href="contact.html">CONTACT</a>
+        <button class="nav-toggle archive-menu-toggle" type="button" aria-label="메뉴 열기" aria-expanded="false" aria-controls="primaryNav">☰</button>
+        <nav class="home-nav archive-nav" id="primaryNav" aria-label="주요 메뉴">
+          <a class="archive-nav-about" href="about.html">ABOUT</a>
+          <a class="archive-nav-products" href="products.html">ALL LOOKS</a>
+          <a class="archive-nav-portfolio" href="portfolio.html">PORTFOLIO</a>
+          <a class="archive-nav-contact" href="contact.html">CONTACT</a>
         </nav>
       </header>
 
-      <div class="tv-floor" aria-hidden="true"></div>
-
-      <div class="tv-wall-stage">
-        <div class="tv-wall">
-
-          <a class="tv" data-tv-role="portfolio" data-tv-index="1" href="portfolio.html" aria-label="음양 시즌 포트폴리오 보기" title="PORTFOLIO — 음양 시즌 포트폴리오">
-            <span class="mobile-tv-label" hidden aria-hidden="true">포트폴리오</span>
-            <span class="tv-decor tv-decor-antenna" aria-hidden="true">
-              <!-- 크롬 소켓 위로 왼쪽=천사 날개(흰색), 오른쪽=악마 날개(광택 검정)가 뻗는다.
-                   각 날개는 [본체 그라데이션 → 스페큘러 하이라이트 → 리브] 순으로 겹쳐 입체감을 만든다. -->
-              <svg class="tv-decor-img" viewBox="0 0 176 100" preserveAspectRatio="xMidYMax meet">
-                <g filter="url(#fxDrop)" stroke-linejoin="round" stroke-linecap="round">
-                  <!-- 천사 날개: 깃털 5장을 소켓에서 위·왼쪽으로 부채꼴로 펼친다.
-                       깃털마다 선화가 둘러져 개별 깃이 또렷하게 읽힌다. -->
-                  <!-- 레퍼런스의 3단 위계: 긴 칼깃(뒤) → 중간 스캘럽 → 맨 위 큰 로브(앞).
-                       뒤쪽 층부터 그려야 앞쪽이 위로 겹친다. -->
-                  <g stroke="#16191d" stroke-width="1.6">
-                    <g fill="#d5dce3">
-                      <use href="#matWingLobe" transform="translate(88 88) rotate(36) scale(.72)" />
-                      <use href="#matWingLobe" transform="translate(87 85) rotate(50) scale(.92)" />
-                      <use href="#matWingLobe" transform="translate(86 82) rotate(64) scale(.95)" />
-                      <use href="#matWingLobe" transform="translate(85 79) rotate(78) scale(.78)" />
-                    </g>
-                    <g fill="#ffffff">
-                      <use href="#matWingLobe" transform="translate(87 84) rotate(52) scale(.50)" />
-                      <use href="#matWingLobe" transform="translate(86 81) rotate(66) scale(.58)" />
-                      <use href="#matWingLobe" transform="translate(85 78) rotate(80) scale(.50)" />
-                    </g>
-                  </g>
-                  <!-- 악마 날개: 손가락뼈 3개(F1~F3) 사이의 막을 오목하게 파낸다.
-                       Q 커브의 제어점을 날개 안쪽으로 당겨 오목함을 만드는 게 핵심 —
-                       천사 쪽 깃털의 볼록한 U자와 정반대다. -->
-                  <!-- 레퍼런스 악마 날개의 시그니처는 바깥 위로 휘어 올라간 '갈고리'(L 148 4)와
-                       손가락 끝 3개 사이의 오목한 막이다. Q 제어점을 관절 쪽으로 당겨
-                       막이 안쪽으로 파이게 만든다 — 천사 쪽 둥근 깃털과 정반대. -->
-                  <path fill="#22262c" stroke="#16191d" stroke-width="1.8" d="M90 86
-                    C 98 58, 114 34, 134 22
-                    L 148 4
-                    C 147 18, 147 28, 150 36
-                    Q 148 50, 168 50
-                    Q 148 58, 154 72
-                    Q 134 70, 126 84
-                    Q 108 84, 90 86 Z" />
-                  <path fill="#0b0d10" opacity=".8" d="M90 86 Q 122 76, 152 70 Q 124 80, 94 85 Z" />
-                  <g fill="none" stroke="#6d7883" stroke-width="1.2">
-                    <path d="M94 82 C 104 58, 120 36, 140 18" />
-                    <path d="M95 83 C 112 68, 142 56, 165 50" />
-                    <path d="M96 84 C 112 76, 138 74, 152 72" />
-                  </g>
-                </g>
-                <ellipse cx="88" cy="91" rx="17" ry="6.5" fill="url(#matChromeDisc)" />
-                <ellipse cx="84" cy="89" rx="8" ry="2.4" fill="#ffffff" opacity=".8" />
-              </svg>
-            </span>
-            <span class="tv-controls" aria-hidden="true">
-              <span class="tv-led"></span>
-              <span class="tv-knobs"><span class="tv-knob"></span><span class="tv-knob"></span></span>
-            </span>
-            <span class="tv-screen-wrap">
-              <span class="tv-screen">
-                <!-- 음양: 하나의 까다로운 path 대신 [어두운 원 → 오른쪽 반원 흰색 → 위/아래 보조 원]
-                     순서로 쌓아 올린다. 어느 영역이 채워지는지 모호하지 않아 눈 2개가 항상 보인다. -->
-                <svg class="tv-icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
-                  <circle cx="32" cy="32" r="25" fill="#12171d" />
-                  <path fill="currentColor" d="M32 7 A25 25 0 0 1 32 57 Z" />
-                  <circle cx="32" cy="19.5" r="12.5" fill="currentColor" />
-                  <circle cx="32" cy="44.5" r="12.5" fill="#12171d" />
-                  <circle cx="32" cy="19.5" r="4.6" fill="#12171d" />
-                  <circle cx="32" cy="44.5" r="4.6" fill="currentColor" />
-                  <circle cx="32" cy="32" r="25" fill="none" stroke="currentColor" stroke-width="1.5" opacity=".9" />
-                </svg>
-              </span>
-            </span>
-          </a>
-
-          <button class="tv" type="button" data-tv-role="bgm" data-tv-index="2" aria-pressed="false" aria-label="배경음악 켜기" title="SOUND — 배경음악 켜기">
-            <span class="tv-controls" aria-hidden="true">
-              <span class="tv-led"></span>
-              <span class="tv-knobs"><span class="tv-knob"></span><span class="tv-knob"></span></span>
-            </span>
-            <span class="tv-screen-wrap">
-              <span class="tv-screen">
-                <svg class="tv-icon tv-icon-bgm-on" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
-                  <path fill="currentColor" d="M8 24v16h9l16 12V12L17 24H8z" />
-                  <path fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" d="M40 22c5 5 5 15 0 20" />
-                  <path fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" d="M47 15c9 9 9 25 0 34" />
-                </svg>
-                <svg class="tv-icon tv-icon-bgm-off" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
-                  <path fill="currentColor" d="M8 24v16h9l16 12V12L17 24H8z" />
-                  <path fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" d="M38 22c5 5 5 15 0 20" />
-                  <path fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" d="M45 15c9 9 9 25 0 34" />
-                  <line x1="6" y1="8" x2="58" y2="56" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" />
-                </svg>
-              </span>
-            </span>
-          </button>
-
-          <a class="tv" data-tv-role="yang" data-tv-index="3" href="products.html?polarity=YANG" aria-label="YANG 룩 보기" title="YANG — 제품 보기">
-            <span class="mobile-tv-label" hidden aria-hidden="true">양 · 제품 보기</span>
-            <span class="tv-decor tv-decor-wing-back" aria-hidden="true">
-              <!-- 천사 날개: 깃털 18장을 3열(칼깃→둘째깃→덮깃)로 겹쳐 배치한다.
-                   뒤쪽 열을 먼저 그려야 앞쪽 열이 위로 겹쳐 실제 날개의 층이 생긴다. -->
-              <svg class="tv-decor-img" viewBox="0 0 252 248" preserveAspectRatio="xMaxYMid meet">
-                <g filter="url(#fxDropSoft)" stroke-linejoin="round">
-                  <!-- 칼깃 5장(길고 뒤쪽). 웹툰 화풍이라 깃털 수를 줄이고 크게 키워
-                       선화로 한 장 한 장이 또렷하게 보이게 한다. 톤은 그림자 쪽. -->
-                  <!-- 레퍼런스처럼 통통한 로브를 부챗살로 벌려 끝이 스캘럽으로 보이게 한다.
-                       가늘고 긴 깃털을 좁은 각도로 겹치면 한 덩어리로 뭉쳐 버린다. -->
-                  <!-- 한 점에서 넓게 방사하면 조개처럼 보인다. 뿌리를 선으로 흩고
-                       각도 폭을 ~36°로 좁혀 한 방향으로 쓸리는 날개를 만든다. -->
-                  <!-- 깃털 끝이 일직선이면 잎사귀 더미로 보인다. 가운데 깃털을 가장 길게 해서
-                       끝점들이 바깥으로 볼록한 호를 그리도록 만드는 게 '날개'의 조건이다. -->
-                  <g fill="#d5dce3" stroke="#16191d" stroke-width="2">
-                    <use href="#matWingLobe" transform="translate(238 198) rotate(2) scale(1.70)" />
-                    <use href="#matWingLobe" transform="translate(240 179) rotate(12) scale(2.10)" />
-                    <use href="#matWingLobe" transform="translate(242 160) rotate(22) scale(2.15)" />
-                    <use href="#matWingLobe" transform="translate(243 141) rotate(32) scale(1.80)" />
-                  </g>
-                  <!-- 앞쪽 짧은 층 — 깃털 뿌리를 덮어 날개가 한 몸으로 읽히게 한다 -->
-                  <g fill="#ffffff" stroke="#16191d" stroke-width="2">
-                    <use href="#matWingLobe" transform="translate(240 176) rotate(16) scale(1.20)" />
-                    <use href="#matWingLobe" transform="translate(242 158) rotate(26) scale(1.34)" />
-                    <use href="#matWingLobe" transform="translate(243 140) rotate(36) scale(1.22)" />
-                  </g>
-                  <!-- 맨 위 큰 로브 — 매끈한 윗선을 만들어 실루엣을 잡는다 -->
-                  <use href="#matWingLobe" fill="#ffffff" stroke="#16191d" stroke-width="2"
-                    transform="translate(245 124) rotate(42) scale(1.50)" />
-                </g>
-              </svg>
-            </span>
-            <span class="tv-decor tv-decor-ears-dog" aria-hidden="true">
-              <!-- 강아지 귀: 검정 삼각형이 아니라 캐비닛과 같은 크롬 재질의 늘어진 귀다.
-                   [크롬 본체 → 안쪽 접힌 어두운 면 → 바깥 가장자리 스페큘러] 3겹.
-                   오른쪽 귀는 같은 path를 좌우 반전해 대칭을 보장한다. -->
-              <svg class="tv-decor-img" viewBox="0 0 370 86" preserveAspectRatio="xMidYMax meet">
-                <g filter="url(#fxDrop)">
-                  <path fill="#eef2f5" stroke="#16191d" stroke-width="2.4" d="M124 20
-                    C 116 4, 86 2, 60 14
-                    C 28 29, 4 58, 10 78
-                    C 17 93, 44 92, 66 78
-                    C 92 62, 130 40, 124 20 Z" />
-                  <path fill="#9aa4af" d="M118 26
-                    C 118 48, 100 70, 70 82
-                    C 48 91, 22 90, 11 80
-                    C 26 88, 52 84, 74 68
-                    C 100 50, 116 38, 118 26 Z" />
-                  <path fill="#ffffff" d="M115 22 C 106 9, 78 8, 54 19 C 78 12, 104 15, 112 26 Z" />
-                  <path fill="none" stroke="#16191d" stroke-width="1.4" opacity=".55" d="M112 30 C 106 50, 88 68, 62 78" />
-                </g>
-                <g filter="url(#fxDrop)" transform="translate(370 0) scale(-1 1)">
-                  <path fill="#eef2f5" stroke="#16191d" stroke-width="2.4" d="M124 20
-                    C 116 4, 86 2, 60 14
-                    C 28 29, 4 58, 10 78
-                    C 17 93, 44 92, 66 78
-                    C 92 62, 130 40, 124 20 Z" />
-                  <path fill="#9aa4af" d="M118 26
-                    C 118 48, 100 70, 70 82
-                    C 48 91, 22 90, 11 80
-                    C 26 88, 52 84, 74 68
-                    C 100 50, 116 38, 118 26 Z" />
-                  <path fill="#ffffff" d="M115 22 C 106 9, 78 8, 54 19 C 78 12, 104 15, 112 26 Z" />
-                  <path fill="none" stroke="#16191d" stroke-width="1.4" opacity=".55" d="M112 30 C 106 50, 88 68, 62 78" />
-                </g>
-              </svg>
-            </span>
-            <span class="tv-controls" aria-hidden="true">
-              <span class="tv-led"></span>
-              <span class="tv-knobs"><span class="tv-knob"></span><span class="tv-knob"></span></span>
-            </span>
-            <span class="tv-screen-wrap">
-              <span class="tv-screen">
-                <!-- 천사 날개: 아래 가장자리가 전부 '둥근' 스캘럽이다(깃털).
-                     TV5의 악마 날개는 같은 자리에 '뾰족한' 스캘럽 + 리브를 써서 확실히 구분된다. -->
-                <svg class="tv-icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
-                  <path fill="currentColor" d="M6 46
-                    C 10 33, 19 20, 34 11
-                    C 42 6, 52 6, 57 11
-                    C 48 14, 41 19, 36 26
-                    C 43 23, 51 24, 55 29
-                    C 46 31, 38 35, 33 41
-                    C 40 39, 47 41, 51 46
-                    C 41 46, 32 49, 26 55
-                    C 19 51, 11 48, 6 46 Z" />
-                  <g fill="none" stroke="#0c0d10" stroke-width="1.1" opacity=".3" stroke-linecap="round">
-                    <path d="M12 45 C 21 34, 31 23, 45 15" />
-                    <path d="M16 48 C 25 41, 34 34, 46 30" />
-                  </g>
-                </svg>
-              </span>
-            </span>
-          </a>
-
-          <a class="tv" data-tv-role="about" data-tv-index="4" href="about.html" aria-label="브랜드 소개 보기" title="ABOUT — 브랜드 소개">
-            <span class="mobile-tv-label" hidden aria-hidden="true">브랜드 소개</span>
-            <span class="tv-controls" aria-hidden="true">
-              <span class="tv-led"></span>
-              <span class="tv-knobs"><span class="tv-knob"></span><span class="tv-knob"></span></span>
-            </span>
-            <span class="tv-screen-wrap">
-              <span class="tv-screen">
-                <!-- 원본은 획이 가늘고 괄호가 세로로 길다 -->
-                <svg class="tv-icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
-                  <path fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" d="M23 11c-8 9-8 33 0 42" />
-                  <path fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" d="M41 11c8 9 8 33 0 42" />
-                  <line x1="26" y1="32" x2="38" y2="32" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" />
-                </svg>
-              </span>
-            </span>
-          </a>
-
-          <a class="tv" data-tv-role="yin" data-tv-index="5" href="products.html?polarity=YIN" aria-label="YIN 룩 보기" title="YIN — 제품 보기">
-            <span class="mobile-tv-label" hidden aria-hidden="true">음 · 제품 보기</span>
-            <span class="tv-decor tv-decor-tail" aria-hidden="true">
-              <!-- 악마 꼬리: TV 뒤에서 나와 S자로 휘어 올라가고 끝에 스페이드가 달린다.
-                   케이블 위쪽에 가는 하이라이트를 한 줄 얹어 원통(광택 튜브)처럼 보이게 한다. -->
-              <svg class="tv-decor-img" viewBox="0 0 206 263" preserveAspectRatio="xMinYMin meet">
-                <g filter="url(#fxDrop)" stroke-linejoin="round" stroke-linecap="round">
-                  <!-- 꼬리는 날개가 아니라 '한 줄기 채찍'이다 — 뿌리는 굵고 끝으로 갈수록
-                       가늘어져야 한다. 균일 두께 stroke로는 그 테이퍼가 안 나와서
-                       위/아래 가장자리를 각각 그린 채움 도형으로 만든다. -->
-                  <!-- 레퍼런스는 아주 가는 S자 한 줄기다. 균일 두께 stroke로는 테이퍼가
-                       안 나오므로 위/아래 가장자리를 각각 그린 채움 도형으로 만든다.
-                       뿌리(왼쪽 아래) 두께 ~10 → 끝(오른쪽 위) ~2로 좁아진다. -->
-                  <path fill="#22262c" stroke="#16191d" stroke-width="1.6" d="M2 226
-                    C 56 242, 122 220, 145 172
-                    C 163 134, 148 86, 126 48
-                    L 123 50
-                    C 143 88, 155 134, 138 170
-                    C 116 214, 56 234, 3 236 Z" />
-                  <path fill="none" stroke="#7e8894" stroke-width="1.6" opacity=".6"
-                    d="M12 230 C 60 240, 120 218, 141 171 C 157 135, 145 90, 125 53" />
-                  <!-- 하트 끝 (레퍼런스의 스페이드 대신 작은 하트) -->
-                  <g transform="rotate(-24 127 40)">
-                    <path fill="#22262c" stroke="#16191d" stroke-width="1.6" d="M127 52
-                      C 111 40, 116 25, 127 32
-                      C 138 25, 143 40, 127 52 Z" />
-                    <path fill="#7e8894" opacity=".45" d="M127 46 C 118 39, 119 31, 126 34 C 124 38, 124 42, 127 46 Z" />
-                  </g>
-                </g>
-              </svg>
-            </span>
-            <span class="tv-decor tv-decor-ears-cat" aria-hidden="true">
-              <!-- 고양이 귀: 크롬 외피가 검정 내이(內耳)를 감싼다. 강아지 귀와 달리 곧게 서고 뾰족하다. -->
-              <svg class="tv-decor-img" viewBox="0 0 320 71" preserveAspectRatio="xMidYMax meet">
-                <g filter="url(#fxDrop)">
-                  <path fill="#eef2f5" stroke="#16191d" stroke-width="2.4" stroke-linejoin="round" d="M9 69 C 6 40, 23 12, 56 0 C 72 17, 80 45, 78 69 Z" />
-                  <path fill="#0b0d10" d="M24 67 C 22 43, 35 21, 56 12 C 66 28, 71 48, 69 67 Z" />
-                  <path fill="#3a4148" d="M56 12 C 66 28, 71 48, 69 67 C 62 48, 58 30, 56 12 Z" />
-                  <path fill="#ffffff" d="M55 4 C 35 16, 21 38, 17 62 C 18 39, 33 18, 53 8 Z" />
-                </g>
-                <g filter="url(#fxDrop)" transform="translate(320 0) scale(-1 1)">
-                  <path fill="#eef2f5" stroke="#16191d" stroke-width="2.4" stroke-linejoin="round" d="M9 69 C 6 40, 23 12, 56 0 C 72 17, 80 45, 78 69 Z" />
-                  <path fill="#0b0d10" d="M24 67 C 22 43, 35 21, 56 12 C 66 28, 71 48, 69 67 Z" />
-                  <path fill="#3a4148" d="M56 12 C 66 28, 71 48, 69 67 C 62 48, 58 30, 56 12 Z" />
-                  <path fill="#ffffff" d="M55 4 C 35 16, 21 38, 17 62 C 18 39, 33 18, 53 8 Z" />
-                </g>
-              </svg>
-            </span>
-            <span class="tv-controls" aria-hidden="true">
-              <span class="tv-led"></span>
-              <span class="tv-knobs"><span class="tv-knob"></span><span class="tv-knob"></span></span>
-            </span>
-            <span class="tv-screen-wrap">
-              <span class="tv-screen">
-                <!-- 악마 날개: 아래 가장자리가 '뾰족한' 스캘럽 3개 + 손가락뼈(리브) 라인.
-                     같은 자리의 천사 날개(TV3)는 둥근 스캘럽이라 실루엣만으로 구분된다. -->
-                <!-- 천사 날개와 좌우 대칭이 되도록 통째로 뒤집는다 —
-                     실루엣 방향 + 뾰족한 가장자리 + 리브, 세 가지로 확실히 구분된다. -->
-                <svg class="tv-icon" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
-                  <g transform="translate(64 0) scale(-1 1)">
-                    <!-- 손가락 끝 3개(57,11 / 55,29 / 46,48)는 뾰족하게 두고,
-                         그 사이 막을 Q 제어점을 날개 안쪽으로 당겨 오목하게 파냈다.
-                         천사 날개의 볼록한 U자와 정확히 반대 방향이라 실루엣만으로 구분된다. -->
-                    <path fill="currentColor" d="M6 46
-                      C 10 33, 19 20, 34 11
-                      C 42 6, 52 6, 57 11
-                      Q 42 20, 55 29
-                      Q 36 35, 46 48
-                      Q 30 48, 24 58
-                      C 16 54, 10 49, 6 46 Z" />
-                    <g fill="none" stroke="#0c0d10" stroke-width="1.5" opacity=".45" stroke-linecap="round">
-                      <path d="M10 45 L 46 15" />
-                      <path d="M11 47 L 50 28" />
-                      <path d="M13 50 L 42 46" />
-                    </g>
-                  </g>
-                </svg>
-              </span>
-            </span>
-          </a>
-
-        </div>
+      <!-- 이미지는 장식, 링크와 음악 버튼은 실제 HTML입니다. 터치·키보드 모두 지원합니다. -->
+      <div class="tv-wall archive-hotspots" aria-label="TV 채널">
+        <a class="tv tv-hotspot" data-tv-role="portfolio" data-tv-index="1" href="portfolio.html" aria-label="PORTFOLIO — 포트폴리오 보기" title="PORTFOLIO — 포트폴리오 보기">
+          <span class="archive-screen" aria-hidden="true"><span class="archive-screen-corner"></span></span>
+          <span class="archive-tv-label" aria-hidden="true">PORTFOLIO</span>
+        </a>
+        <a class="tv tv-hotspot" data-tv-role="yang" data-tv-index="3" href="products.html?polarity=YANG" aria-label="YANG 룩 보기" title="YANG — 제품 보기">
+          <span class="archive-screen" aria-hidden="true"><span class="archive-screen-corner"></span></span>
+          <span class="archive-tv-label" aria-hidden="true">YANG</span>
+        </a>
+        <a class="tv tv-hotspot" data-tv-role="about" data-tv-index="4" href="about.html" aria-label="about - echo archive" title="about - echo archive">
+          <span class="archive-screen" aria-hidden="true"><span class="archive-screen-corner"></span></span>
+          <span class="archive-tv-label" aria-hidden="true">about - echo archive</span>
+        </a>
+        <a class="tv tv-hotspot" data-tv-role="yin" data-tv-index="5" href="products.html?polarity=YIN" aria-label="YIN 룩 보기" title="YIN — 제품 보기">
+          <span class="archive-screen" aria-hidden="true"><span class="archive-screen-corner"></span></span>
+          <span class="archive-tv-label" aria-hidden="true">YIN</span>
+        </a>
       </div>
 
-      <footer class="home-footer">
-        <p class="home-footer-copy">© ECHO ARCHIVE. ALL RIGHTS RESERVED.</p>
-        <p class="home-footer-brand">SAME SOULS <span class="home-footer-rule" aria-hidden="true"></span> DIFFERENT SIDES</p>
-        <a class="home-footer-admin" href="/admin">ADMIN</a>
+      <!-- 음악 버튼은 TV 대열에서 분리했습니다. 모바일에서는 화면 오른쪽 아래
+           원형 버튼, 720px 이상에서는 그림 속 음소거 TV 위의 클릭 영역입니다. -->
+      <button class="archive-bgm-button" data-tv-role="bgm" data-tv-index="2" type="button" aria-pressed="false" aria-label="배경음악 켜기" title="SOUND — 배경음악 켜기">
+        <span class="archive-screen" aria-hidden="true"><span class="archive-screen-corner"></span></span>
+        <!-- 꺼짐 화면은 원본 그대로 둡니다. 켜짐 상태에서만 유리 위 음소거 아이콘을 교체합니다. -->
+        <span class="archive-sound-on" aria-hidden="true">
+          <svg viewBox="0 0 64 64" focusable="false"><path fill="currentColor" d="M9 25h10l15-12v38L19 39H9z" /><path fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" d="M41 23c5 5 5 13 0 18M47 16c9 9 9 23 0 32M53 9c13 13 13 33 0 46" /></svg>
+        </span>
+        <span class="archive-tv-label archive-sound-off-label" aria-hidden="true">SOUND OFF</span>
+        <span class="archive-tv-label archive-sound-on-label" aria-hidden="true">SOUND ON</span>
+      </button>
+
+      <footer class="archive-footer">
+        <p class="archive-footer-copy">© ECHO ARCHIVE. ALL RIGHTS RESERVED.</p>
+        <a class="archive-admin" href="/admin" aria-label="브랜드 관리자">ADMIN</a>
       </footer>
     </div>
-
-    <!-- 화면에는 TV만 보이게 두고, 실제 음원은 숨겨진 오디오 요소로 연결한다. -->
-    <audio id="bgmAudio" src="audio/velvet-shoreline.mp3" preload="auto" hidden></audio>
+    <audio id="bgmAudio" src="audio/velvet-shoreline.mp3" preload="none" hidden></audio>
     <span id="bgmLiveStatus" class="sr-only" role="status" aria-live="polite"></span>
   </main>
-
-  <signal-transition></signal-transition>
   <script src="script.js?v=20260916-mobile-1"></script>
   <script src="scripts/motion.js?v=20260908-y2k-1"></script>
   <script src="scripts/home-logic.js?v=20260910-bgm-1"></script>
-  <script src="scripts/components/signal-transition.js?v=20260908-y2k-1"></script>
-  <script src="scripts/home.js?v=20260910-bgm-2"></script>
+  <script src="scripts/home.js?v=20260917-image-home"></script>
 </body>
 </html>

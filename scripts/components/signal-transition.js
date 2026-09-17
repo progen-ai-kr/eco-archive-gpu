@@ -39,6 +39,11 @@
 
   overlay.runTransition = function (tv, destination, options) {
     const settings = options || {};
+    // 이전 전환이 남긴 타이머를 먼저 걷어낸다. 남겨 두면 예약된 finish가 나중에
+    // 깨어나 지금 누른 곳이 아닌 이전 목적지로 이동시킬 수 있다.
+    reset();
+    // reset()이 방금 지운 이동 중 표시를 이번 전환 기준으로 다시 세운다.
+    document.body.setAttribute("aria-busy", "true");
     let completed = false;
     const finish = () => {
       if (completed) return;

@@ -2,6 +2,13 @@
    @import는 렌더 블로킹이고 브라우저 프리로드 스캐너가 못 찾는다. */
 
 :root {
+  /* 홈 렌더 이미지와 맞추는 배경·글꼴. 홈 전용 CSS도 이 토큰만 참조합니다. */
+  --home-matte: #f7f7f7;
+  --home-sky: #e4edf9;
+  --home-screen-mid: #252d32;
+  --home-screen-edge: #101619;
+  --home-screen-light: rgba(230, 245, 255, .14);
+  --font-archive: Georgia, "Times New Roman", serif;
   --studio: #050403;
   --studio-raised: #0d0c0b;
   --charcoal: #1a1917;
