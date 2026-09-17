@@ -22,7 +22,7 @@
       "sections": [
         {
           "type": "rich_text",
-          "body": "<p><img src=\"/images/products/6d6e45d1-e850-4f1e-95a7-49be596021db/1789653518374-f4f97084.png\" alt=\"01-hero.png\"><img src=\"/images/products/6d6e45d1-e850-4f1e-95a7-49be596021db/1789653532977-e06d5dae.png\" alt=\"02-silhouette.png\"><img src=\"/images/products/6d6e45d1-e850-4f1e-95a7-49be596021db/1789653544578-84582b63.png\" alt=\"03-feature-details.png\"><img src=\"/images/products/6d6e45d1-e850-4f1e-95a7-49be596021db/1789653562683-f3bbaaf7.png\" alt=\"04-construction-view.png\"><img src=\"/images/products/6d6e45d1-e850-4f1e-95a7-49be596021db/1789653584452-a590af74.png\" alt=\"05-specification-pending.png\"><br></p>"
+          "body": "<p><img src=\"/images/products/6d6e45d1-e850-4f1e-95a7-49be596021db/1789653518374-f4f97084.png\" alt=\"01-hero.png\"><img src=\"/images/products/6d6e45d1-e850-4f1e-95a7-49be596021db/1789653532977-e06d5dae.png\" alt=\"02-silhouette.png\"><img src=\"/images/products/6d6e45d1-e850-4f1e-95a7-49be596021db/1789653544578-84582b63.png\" alt=\"03-feature-details.png\"><img src=\"/images/products/6d6e45d1-e850-4f1e-95a7-49be596021db/1789653562683-f3bbaaf7.png\" alt=\"04-construction-view.png\">![05-specification-pending.png]</p>"
         }
       ]
     },
