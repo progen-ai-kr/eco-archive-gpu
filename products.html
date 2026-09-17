@@ -13,11 +13,12 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@500;600;700&family=Playfair+Display:ital@1&display=swap" />
-  <link rel="stylesheet" href="style.css?v=20260917-tv-warp-1" />
+  <link rel="stylesheet" href="style.css?v=20260917-buttons-1" />
   <link rel="stylesheet" href="scroll-pages.css?v=20260916-1" />
-  <link rel="stylesheet" href="mobile.css?v=20260916-1" media="(max-width: 899px)" />
+  <link rel="stylesheet" href="mobile.css?v=20260917-buttons-1" media="(max-width: 899px)" />
   <link rel="stylesheet" href="transition.css?v=20260917-tv-warp-2" />
   <script src="scripts/transition-entry.js?v=20260917-tv-warp-2"></script>
+  <link rel="stylesheet" href="mobile-motion.css?v=20260918-mobile-1" />
 </head>
 <body class="products-page">
 
@@ -63,10 +64,10 @@
 
     <section class="section archive-note">
       <p class="eyebrow" data-scroll="left">THE ARCHIVE CONTINUES</p>
-      <h2 data-scroll="up">기록은 계속 이어집니다.</h2>
+      <h2 class="closing-title" data-scroll="up">기록은 계속 이어집니다.</h2>
       <p class="archive-note-links" data-scroll="up">
-        <a href="portfolio.html" class="btn btn-yang"><span class="btn-yinyang-icon" aria-hidden="true"></span>SIG_RECORD 보기</a>
-        <a href="contact.html" class="btn btn-yin"><span class="btn-yinyang-icon" aria-hidden="true"></span>문의하기</a>
+        <a href="portfolio.html" class="btn btn-primary"><span>ARCHIVE 살펴보기</span><span class="btn-arrow" aria-hidden="true">→</span></a>
+        <a href="contact.html" class="btn btn-secondary"><span>문의하기</span><span class="btn-arrow" aria-hidden="true">→</span></a>
       </p>
     </section>
 
@@ -160,5 +161,6 @@
         notifyProductsRendered();
       });
   </script>
+  <script src="scripts/mobile-motion.js?v=20260918-detail-1"></script>
 </body>
 </html>

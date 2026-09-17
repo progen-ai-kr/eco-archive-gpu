@@ -13,10 +13,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@500;600;700&display=swap" />
-  <link rel="stylesheet" href="style.css?v=20260917-tv-warp-1" />
-  <link rel="stylesheet" href="mobile.css?v=20260916-1" media="(max-width: 899px)" />
+  <link rel="stylesheet" href="style.css?v=20260917-buttons-1" />
+  <link rel="stylesheet" href="mobile.css?v=20260917-buttons-1" media="(max-width: 899px)" />
   <link rel="stylesheet" href="transition.css?v=20260917-tv-warp-2" />
   <script src="scripts/transition-entry.js?v=20260917-tv-warp-2"></script>
+  <link rel="stylesheet" href="mobile-motion.css?v=20260918-mobile-1" />
 </head>
 <body class="about-page">
   <a class="skip-link" href="#mainContent">본문으로 건너뛰기</a>
@@ -68,7 +69,7 @@
     <section class="about-scene" id="scene-memory" data-scene="01" aria-labelledby="sceneMemoryTitle">
       <div class="about-scene-inner">
         <figure class="about-scene-visual">
-          <img src="images/campaign/capsule-01/scene-memory.webp" alt="레이스 칼라와 검정 케이프 재킷을 입은 모델" width="823" height="1100" loading="lazy" decoding="async" />
+          <img data-about-product-image src="images/brand/echo-archive-logo.png" alt="상품 대표 이미지 준비 중" width="823" height="1100" loading="lazy" decoding="async" />
           <figcaption>FIG.01 / A MEMORY, REWORN</figcaption>
         </figure>
         <div class="about-scene-copy">
@@ -86,7 +87,7 @@
     <section class="about-scene" id="scene-translate" data-scene="02" aria-labelledby="sceneTranslateTitle">
       <div class="about-scene-inner">
         <figure class="about-scene-visual">
-          <img src="images/campaign/capsule-01/scene-translate.webp" alt="줄무늬 패널과 퍼프 소매가 있는 검정 의상을 입은 모델" width="828" height="1100" loading="lazy" decoding="async" />
+          <img data-about-product-image src="images/brand/echo-archive-logo.png" alt="상품 대표 이미지 준비 중" width="828" height="1100" loading="lazy" decoding="async" />
           <figcaption>FIG.02 / FROM FEELING TO FORM</figcaption>
         </figure>
         <div class="about-scene-copy">
@@ -109,7 +110,7 @@
     <section class="about-scene" id="scene-everyday" data-scene="03" aria-labelledby="sceneEverydayTitle">
       <div class="about-scene-inner">
         <figure class="about-scene-visual">
-          <img src="images/campaign/capsule-01/scene-everyday.webp" alt="은회색 주름 장식과 흰색 퍼프 소매 의상을 입은 모델" width="835" height="1100" loading="lazy" decoding="async" />
+          <img data-about-product-image src="images/brand/echo-archive-logo.png" alt="상품 대표 이미지 준비 중" width="835" height="1100" loading="lazy" decoding="async" />
           <figcaption>FIG.03 / YOUR OWN EVERYDAY</figcaption>
         </figure>
         <div class="about-scene-copy">
@@ -139,19 +140,19 @@
         <div class="about-archive-window">
           <div class="about-archive-track">
             <figure class="about-archive-card">
-              <img src="images/campaign/capsule-01/scene-memory.webp" alt="레이스 칼라와 검정 케이프 재킷을 입은 모델" width="823" height="1100" loading="lazy" decoding="async" />
+              <img data-about-product-image src="images/brand/echo-archive-logo.png" alt="상품 대표 이미지 준비 중" width="823" height="1100" loading="lazy" decoding="async" />
               <figcaption>FRAME 01 / A MEMORY, REWORN</figcaption>
             </figure>
             <figure class="about-archive-card">
-              <img src="images/campaign/capsule-01/scene-translate.webp" alt="줄무늬 패널과 퍼프 소매가 있는 검정 의상을 입은 모델" width="828" height="1100" loading="lazy" decoding="async" />
+              <img data-about-product-image src="images/brand/echo-archive-logo.png" alt="상품 대표 이미지 준비 중" width="828" height="1100" loading="lazy" decoding="async" />
               <figcaption>FRAME 02 / FROM FEELING TO FORM</figcaption>
             </figure>
             <figure class="about-archive-card">
-              <img src="images/campaign/capsule-01/scene-everyday.webp" alt="은회색 주름 장식과 흰색 퍼프 소매 의상을 입은 모델" width="835" height="1100" loading="lazy" decoding="async" />
+              <img data-about-product-image src="images/brand/echo-archive-logo.png" alt="상품 대표 이미지 준비 중" width="835" height="1100" loading="lazy" decoding="async" />
               <figcaption>FRAME 03 / YOUR OWN EVERYDAY</figcaption>
             </figure>
             <figure class="about-archive-card">
-              <img src="images/campaign/capsule-01/scene-episode.webp" alt="검정 프릴과 흰색 케이프 칼라 의상을 입은 모델" width="816" height="1100" loading="lazy" decoding="async" />
+              <img data-about-product-image src="images/brand/echo-archive-logo.png" alt="상품 대표 이미지 준비 중" width="816" height="1100" loading="lazy" decoding="async" />
               <figcaption>FRAME 04 / A STORY TO KEEP</figcaption>
             </figure>
           </div>
@@ -171,7 +172,7 @@
         <div class="about-scene-copy craft-copy">
           <p class="about-scene-index">05</p>
           <p class="eyebrow">LOCAL CRAFT</p>
-          <h2 id="sceneCraftTitle">중촌동의 손에서<br />완성되는 기록.</h2>
+          <h2 id="sceneCraftTitle" class="closing-title">중촌동의 손에서<br />완성되는 기록.</h2>
           <p class="about-scene-lead">상상에서 시작한 옷에<br />오래 쌓인 제작 경험을 더합니다.</p>
           <p>대전 중촌동 패션 맞춤 거리 장인의 기술과 ECHO ARCHIVE의 서브컬처 감각을 연결합니다. 소량으로 제작하며 디테일과 완성도를 살핍니다.</p>
           <ol class="craft-steps" aria-label="소량 제작 과정">
@@ -181,7 +182,7 @@
             <li><span>04</span>완성도 검수와 기록</li>
           </ol>
           <p class="about-scene-meta">ARCHIVE LOG / REC_005<br />ORIGIN: DAEJEON, JUNGCHON-DONG</p>
-          <p class="about-cta"><a href="products.html" class="btn ghost">옷으로 이어지는 이야기 <span aria-hidden="true">↗</span></a></p>
+          <p class="about-cta"><a href="products.html" class="btn btn-primary"><span>옷으로 이어지는 이야기</span><span class="btn-arrow" aria-hidden="true">→</span></a></p>
         </div>
       </div>
     </section>
@@ -195,6 +196,9 @@
   </footer>
   <script src="script.js?v=20260916-mobile-1"></script>
   <script src="scripts/motion.js"></script>
-  <script src="scripts/about.js"></script>
+  <script src="scripts/about.js?v=20260918-mobile-1"></script>
+  <script src="catalog.js?v=20260826-rich-editor-1"></script>
+  <script src="scripts/about-products.js?v=20260918-mobile-1"></script>
+  <script src="scripts/mobile-motion.js?v=20260918-detail-1"></script>
 </body>
 </html>

@@ -7,12 +7,16 @@
   <meta name="description" content="서로 다른 모습, 같은 영혼. 다섯 개의 크롬 TV에서 ECHO ARCHIVE의 컬렉션과 이야기를 만나보세요." />
   <meta property="og:title" content="ECHO ARCHIVE" />
   <meta property="og:description" content="다섯 개의 크롬 TV로 탐색하는 ECHO ARCHIVE" />
-  <meta property="og:image" content="images/home/echo-desktop-hd-v4.png" />
+  <!-- 공유 미리보기도 가벼운 JPEG을 씁니다. 6.6MB PNG는 SNS 크롤러가 자주 건너뜁니다. -->
+  <meta property="og:image" content="images/home/echo-desktop-v5-1920.jpg" />
+  <meta property="og:image:width" content="1920" />
+  <meta property="og:image:height" content="640" />
   <meta property="og:type" content="website" />
   <link rel="icon" href="images/brand/echo-archive-logo.png" />
-  <link rel="stylesheet" href="style.css?v=20260917-tv-warp-1" />
-  <link rel="stylesheet" href="home.css?v=20260917-mobile-hd-5" />
+  <link rel="stylesheet" href="style.css?v=20260917-buttons-1" />
+  <link rel="stylesheet" href="home.css?v=20260918-mobile-1" />
   <link rel="stylesheet" href="transition.css?v=20260917-tv-warp-2" />
+  <link rel="stylesheet" href="mobile-motion.css?v=20260918-mobile-1" />
 </head>
 <body class="home-page art-home">
   <a class="skip-link" href="#mainContent">TV 아카이브로 건너뛰기</a>
@@ -39,9 +43,19 @@
       <!-- 모바일 메뉴는 일반 문서 흐름에 두어, 열리면 이 장면을 아래로 밀어냅니다.
            이미지와 클릭 영역을 함께 묶어 이동 후에도 터치 위치를 유지합니다. -->
       <div class="archive-scene">
+        <!-- 히어로는 화면 폭에 맞는 크기만 내려받습니다. 원본 PNG(모바일 5.2MB·데스크톱 6.6MB)는
+             표시 크기보다 5배 이상 크고 투명 영역이 전혀 없어, 알파 없는 JPEG로 바꿔 97~99% 줄였습니다.
+             srcset의 w값과 sizes로 브라우저가 해상도(1x/2x)에 맞는 파일을 고릅니다. -->
         <picture class="archive-artwork">
-          <source media="(min-width: 720px)" srcset="images/home/echo-desktop-hd-v4.png" width="4344" height="1448" />
-          <img src="images/home/echo-mobile-hd-v4.png" width="2048" height="3072" fetchpriority="high" decoding="async"
+          <!-- 데스크톱 캔버스는 home.css에서 max(100%, 100dvh*3.36)이라 뷰포트보다 넓어질 수 있습니다.
+               sizes를 100vw로 두면 실제 필요한 폭보다 작게 골라 흐려집니다. -->
+          <source media="(min-width: 720px)" type="image/jpeg"
+            srcset="images/home/echo-desktop-v5-1920.jpg 1920w, images/home/echo-desktop-v5-2896.jpg 2896w"
+            sizes="max(100vw, 336vh)" width="4344" height="1448" />
+          <source type="image/jpeg"
+            srcset="images/home/echo-mobile-v5-780.jpg 780w, images/home/echo-mobile-v5-1400.jpg 1400w"
+            sizes="100vw" width="2048" height="3072" />
+          <img src="images/home/echo-mobile-v5-780.jpg" width="2048" height="3072" fetchpriority="high" decoding="async"
             alt="구름빛 배경과 반사 바닥 위 은빛 TV들. 천사와 악마 날개 안테나, 강아지 귀와 흰 날개, 고양이 귀와 악마 꼬리가 달려 있습니다." />
         </picture>
 
@@ -92,5 +106,6 @@
   <script src="scripts/home-logic.js?v=20260910-bgm-1"></script>
   <script src="scripts/components/tv-warp.js?v=20260917-tv-warp-2"></script>
   <script src="scripts/home.js?v=20260917-tv-warp-2"></script>
+  <script src="scripts/mobile-motion.js?v=20260918-detail-1"></script>
 </body>
 </html>

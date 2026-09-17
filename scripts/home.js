@@ -117,7 +117,9 @@
 
     if (audio || BGM_SRC) {
       audio = audio || new Audio(BGM_SRC);
-      audio.preload = "auto";
+      // preload는 건드리지 않는다. index.html이 preload="none"으로 선언해 두었는데
+      // 여기서 "auto"로 덮으면 음악을 켜지 않은 방문자까지 음원 731KB를 내려받는다.
+      // 실제 로드는 아래 클릭 시점(ensureLoaded)에 한 번만 시작한다.
       audio.loop = true;
 
       // 기본 loop 속성만 쓰면 30초 전체를 반복하므로 마지막 무음까지 재생한다.
@@ -196,6 +198,13 @@
       if (wasPending) return; // 재생 대기 중 빠른 연속 클릭은 무시
 
       if (!wasPressed) {
+        // preload="none"이므로 첫 재생 직전에 로드를 시작한다.
+        // play()만으로도 브라우저가 가져오지만, load()를 먼저 부르면
+        // 네트워크 요청이 더 일찍 출발해 첫 소리까지의 지연이 줄어든다.
+        if (audio.preload === "none" && !audio.readyState) {
+          audio.preload = "auto";
+          audio.load();
+        }
         var playResult = audio.play();
         if (playResult && typeof playResult.then === "function") {
           playResult
