@@ -13,12 +13,13 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@500;600;700&display=swap" />
-  <link rel="stylesheet" href="style.css?v=20260917-tv-warp-1" />
+  <link rel="stylesheet" href="style.css?v=20260917-buttons-1" />
   <link rel="stylesheet" href="rich-content.css?v=20260826-rich-editor-1" />
-  <link rel="stylesheet" href="mobile.css?v=20260916-1" media="(max-width: 899px)" />
-  <link rel="stylesheet" href="archive.css?v=20260917-scroll-3" />
+  <link rel="stylesheet" href="mobile.css?v=20260917-buttons-1" media="(max-width: 899px)" />
+  <link rel="stylesheet" href="archive.css?v=20260918-outro-1" />
   <link rel="stylesheet" href="transition.css?v=20260917-tv-warp-2" />
   <script src="scripts/transition-entry.js?v=20260917-tv-warp-2"></script>
+  <link rel="stylesheet" href="mobile-motion.css?v=20260918-mobile-1" />
 </head>
 <body class="portfolio-page">
 
@@ -63,11 +64,11 @@
     <div class="yy-rule" aria-hidden="true"><span class="yy-rule-node"></span></div>
 
     <section class="section archive-note record-outro">
-      <p class="eyebrow" data-record-reveal>NEXT CHAPTER</p>
-      <h2 data-record-reveal>기록에서,<br />당신의 옷장으로.</h2>
-      <p class="archive-note-links">
-        <a href="products.html" class="btn ghost">SHOP 살펴보기</a>
-        <a href="contact.html" class="btn ghost">협업 문의하기</a>
+      <p class="eyebrow" data-record-reveal data-outro-entry="label">NEXT CHAPTER</p>
+      <h2 class="closing-title"><span class="record-outro-line" data-record-reveal data-outro-entry="left">기록에서,</span><span class="record-outro-line" data-record-reveal data-outro-entry="right">당신의 옷장으로.</span></h2>
+      <p class="archive-note-links" data-record-reveal data-outro-entry="actions">
+        <a href="products.html" class="btn btn-primary"><span>SHOP 살펴보기</span><span class="btn-arrow" aria-hidden="true">→</span></a>
+        <a href="contact.html" class="btn btn-secondary"><span>협업 문의하기</span><span class="btn-arrow" aria-hidden="true">→</span></a>
       </p>
     </section>
 
@@ -88,5 +89,6 @@
   <script src="script.js?v=20260916-mobile-1"></script>
   <script src="scripts/mobile.js?v=20260916-1"></script>
   <script src="scripts/archive-scroll.js?v=20260917-scroll-3"></script>
+  <script src="scripts/mobile-motion.js?v=20260918-detail-1"></script>
 </body>
 </html>

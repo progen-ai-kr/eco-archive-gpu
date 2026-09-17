@@ -66,12 +66,33 @@
   // products: ProductCatalog가 반환한 실제 제품 배열, capsuleEntries: EchoCapsuleData.
   // 정확한 이름이 일치하면 그 극성을 쓰고, 못 찾으면 null(알 수 없음 → 숨기지 않음).
   function resolveProductPolarity(product, capsuleEntries) {
-    if (!product || !Array.isArray(capsuleEntries)) return null;
+    if (!product) return null;
     var name = String(product.name || "").trim().toLowerCase();
-    var match = capsuleEntries.find(function (entry) {
-      return String(entry.productName || "").trim().toLowerCase() === name;
-    });
-    return match ? match.polarity : null;
+
+    // 1순위: 캡슐 매핑에 정확히 일치하는 이름이 있으면 그 극성을 쓴다.
+    if (Array.isArray(capsuleEntries)) {
+      var match = capsuleEntries.find(function (entry) {
+        return String(entry.productName || "").trim().toLowerCase() === name;
+      });
+      if (match) return match.polarity;
+    }
+
+    // 2순위: 제품 자체가 극성을 말해 주면 그대로 쓴다.
+    // 관리자가 제품명·카테고리·키워드에 YIN/YANG을 적는 실제 운영 방식을 지원한다.
+    // (캡슐 매핑은 CAT_404 같은 시즌 코드명이라 실제 제품명과 어긋나기 쉽다)
+    var fields = [product.name, product.category].concat(
+      Array.isArray(product.keywords) ? product.keywords : []);
+    var found = null;
+    for (var i = 0; i < fields.length; i++) {
+      var text = String(fields[i] == null ? "" : fields[i]).toUpperCase();
+      // 단어 경계로 검사해 "YANGZHOU" 같은 우연한 포함을 배제한다.
+      var isYin = /(^|[^A-Z])YIN([^A-Z]|$)/.test(text);
+      var isYang = /(^|[^A-Z])YANG([^A-Z]|$)/.test(text);
+      if (isYin && isYang) return null; // 둘 다면 판단하지 않는다
+      if (isYin) { if (found === "YANG") return null; found = "YIN"; }
+      else if (isYang) { if (found === "YIN") return null; found = "YANG"; }
+    }
+    return found;
   }
 
   function filterProductsByPolarity(products, polarity, capsuleEntries) {

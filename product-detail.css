@@ -1,0 +1,73 @@
+/* 상품 데이터·편집기 서식은 유지하고 공개 상세 화면만 꾸밉니다. */
+.product-page main, .product-page .product-back { overflow-x: clip; }
+.product-page .product-info { min-width: 0; }
+.product-page .product-info h1 { overflow-wrap: anywhere; }
+/* 크기 정보가 없는 관리자 이미지도 지연 로딩 감지 면적을 확보합니다. */
+.product-page .product-rich-text img { min-width: 1px; min-height: 1px; }
+.product-page.has-product-motion .product-rich-text img:not(.product-image-ready) { min-width: 100%; }
+.product-page .product-sale-status { border-radius: var(--button-radius); line-height: 1.65; }
+.product-page .product-carousel-button,
+.product-page .purchase-dialog-close {
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--button-ink);
+  border-radius: var(--button-radius);
+  background: var(--button-bg);
+  color: var(--button-ink);
+  font-family: var(--font-button);
+}
+.product-page .product-carousel-dots { flex-wrap: wrap; justify-content: flex-end; gap: 0; }
+.product-page .product-carousel-dot {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--button-radius);
+  background: transparent;
+  place-items: center;
+}
+.product-page .product-carousel-dot::before {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--stage-ink-soft);
+  content: "";
+}
+.product-page .product-carousel-dot::after { content: none; }
+.product-page .product-carousel-dot[aria-current="true"] { background: transparent; box-shadow: none; }
+.product-page .product-carousel-dot[aria-current="true"]::before {
+  width: 20px;
+  border-radius: var(--button-radius);
+  background: var(--button-ink);
+}
+.product-page .product-back .btn { gap: 24px; }
+
+/* 추가 상자로 감싸지 않아 관리자가 지정한 정렬·갤러리·표 구조가 유지됩니다. */
+.product-page :is(main, .product-back) [data-product-reveal] { --product-shift: -42px; }
+.product-page :is(main, .product-back) [data-product-side="right"] { --product-shift: 42px; }
+.product-page.has-product-motion :is(main, .product-back) [data-product-reveal] {
+  translate: var(--product-shift) 0;
+  opacity: .2;
+  transition: translate 780ms cubic-bezier(.2,.7,.2,1), opacity 620ms ease;
+  transition-delay: var(--product-delay, 0ms);
+}
+.product-page.has-product-motion :is(main, .product-back) [data-product-reveal].product-entered,
+.product-page.has-product-motion :is(main, .product-back) [data-product-reveal]:focus-within {
+  translate: 0 0;
+  opacity: 1;
+}
+.product-page.has-product-motion :is(main, .product-back) [data-product-reveal]:focus-within { transition-delay: 0ms; }
+@media (min-width: 720px) {
+  .product-page :is(main, .product-back) [data-product-reveal] { --product-shift: -64px; }
+  .product-page :is(main, .product-back) [data-product-side="right"] { --product-shift: 64px; }
+}
+@media (hover: hover) {
+  .product-page .product-carousel-button:hover,
+  .product-page .purchase-dialog-close:hover { background: var(--button-hover); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .product-page :is(main, .product-back) [data-product-reveal] { translate: none !important; opacity: 1 !important; transition: none !important; }
+  .product-page .product-carousel-track { transition: none; }
+}
+@media print {
+  .product-page :is(main, .product-back) [data-product-reveal] { translate: none !important; opacity: 1 !important; transition: none !important; }
+}

@@ -13,9 +13,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@500;600;700&display=swap" />
-  <link rel="stylesheet" href="style.css?v=20260902-design-1c" />
+  <link rel="stylesheet" href="style.css?v=20260917-buttons-1" />
   <link rel="stylesheet" href="rich-content.css?v=20260826-rich-editor-1" />
-  <link rel="stylesheet" href="mobile.css?v=20260916-1" media="(max-width: 899px)" />
+  <link rel="stylesheet" href="mobile.css?v=20260917-buttons-1" media="(max-width: 899px)" />
+  <link rel="stylesheet" href="mobile-motion.css?v=20260918-mobile-1" />
+  <link rel="stylesheet" href="product-detail.css?v=20260918-detail-1" />
 </head>
 <body class="product-page">
 
@@ -60,7 +62,7 @@
   </dialog>
 
   <section class="section product-back">
-    <a href="products.html" class="btn ghost" aria-label="제품 목록으로 돌아가기">← <span class="mobile-back-label" hidden>제품 목록</span></a>
+    <a href="products.html" class="btn btn-secondary" aria-label="제품 목록으로 돌아가기"><span class="btn-arrow" aria-hidden="true">←</span><span>제품 목록</span></a>
   </section>
 
   <footer class="footer">
@@ -249,7 +251,7 @@
         const image = imageMarkup(section.image, section.alt || product.name, "", false);
         if (!image) return "";
         const caption = section.caption ? "<figcaption>" + esc(section.caption) + "</figcaption>" : "";
-        return '<figure class="product-block product-full-image glass-panel glass-corners tv-frame">' + image + caption + "</figure>";
+        return '<figure class="product-block product-full-image glass-panel glass-corners">' + image + caption + "</figure>";
       }
 
       if (section.type === "image_text") {
@@ -257,14 +259,14 @@
         const heading = section.heading ? "<h2>" + esc(section.heading) + "</h2>" : "";
         const reverse = section.imagePosition === "right" ? " reverse" : "";
         return '<section class="product-block product-image-text' + reverse + '">' +
-          '<div class="product-block-image glass-panel glass-corners tv-frame">' + image + "</div>" +
+          '<div class="product-block-image glass-panel glass-corners">' + image + "</div>" +
           '<div class="product-block-copy">' + heading + rich(section.body) + "</div></section>";
       }
 
       if (section.type === "gallery") {
         const columns = ["1", "2", "3"].includes(String(section.columns)) ? String(section.columns) : "2";
         const images = (Array.isArray(section.images) ? section.images : [])
-          .map((source, imageIndex) => '<figure class="glass-panel glass-corners tv-frame">' + imageMarkup(source, product.name + " 상세 이미지 " + (imageIndex + 1), "", false) + "</figure>")
+          .map((source, imageIndex) => '<figure class="glass-panel glass-corners">' + imageMarkup(source, product.name + " 상세 이미지 " + (imageIndex + 1), "", false) + "</figure>")
           .join("");
         return images ? '<section class="product-block product-gallery columns-' + columns + '">' + images + "</section>" : "";
       }
@@ -308,10 +310,10 @@
         const publicBuyNotice = buyNotice === "계좌 0000-000-0000 김*수" ? "" : buyNotice;
         const buyButton = buyLink
           ? '<a class="btn product-buy" href="' + esc(buyLink) + '" target="_blank" rel="noopener noreferrer">' +
-            esc(product.buyLabel || "구매하기") + " <span aria-hidden=\"true\">↗</span></a>"
+            '<span>' + esc(product.buyLabel || "구매하기") + '</span><span class="btn-arrow" aria-hidden="true">↗</span></a>'
           : publicBuyNotice
             ? '<button class="btn product-buy" type="button" data-purchase-dialog aria-haspopup="dialog">' +
-              esc(product.buyLabel || "구매하기") + "</button>"
+              '<span>' + esc(product.buyLabel || "구매하기") + '</span><span class="btn-arrow" aria-hidden="true">→</span></button>'
             : '<p class="product-sale-status" role="status">판매 준비 중 · 문의 채널을 이용해 주세요.</p>';
 
         const keywordLine = Array.isArray(product.keywords) && product.keywords.length
@@ -346,7 +348,7 @@
 
         document.getElementById("mainContent").innerHTML =
           '<section class="section product-hero">' +
-            '<div class="product-hero-gallery glass-panel glass-corners tv-frame">' + gallery + "</div>" +
+            '<div class="product-hero-gallery glass-panel glass-corners">' + gallery + "</div>" +
             '<div class="product-info">' +
               '<p class="channel-code">CH.03 <strong>SIG_EPISODE</strong> · EP.' + episodeNumber + "</p>" +
               '<p class="k">' + esc(product.label || product.category || "") + "</p>" +
@@ -377,5 +379,7 @@
           '<section class="section"><h1>제품을 찾을 수 없습니다.</h1><p>요청한 기록이 없거나 현재 공개되지 않았습니다.</p></section>';
       });
   </script>
+  <script src="scripts/product-motion.js?v=20260918-detail-1"></script>
+  <script src="scripts/mobile-motion.js?v=20260918-detail-1"></script>
 </body>
 </html>

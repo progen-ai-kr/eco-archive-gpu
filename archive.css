@@ -52,8 +52,28 @@
 .portfolio-page .portfolio-content .portfolio-status { padding: 48px 16px; text-align: center; font-size: 15px; }
 .portfolio-page .portfolio-content.is-empty { min-height: 220px; }
 .portfolio-page .record-outro { padding-block: clamp(48px, 9vw, 130px); }
-.portfolio-page .record-outro h2 { margin-top: 20px; font: 500 clamp(30px, 5vw, 68px)/1.3 var(--font-main); letter-spacing: -.055em; }
+.portfolio-page .record-outro h2 { margin-top: 20px; }
 .record-outro .archive-note-links { margin-top: 28px; }
+.record-outro { overflow-x: clip; }
+.record-outro-line { display: block; }
+.record-outro .archive-note-links > .record-motion { display: flex; flex-wrap: wrap; justify-content: center; gap: inherit; width: 100%; }
+
+/* 마지막 문구는 ABOUT처럼 줄마다 반대 방향에서 들어오고 버튼이 뒤따릅니다.
+   이 구간은 한 번의 등장 효과를 사용해 스크롤 속도와 관계없이 순서가 보입니다. */
+.record-outro [data-outro-entry] { --outro-x: -36px; --outro-y: 0px; --outro-delay: 0ms; }
+.record-outro [data-outro-entry="left"] { --outro-delay: 70ms; }
+.record-outro [data-outro-entry="right"] { --outro-x: 36px; --outro-delay: 170ms; }
+.record-outro [data-outro-entry="actions"] { --outro-x: 0px; --outro-y: 16px; --outro-delay: 260ms; }
+.has-record-motion .record-outro .record-anchor > .record-motion {
+  animation: none;
+  opacity: .2;
+  filter: blur(3px);
+  transform: translate3d(var(--outro-x), var(--outro-y), 0);
+  transition: transform 700ms cubic-bezier(.2,.7,.2,1) var(--outro-delay), opacity 560ms ease var(--outro-delay), filter 560ms ease var(--outro-delay);
+}
+.has-record-motion .record-outro .record-anchor.is-seen > .record-motion,
+.has-record-motion .record-outro .record-anchor:focus-within > .record-motion { opacity: 1; filter: none; transform: none; }
+.has-record-motion .record-outro .record-anchor:focus-within > .record-motion { transition-delay: 0ms; }
 
 /* 실제 콘텐츠는 기본적으로 보입니다. 스크립트가 준비된 경우에만 작은 이동을 더합니다.
    긴 사진 전체에 blur나 잘림을 적용하지 않아 콜라주 속 글과 디테일도 읽힙니다. */
@@ -82,6 +102,9 @@
 }
 
 @media (min-width: 720px) {
+  .record-outro [data-outro-entry] { --outro-x: -64px; }
+  .record-outro [data-outro-entry="right"] { --outro-x: 64px; }
+  .record-outro [data-outro-entry="actions"] { --outro-x: 0px; }
   .portfolio-page .record-intro { padding-bottom: 64px; }
   .record-intro-motion { --intro-x: -64px; }
   .record-intro-line + .record-intro-line { --intro-x: 64px; }
@@ -112,11 +135,11 @@
 }
 @media (prefers-reduced-motion: reduce) {
   html:has(.portfolio-page) { scroll-behavior: auto; }
-  .portfolio-page .record-anchor > .record-motion { opacity: 1 !important; transform: none !important; animation: none !important; transition: none !important; }
+  .portfolio-page .record-anchor > .record-motion { opacity: 1 !important; transform: none !important; filter: none !important; animation: none !important; transition: none !important; }
 }
 @media print {
   .record-start { display: none; }
   .portfolio-page .record-reader { display: block; }
-  .portfolio-page .record-anchor > .record-motion { opacity: 1 !important; transform: none !important; animation: none !important; }
+  .portfolio-page .record-anchor > .record-motion { opacity: 1 !important; transform: none !important; filter: none !important; animation: none !important; }
   .record-intro-motion { animation: none; opacity: 1; transform: none; }
 }

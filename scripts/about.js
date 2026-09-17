@@ -212,6 +212,7 @@
     if (unit) unit.classList.add("is-seen", "is-focused");
   });
   window.addEventListener("resize", scheduleConfigure);
+  document.addEventListener("echo:about-images-updated", scheduleConfigure);
   if (window.visualViewport) window.visualViewport.addEventListener("resize", scheduleConfigure);
   // 예약된 프레임과 겹치지 않도록 다른 이벤트와 같은 경로로 모읍니다.
   reducedMotion.addEventListener("change", scheduleConfigure);

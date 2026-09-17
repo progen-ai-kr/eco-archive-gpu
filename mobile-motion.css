@@ -1,0 +1,41 @@
+/* 모바일 효과만 담당합니다. 데스크톱의 기존 화면과 효과는 그대로 유지합니다. */
+.mobile-reveal-shell { display: contents; }
+@media (max-width: 899px) {
+  .mobile-reveal-shell { display: block; min-width: 0; }
+  body:not(.art-home) main { overflow-x: clip; }
+  .footer, .archive-footer { overflow-x: clip; }
+  .has-mobile-enter [data-mobile-motion] {
+    --mobile-slide: -42px;
+    translate: var(--mobile-slide) 0;
+    opacity: .25;
+    transition: translate 720ms cubic-bezier(.2,.7,.2,1), opacity 560ms ease;
+  }
+  .has-mobile-enter [data-mobile-motion="image"] { --mobile-slide: -58px; }
+  .has-mobile-enter [data-mobile-direction="right"] { --mobile-slide: 42px; }
+  .has-mobile-enter [data-mobile-motion="image"][data-mobile-direction="right"] { --mobile-slide: 58px; }
+  .has-mobile-enter .mobile-entered > [data-mobile-motion],
+  .has-mobile-enter [data-mobile-anchor]:focus-within > [data-mobile-motion] { translate: 0 0; opacity: 1; }
+  /* 기존 데스크톱 효과와 겹쳐 두 번 이동하거나 흐려지는 것을 막습니다. */
+  .has-mobile-enter :is(.about-move, .scroll-content, .record-motion)[data-mobile-motion] {
+    transform: none !important;
+    animation: none !important;
+    filter: none !important;
+    opacity: .25;
+    transition: translate 720ms cubic-bezier(.2,.7,.2,1), opacity 560ms ease !important;
+  }
+  .has-mobile-enter .mobile-entered > :is(.about-move, .scroll-content, .record-motion)[data-mobile-motion],
+  .has-mobile-enter [data-mobile-anchor]:focus-within > :is(.about-move, .scroll-content, .record-motion)[data-mobile-motion] { opacity: 1; }
+  .about-page.has-mobile-enter .about-title-line { transform: none !important; transition: none !important; }
+  .about-page.has-mobile-enter .about-focus { opacity: 1 !important; filter: none !important; }
+  .portfolio-page .record-intro-motion { --intro-x: -42px; }
+  .portfolio-page .record-intro-line + .record-intro-line { --intro-x: 42px; }
+  /* 홈은 하나의 합성 이미지이므로 사진과 링크의 이동 시간도 정확히 맞춥니다. */
+  .art-home.has-mobile-enter .archive-artwork,
+  .art-home.has-mobile-enter .archive-hotspots { transition-duration: 720ms, 560ms; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .has-mobile-enter [data-mobile-motion] { translate: none !important; opacity: 1 !important; transition: none !important; }
+}
+@media print {
+  [data-mobile-motion] { translate: none !important; opacity: 1 !important; transition: none !important; }
+}
