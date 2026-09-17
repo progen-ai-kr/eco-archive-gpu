@@ -1,5 +1,28 @@
 # 홈 이미지 원본과 편집 기록
 
+## 현재 적용: 모바일 메뉴 분리 및 고해상도 v4
+
+- `echo-mobile-hd-v4.png`: 2048 × 3072px. 위 오른쪽 ABOUT TV 본체 높이를 옆 TV에 맞추고 합성 경계와 금속 디테일을 보정했습니다.
+- `echo-desktop-hd-v4.png`: 4344 × 1448px. 기존 3:1 파노라마의 배치를 유지하면서 크롬·화면·구름·바닥 디테일을 보정했습니다.
+- 방식: 내장 imagegen 편집 → 생성 결과(모바일 1024 × 1536, 데스크톱 2172 × 724)를 고품질 bicubic 보간으로 가로·세로 2배 확대 → PNG 저장. 요청한 큰 해상도를 생성 도구가 직접 출력한 것은 아니며, 픽셀 수 증가 자체가 실제 디테일 4배 복원을 의미하지 않습니다.
+- 기존 이미지들은 보존했습니다. 생성 편집이므로 세부 반사와 구름이 원본과 픽셀 단위로 동일하지는 않습니다.
+- 모바일 헤더와 메뉴는 문서 흐름을 사용하고, 이미지와 클릭 영역은 `archive-scene`에 함께 넣었습니다. 메뉴가 펼쳐지면 장면을 아래로 밀며, 짧은 화면에서는 세로 스크롤로 모두 접근합니다. 데스크톱 헤더·메뉴는 기존 위치를 유지합니다.
+- 사용자 요청에 따라 브라우저 조작과 테스트는 실행하지 않았습니다.
+
+### v4 최종 생성 프롬프트
+
+모바일:
+
+```text
+Use case: precise-object-edit. Edit target: attached portrait image of FOUR chrome CRT TVs in 2x2 arrangement. Produce a high-resolution restored upscale, EXACT output 2048x3072 pixels, retain 2:3 aspect ratio and original framing. Correct ONLY the upper-right ABOUT TV (glowing horizontal dash in parentheses) to have the SAME chrome cabinet width AND height as upper-left yin-yang TV and lower two TVs: enlarge it slightly vertically, align top and bottom of its cabinet with upper-left cabinet. Keep body boxes roughly x19%-50% and x51%-82%, upper row y27%-44%, bottom row y48%-66%. Preserve all four symbols, the asymmetrical angel/bat wing antenna above upper-left, dog ears and feather wing bottom-left, cat ears and devil tail bottom-right. NO sound/speaker TV. Preserve chrome polished silver gloss, original camera, pale blue cloud colors and reflective floor, original centered composition and blank space. Clean up the visible rectangular collage seams and blurry patches around upper-right TV and floor, seamlessly match reflections. Restore fine chrome edges, individual feathers, cat ears, glass highlights, prevent pixelation, ringing or oversharpening. Do not add objects, text, labels, logo, border or UI. This is detail restoration plus matching cabinet dimensions, NOT a redesign. Output actual 2048x3072 high-res raster.
+```
+
+데스크톱:
+
+```text
+Use case: precise-object-edit. Edit target: attached ultrawide 3:1 panorama of FIVE chrome CRT TVs centered in blue cloudy studio. Upscale and restore this exact image to actual 3840x1280 pixels, maintain EXACT 3:1 aspect ratio. Preserve the entire composition, subject sizes and normalized positions, all five TV bodies, exact screen icons and wing/ear/tail details, camera, silver chrome materials and single seamless cloud background and reflective floor. Do not rearrange, move, enlarge or shrink subjects. Restore sharp fine edges of chrome casings, subtle metal reflections and tiny buttons, individual feathers, screen glyph edges, smooth clean natural clouds and glossy floor. Remove blur/pixelation while preserving intentional soft lighting. No text, logo, watermark, added objects, seams, new textures, sharpening halos, fake grain or color change. Output actual 3840x1280 high-resolution raster, not a smaller preview.
+```
+
 ## 현재 데스크톱: 단일 파노라마 v3
 
 - 파일: `echo-desktop-panorama-v3.png` (2172 × 724px, 3:1).

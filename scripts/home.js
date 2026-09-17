@@ -62,16 +62,23 @@
       if (tv.tagName !== "A") return; // BGM 버튼은 페이지 전환 연출을 타지 않는다
 
       tv.addEventListener("click", function (event) {
-        if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+        if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || tv.target === "_blank" || tv.hasAttribute("download")) return;
         var transition = document.querySelector("signal-transition");
-        if (transitionInFlight || !transition || typeof transition.runTransition !== "function") return;
+        if (!transition || typeof transition.runTransition !== "function") return;
 
         event.preventDefault();
-        transitionInFlight = true;
-        document.body.setAttribute("aria-busy", "true");
-        transition.runTransition(tv, tv.href, {
-          reducedMotion: window.EchoMotion && window.EchoMotion.prefersReducedMotion(),
-        });
+        if (transitionInFlight) return;
+        try {
+          // 키보드 선택은 TV 중심에서, 마우스·터치는 실제 클릭 지점에서 번쩍입니다.
+          transitionInFlight = transition.runTransition(tv, tv.href, {
+            point: event.detail > 0 ? { x: event.clientX, y: event.clientY } : null,
+            reducedMotion: window.EchoMotion && window.EchoMotion.prefersReducedMotion(),
+          }) === true;
+          if (!transitionInFlight) window.location.assign(tv.href);
+        } catch (_) {
+          if (typeof transition.cancelTransition === "function") transition.cancelTransition();
+          window.location.assign(tv.href);
+        }
       });
     });
 
@@ -89,10 +96,14 @@
       });
     }
 
-    window.addEventListener("pageshow", function () {
+    function resetNavigation() {
       transitionInFlight = false;
       document.body.removeAttribute("aria-busy");
+    }
+    window.addEventListener("pageshow", function (event) {
+      if (event.persisted) resetNavigation();
     });
+    window.addEventListener("echo:warp-reset", resetNavigation);
   }
 
   // ── BGM 토글 (순수 상태 기계는 scripts/home-logic.js) ───────────

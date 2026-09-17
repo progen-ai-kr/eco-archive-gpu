@@ -16,7 +16,7 @@ test("글자를 제거한 데스크톱 TV 장면이 바이트 단위로 보존�
 });
 
 test("가로/세로 이미지의 실제 크기가 HTML 예약 비율과 일치한다", () => {
-  for (const [file, width, height] of [["echo-desktop-panorama-v3.png", 2172, 724], ["echo-mobile.png", 1024, 1536]]) {
+  for (const [file, width, height] of [["echo-desktop-hd-v4.png", 4344, 1448], ["echo-mobile-hd-v4.png", 2048, 3072]]) {
     const buffer = fs.readFileSync(path.join(repoRoot, "images/home", file));
     assert.equal(buffer.toString("hex", 0, 8), "89504e470d0a1a0a");
     assert.equal(buffer.readUInt32BE(16), width);
